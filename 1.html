@@ -2,14 +2,49 @@
 <html>
 <head> 
 <meta charset="utf-8"> 
-<title>Potato的提示</title> 
+<title>无标题网页</title> 
 </head>
 <body>
 
-<p><big>有事情请直接说，问在吗之类一律不回。</big></p>
+<p><big>有事情请直接说，问“在吗”之类一律不回。</big></p>
 <p><big>言语辱骂、游戏链接、索要作业等内容一律会被屏蔽，绑亲密关系的不受影响。</big></p>
-<p><big>消息回复时间为休息日的13:30-21:00，绑亲密关系的不受影响。从25年5月起直至中考结束所有消息一律不回。</big></p>
+<p><big>消息回复时间为休息日的13:30-20:00，绑亲密关系的不受影响。从25年5月起直至中考结束所有平台所有消息一律不回。</big></p>
 <p><big>QQ联系不上加微信：lvka7534；钉钉：dingtalk7lvka。选中能复制。</big></p>
+<p>发布：2024/11/13，更新：2024/12/08（第1次）</big></p>
 
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+ 
+<body>
+    <div class="box"></div>
+    <script>
+        function getTime() {
+            var date = new Date();
+            var year = date.getFullYear(); //获取年份
+            var month = date.getMonth() + 1; //获取月份
+            var day = date.getDate(); //获取日期
+            var hour = date.getHours(); //获取小时
+            hour = hour < 10 ? '0' + hour : hour;
+            var minute = date.getMinutes(); // 获取分
+            minute = minute < 10 ? '0' + minute : minute;
+            var seconds = date.getSeconds(); //获取秒
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            return year + '年' + month + '月' + day + '日&nbsp;' + hour + ':' + minute + ':' + seconds;
+        }
+ 
+        setInterval(function() {
+            document.querySelector('.box').innerHTML = getTime();
+        }, 1000)
+    </script>
 </body>
 </html>
