@@ -2,19 +2,183 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>通话全程录音提醒</title>
-</head>
-<body style="background: white;padding: 20px;">
-<marquee scrollamount="15"><span style="font-weight: normal;font-size: 20px;color: black;">「Website General Announcement (2022/07/13)」梦幻云问题请联系社区客服；网页问题请联系lvka17026@outlook.com。</span></marquee>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+                         "Helvetica Neue", Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .marquee-container {
+            width: 100%;
+            max-width: 1200px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .marquee-content {
+            font-size: 20px;
+            color: #333;
+            font-weight: 400; /* 细体显示 */
+            white-space: nowrap;
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 20s linear infinite;
+        }
+        
+        .content-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .info-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        .info-card h2 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        .info-card p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .image-container {
+            max-width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .contact-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f4fc;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+        
+        .contact-info a {
+            color: #2980b9;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #777;
+            font-size: 14px;
+            padding: 20px;
+            border-top: 1px solid #eee;
+            width: 100%;
+            max-width: 1200px;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        @media (max-width: 768px) {
+            .marquee-content {
+                font-size: 18px;
+            }
+            
+            .info-card {
+                padding: 20px;
+            }
+            
+            .info-card h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <img src="5226.jpg"/ width="1835px" height="1109px">
+    <div class="header">
+        <h1 class="title">通话全程录音提醒</h1>
+    </div>
+    
+    <div class="marquee-container">
+        <div class="marquee-content">
+            「Website General Announcement (2022/07/13)」This website is built by Lvka based on Github and has nothing to do with Dream Cloud Inc. If part of the website loads abnormally or cannot be accessed, please check your network or try to open the network proxy. For other questions, please contact lvka17026@outlook.com.
+        </div>
+    </div>
+    
+    <div class="content-wrapper">
+        <div class="info-card">
+            <h2>重要通知</h2>
+            <p>本站不受理梦幻云服务问题，相关问题请联系梦幻社区客服。</p>
+            
+            <div class="contact-info">
+                技术支持邮箱: <a href="mailto:lvka17026@outlook.com">lvka17026@outlook.com</a>
+            </div>
+        </div>
+        
+        <div class="image-container">
+            <img src="5226.jpg" alt="通话录音示意图">
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2022 律卡 | 基于 GitHub 构建 | 与 Dream Cloud Inc. 无关</p>
+    </div>
 </body>
 </html>
