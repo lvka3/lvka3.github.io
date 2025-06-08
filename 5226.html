@@ -2,19 +2,54 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>通话全程录音提醒</title>
-</head>
-<body style="background: white;padding: 20px;">
-<marquee scrollamount="15"><span style="font-weight: normal;font-size: 20px;color: black;">「Website General Announcement (2022/07/13)」This website is built by Lvka based on Github and has nothing to do with Dream Cloud Inc. If part of the website loads abnormally or cannot be accessed, please check your network or try to open the network proxy. For other questions, please contact lvka17026@outlook.com.</span></marquee>
-</body>
-</html>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
+    <style>
+        body {
+            background: white;
+            padding: 20px;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .marquee-container {
+            width: 100%;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .marquee-content {
+            font-size: 20px;
+            color: black;
+            font-weight: 400; /* 确保细体显示 */
+            white-space: nowrap;
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 15s linear infinite;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
 </head>
 <body>
-    <img src="5226.jpg"/ width="1388px" height="506px">
+    <div class="marquee-container">
+        <div class="marquee-content">
+            「Website General Announcement (2022/07/13)」网页问题请联系lvka17026@outlook.com。
+        </div>
+    </div>
+    
+    <img src="5226.jpg" alt="通话全程录音提醒">
 </body>
 </html>
