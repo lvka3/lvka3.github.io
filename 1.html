@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>在线状态说明 - 律卡</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 导入自定义字体 */
+        @font-face {
+            font-family: 'HanYiShuSongErJian';
+            src: url('HanYiShuSongErJian-1.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        /* 加载界面 */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader-content {
+            text-align: center;
+            color: #fff;
+            max-width: 500px;
+            padding: 20px;
+        }
+        
+        .loader-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: #4fc3f7;
+        }
+        
+        .loader-text {
+            font-size: 22px;
+            margin-bottom: 25px;
+        }
+        
+        .progress-container {
+            width: 80%;
+            max-width: 400px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #4fc3f7, #2980b9);
+            border-radius: 10px;
+            transition: width 1.5s ease;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            font-family: 'HanYiShuSongErJian', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+                         "Helvetica Neue", Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #e6e6e6;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* 左上角时间显示 */
+        .top-time {
+            position: fixed;
+            top: 15px;
+            left: 20px;
+            background: rgba(25, 118, 210, 0.3);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            z-index: 1001;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* 粒子画布 */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            width: 100%;
+            padding: 15px 0;
+            position: relative;
+            margin-top: 60px; /* 为左上角时间留出空间 */
+        }
+        
+        .title {
+            font-size: 42px;
+            font-weight: 500;
+            color: #fff;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(79, 195, 247, 0.7);
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(to right, transparent, #4fc3f7, transparent);
+            border-radius: 2px;
+        }
+        
+        /* 跑马灯容器 */
+        .marquee-container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(25, 118, 210, 0.25);
+            border-radius: 8px;
+            padding: 14px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .marquee-wrapper {
+            display: flex;
+            width: max-content;
+            animation: marquee 25s linear infinite;
+        }
+        
+        .marquee-content {
+            font-size: 22px;
+            color: #fff;
+            font-weight: 400;
+            white-space: nowrap;
+            padding: 0 20px;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        /* 关键帧动画调整 */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .content-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .info-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            pointer-events: none;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        
+        .info-card h2 {
+            color: #4fc3f7;
+            margin-bottom: 30px;
+            font-size: 36px;
+            text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+            position: relative;
+        }
+        
+        .info-card h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, transparent, #4fc3f7, transparent);
+            border-radius: 2px;
+        }
+        
+        .info-card p {
+            font-size: 24px;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+            text-align: left;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .highlight {
+            color: #4fc3f7;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(79, 195, 247, 0.7);
+        }
+        
+        .contact-info {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(25, 118, 210, 0.2);
+            border-radius: 12px;
+            font-size: 20px;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .contact-info a {
+            color: #4fc3f7;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px rgba(79, 195, 247, 0.5);
+        }
+        
+        .contact-info a:hover {
+            color: #fff;
+            text-decoration: underline;
+            text-shadow: 0 0 10px rgba(79, 195, 247, 0.8);
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: rgba(255,255,255,0.7);
+            font-size: 16px;
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            max-width: 1200px;
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        .decoration {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+        }
+        
+        .decoration-1 {
+            top: 10%;
+            left: 10%;
+            background: rgba(79, 195, 247, 0.2);
+        }
+        
+        .decoration-2 {
+            bottom: 10%;
+            right: 10%;
+            background: rgba(233, 30, 99, 0.2);
+        }
+        
+        /* 弹窗样式 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            position: relative;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-content::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(79, 195, 247, 0.1), transparent 70%);
+            pointer-events: none;
+        }
+        
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .modal-header h2 {
+            font-size: 32px;
+            color: #4fc3f7;
+            text-shadow: 0 0 10px rgba(79, 195, 247, 0.5);
+        }
+        
+        .modal-body {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+        
+        .info-list {
+            text-align: left;
+            padding: 0 20px;
+        }
+        
+        .info-list li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .info-list li:before {
+            content: "•";
+            color: #4fc3f7;
+            position: absolute;
+            left: 0;
+            font-size: 24px;
+        }
+        
+        .modal-button {
+            display: block;
+            margin: 0 auto;
+            padding: 12px 40px;
+            background: linear-gradient(to right, #4fc3f7, #2980b9);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 20px;
+            font-family: 'HanYiShuSongErJian', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(to right, #64d2ff, #3498db);
+        }
+        
+        .modal-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        
+        /* 更多信息按钮（右上角） */
+        .more-info-btn {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            background: linear-gradient(135deg, #4fc3f7, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-family: 'HanYiShuSongErJian', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .more-info-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #64d2ff, #3498db);
+        }
+        
+        /* 时间显示样式 */
+        .time-display {
+            background: rgba(25, 118, 210, 0.2);
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 32px;
+            }
+            
+            .marquee-content {
+                font-size: 18px;
+            }
+            
+            @keyframes marquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-100%); }
+            }
+            
+            .info-card {
+                padding: 25px;
+            }
+            
+            .info-card h2 {
+                font-size: 28px;
+            }
+            
+            .info-card p {
+                font-size: 20px;
+            }
+            
+            .contact-info {
+                font-size: 16px;
+            }
+            
+            .modal-content {
+                padding: 30px 20px;
+            }
+            
+            .modal-header h2 {
+                font-size: 28px;
+            }
+            
+            .modal-body {
+                font-size: 18px;
+            }
+            
+            .more-info-btn {
+                top: 10px;
+                right: 10px;
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+            
+            .top-time {
+                top: 10px;
+                left: 10px;
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+            
+            .header {
+                margin-top: 50px;
+            }
+            
+            .loader-title {
+                font-size: 26px;
+            }
+            
+            .loader-text {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 加载界面 -->
+    <div id="loader">
+        <div class="loader-content">
+            <h2 class="loader-title">正在加载中，请稍候</h2>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p class="loader-text" id="loader-text">预计还需 2秒</p>
+        </div>
+    </div>
+
+    <!-- 左上角时间显示 -->
+    <div class="top-time" id="top-time">加载中...</div>
+    
+    <!-- 粒子背景容器 -->
+    <div id="particles-js"></div>
+    
+    <!-- 装饰性元素 -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+    
+    <div class="header">
+        <h1 class="title floating">在线状态说明</h1>
+    </div>
+    
+    <!-- 跑马灯 -->
+    <div class="marquee-container">
+        <div class="marquee-wrapper">
+            <div class="marquee-content">
+                【网页提醒】请不要向外人展示网址及通讯方式，谢谢您的理解。
+            </div>
+        </div>
+    </div>
+    
+    <div class="content-wrapper">
+        <div class="info-card">
+            <h2>重要说明</h2>
+            <p><span class="highlight">有事情请直接说</span>，问“在吗”之类一律不回。</p>
+            <p><span class="highlight">2025/06/09 14:00 至 2025/06/23 16:50</span> 期间全部消息不回复。</p>
+            <p><span class="highlight">QQ：3490360380</span>；<span class="highlight">微信：lvka7534</span>；<span class="highlight">钉钉：dingtalk7lvka</span>。选中能复制。</p>
+            
+            <div class="contact-info">
+                有问题请联系: <a href="mailto:lvka17026@outlook.com">lvka17026@outlook.com</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>© 2022-2025 律卡 | 基于 GitHub 构建 | 与 Dream Cloud Inc. 无关</p>
+    </div>
+
+    <!-- 更多信息按钮（右上角） -->
+    <button class="more-info-btn" id="more-info-btn">
+        <i class="fas fa-info-circle"></i> 更多信息
+    </button>
+
+    <!-- 系统提示弹窗 -->
+    <div class="modal-overlay" id="system-modal">
+        <div class="modal-content">
+            <div id="system-particles" class="modal-particles"></div>
+            
+            <div class="modal-header">
+                <h2>系统提示</h2>
+            </div>
+            <div class="modal-body">
+                请不要像外人展示网址及通讯方式，谢谢您的理解。获取更多信息，欢迎访问https://lvka3.github.io/index.html。
+            </div>
+            <button class="modal-button" id="close-system-modal">确认</button>
+        </div>
+    </div>
+
+    <!-- 更多信息弹窗 -->
+    <div class="modal-overlay" id="more-info-modal">
+        <div class="modal-content">
+            <div id="info-particles" class="modal-particles"></div>
+            
+            <div class="modal-header">
+                <h2>更多信息</h2>
+            </div>
+            <div class="modal-body">
+                <ul class="info-list">
+                    <li>感谢“若叶”、Dream Cloud AI和DeepSeek对网页构建的指导与支持。</li>
+                    <li>网页内容由梦幻云工作人员律卡独立于梦幻云构建，所显示的任何内容均不代表梦幻云立场。</li>
+                    <li>现在是北京时间：<span id="beijing-time">加载中...</span></li>
+                </ul>
+                <div class="time-display">
+                    <i class="fas fa-clock"></i> <span id="current-time">--:--:--</span>
+                </div>
+            </div>
+            <button class="modal-button" id="close-info-modal">确认</button>
+        </div>
+    </div>
+
+    <!-- 粒子效果库 -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        // 加载进度条动画
+        const loader = document.getElementById('loader');
+        const progressBar = document.getElementById('progress-bar');
+        const loaderText = document.getElementById('loader-text');
+        
+        // 倒计时变量
+        let countdown = 2;
+        
+        // 更新倒计时文本
+        function updateCountdown() {
+            loaderText.textContent = `预计还需 ${countdown}秒`;
+            countdown--;
+            
+            if (countdown >= 0) {
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+        
+        // 开始加载进度条
+        setTimeout(() => {
+            progressBar.style.width = '100%';
+            updateCountdown();
+        }, 500);
+        
+        // 加载完成后隐藏加载界面
+        setTimeout(() => {
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+                initPage(); // 初始化页面功能
+            }, 500);
+        }, 2000);
+        
+        // 初始化页面功能
+        function initPage() {
+            // 初始化主页面粒子背景
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {
+                        "value": 70,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": "#4fc3f7"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.4,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 2,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 140,
+                        "color": "#4fc3f7",
+                        "opacity": 0.3,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+            
+            // 添加悬停效果到卡片
+            document.querySelectorAll('.info-card').forEach(card => {
+                card.addEventListener('mousemove', function(e) {
+                    const cardRect = this.getBoundingClientRect();
+                    const x = e.clientX - cardRect.left;
+                    const y = e.clientY - cardRect.top;
+                    
+                    const centerX = cardRect.width / 2;
+                    const centerY = cardRect.height / 2;
+                    
+                    const angleY = (x - centerX) / 10;
+                    const angleX = (centerY - y) / 10;
+                    
+                    this.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                });
+                
+                card.addEventListener('touchend', function() {
+                    this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+                });
+            });
+            
+            // 确保跑马灯内容加载后可见
+            const marqueeWrapper = document.querySelector('.marquee-wrapper');
+            const content = document.querySelector('.marquee-content');
+            const clone = content.cloneNode(true);
+            marqueeWrapper.appendChild(clone);
+            
+            const contentWidth = content.offsetWidth;
+            marqueeWrapper.style.width = `${contentWidth * 2}px`;
+            
+            // 弹窗处理
+            const systemModal = document.getElementById('system-modal');
+            const closeSystemButton = document.getElementById('close-system-modal');
+            
+            const moreInfoModal = document.getElementById('more-info-modal');
+            const closeInfoButton = document.getElementById('close-info-modal');
+            const moreInfoBtn = document.getElementById('more-info-btn');
+            
+            // 显示系统提示弹窗
+            systemModal.classList.add('active');
+            
+            // 关闭系统提示弹窗
+            closeSystemButton.addEventListener('click', function() {
+                systemModal.classList.remove('active');
+            });
+            
+            // 打开更多信息弹窗
+            moreInfoBtn.addEventListener('click', function() {
+                moreInfoModal.classList.add('active');
+            });
+            
+            // 关闭更多信息弹窗
+            closeInfoButton.addEventListener('click', function() {
+                moreInfoModal.classList.remove('active');
+            });
+            
+            // 系统提示弹窗粒子效果
+            particlesJS("system-particles", {
+                "particles": {
+                    "number": {
+                        "value": 30,
+                        "density": {
+                            "enable": true,
+                            "value_area": 400
+                        }
+                    },
+                    "color": {
+                        "value": "#4fc3f7"
+                    },
+                    "shape": {
+                        "type": "circle"
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": true
+                    },
+                    "size": {
+                        "value": 2,
+                        "random": true
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 100,
+                        "color": "#4fc3f7",
+                        "opacity": 0.3,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1,
+                        "direction": "none",
+                        "random": true,
+                        "out_mode": "out"
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+            
+                        // 更多信息弹窗粒子效果（不同风格）
+            particlesJS("info-particles", {
+                "particles": {
+                    "number": {
+                        "value": 40,
+                        "density": {
+                            "enable": true,
+                            "value_area": 500
+                        }
+                    },
+                    "color": {
+                        "value": "#e91e63"
+                    },
+                    "shape": {
+                        "type": "triangle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.6,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1,
+                            "opacity_min": 0.2,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 4,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 3,
+                            "size_min": 1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 120,
+                        "color": "#e91e63",
+                        "opacity": 0.4,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 1.5,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "repulse"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "bubble"
+                        }
+                    },
+                    "modes": {
+                        "repulse": {
+                            "distance": 100,
+                            "duration": 0.4
+                        },
+                        "bubble": {
+                            "distance": 100,
+                            "size": 8,
+                            "duration": 0.3,
+                            "opacity": 0.8,
+                            "speed": 3
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        }
+        
+        // 更新时间显示
+        function updateBeijingTime() {
+            // 获取用户本地时间
+            const now = new Date();
+            
+            // 转换为北京时间 (UTC+8)
+            const beijingOffset = 8 * 60; // 8小时 * 60分钟
+            const localOffset = now.getTimezoneOffset(); // 本地时区偏移（分钟）
+            const beijingTime = new Date(now.getTime() + (beijingOffset + localOffset) * 60000);
+            
+            // 格式化时间
+            const year = beijingTime.getFullYear();
+            const month = (beijingTime.getMonth() + 1).toString().padStart(2, '0');
+            const day = beijingTime.getDate().toString().padStart(2, '0');
+            const hours = beijingTime.getHours().toString().padStart(2, '0');
+            const minutes = beijingTime.getMinutes().toString().padStart(2, '0');
+            const seconds = beijingTime.getSeconds().toString().padStart(2, '0');
+            
+            // 更新显示
+            const timeString = `${year}年${month}月${day}日${hours}:${minutes}:${seconds}（UTC+8）`;
+            if (document.getElementById('beijing-time')) {
+                document.getElementById('beijing-time').textContent = timeString;
+            }
+            if (document.getElementById('current-time')) {
+                document.getElementById('current-time').textContent = timeString;
+            }
+            if (document.getElementById('top-time')) {
+                document.getElementById('top-time').textContent = timeString;
+            }
+        }
+        
+        // 初始更新
+        updateBeijingTime();
+        
+        // 每秒更新一次
+        setInterval(updateBeijingTime, 1000);
+    </script>
+</body>
+</html>
