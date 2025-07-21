@@ -613,7 +613,7 @@
     <div id="social-modal" class="modal">
         <div class="modal-content">
             <h3>系统提示</h3>
-            <p id="modal-message">您所单击的网页在中国大陆不可用，确认要继续吗？</p>
+            <p id="modal-message">您所单击的网页可能在中国大陆不可用，确认要继续吗？</p>
             <div class="modal-buttons">
                 <button class="modal-button cancel">取消</button>
                 <button class="modal-button confirm">确认</button>
@@ -765,7 +765,7 @@
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 currentSocialLink = this.href;
-                modalMessage.textContent = '您所单击的网页在中国大陆不可用，确认要继续吗？';
+                modalMessage.textContent = '您所单击的网页可能在中国大陆不可用，确认要继续吗？';
                 modal.style.display = 'flex';
             });
         });
