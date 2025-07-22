@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公告详情</title>
+    <style>
+        /* 导入自定义字体 */
+        @font-face {
+            font-family: 'HanYiShuSong';
+            src: url('HanYiShuSongErJian-1.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'HanYiShuSong', 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 顶部装饰 */
+        .header-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, #3498db, #8e44ad, #e74c3c);
+        }
+        
+        /* 导航样式 */
+        .nav-bar {
+            display: flex;
+            padding: 20px 30px;
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            margin-right: 15px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 50px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .nav-button:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .nav-button i {
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        /* 公告内容样式 */
+        .notice-content {
+            padding: 40px;
+        }
+        
+        .notice-title {
+            font-size: 2.8rem;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        
+        .notice-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #8e44ad);
+            border-radius: 2px;
+        }
+        
+        .notice-meta {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .notice-meta .separator {
+            margin: 0 15px;
+            font-size: 1.2rem;
+            color: #ddd;
+        }
+        
+        .notice-body {
+            font-size: 1.15rem;
+            color: #34495e;
+        }
+        
+        .notice-body p {
+            margin-bottom: 25px;
+            text-indent: 2em;
+            text-align: justify;
+        }
+        
+        .notice-body p:first-child {
+            font-size: 1.25rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .notice-content {
+                padding: 25px;
+            }
+            
+            .notice-title {
+                font-size: 2.2rem;
+            }
+            
+            .nav-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-button {
+                margin-right: 0;
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .notice-title {
+                font-size: 1.8rem;
+            }
+            
+            .notice-meta {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .notice-meta .separator {
+                display: none;
+            }
+        }
+    </style>
+    <!-- 引入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部装饰条 -->
+        <div class="header-decoration"></div>
+        
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <a href="https://lvka.netlify.app/index.html" class="nav-button">
+                <i class="fas fa-home"></i> 返回主页
+            </a>
+            <a href="#" class="nav-button" onclick="history.back(); return false;">
+                <i class="fas fa-arrow-left"></i> 返回上一级
+            </a>
+        </div>
+        
+        <!-- 公告内容 -->
+        <div class="notice-content">
+            <h1 class="notice-title">公告标题</h1>
+            
+            <div class="notice-meta">
+                <span><i class="far fa-calendar-alt"></i> 发布时间：2025年07月22日07:06:33（UTC+8）</span>
+                <span class="separator">|</span>
+                <span><i class="fas fa-user-edit"></i> 发布人：律卡</span>
+            </div>
+            
+            <div class="notice-body">
+                <p>问候语：</p>
+                <p>正文第1段。</p>
+                <p>正文第2段。</p>
+                
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            © 2022-2025 律卡
+        </div>
+    </div>
+</body>
+</html>
