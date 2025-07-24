@@ -485,6 +485,7 @@
             font-weight: bold;
         }
         
+        /* 移动端优化 */
         @media (max-width: 768px) {
             .title {
                 font-size: 32px;
@@ -527,22 +528,22 @@
                 font-size: 18px;
             }
             
+            /* 移动端隐藏左上角时间 */
+            .top-time {
+                display: none;
+            }
+            
+            /* 移动端调整"更多信息"按钮位置 */
             .more-info-btn {
-                top: 10px;
-                right: 10px;
-                padding: 10px 20px;
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 20px;
                 font-size: 16px;
             }
             
-            .top-time {
-                top: 10px;
-                left: 10px;
-                font-size: 14px;
-                padding: 8px 12px;
-            }
-            
             .header {
-                margin-top: 50px;
+                margin-top: 30px; /* 减少顶部空间 */
             }
             
             .loader-title {
@@ -563,7 +564,12 @@
             <div class="progress-container">
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
-            <p class="loader-text" id="loader-text">预计还需 2秒</p>
+            <p class="loader-text" id="loader-text">预计还需2秒</p>
+            <p>不重要的说明</p>
+            <p>1.卡加载请更换浏览器，PC不要用IE，老设备可能会网页卡顿。</p>
+            <p>2.QQ拦截请在浏览器打开。</p>
+            <p>3.针对手机做了一些优化，但是手机UI板压下去弹不回来问题没实力不会修。
+            <p>4.预加载配置文件以更快打开网页。</p>
         </div>
     </div>
 
@@ -593,9 +599,10 @@
     <div class="content-wrapper">
         <div class="info-card">
             <h2>重要说明</h2>
-            <p><span class="highlight">有事情请直接说</span>，问“在吗”之类一律不回。</p>
-            <p><span class="highlight">2025/06/09 14:00 至 2025/06/23 16:50</span> 期间全部消息不回复。</p>
-            <p><span class="highlight">QQ：3490360380</span>；<span class="highlight">微信：lvka7534</span>；<span class="highlight">钉钉：dingtalk7lvka</span>。选中能复制。</p>
+            <p>（一）<span class="highlight">有事情请直接说</span>，问“在吗”之类一律不回。</p>
+            <p>（二）<span class="highlight">2025/06/09 14:00 至 2025/06/23 16:50</span> 期间全部消息不回复。</p>
+            <p>（三）<span class="highlight">[NoReplyTimePrompt_New]2025/08/02至2028/06/09期间消息随缘回复，可能秒回，也可能几月不回。敬请理解。</span></p>
+            <p>（四）<span class="highlight">QQ：3490360380</span>；<span class="highlight">微信：lvka7534</span>；<span class="highlight">钉钉（不常用）：dingtalk7lvka</span>。选中能复制。</p>
             
             <div class="contact-info">
                 有问题请联系: <a href="mailto:lvka17026@outlook.com">lvka17026@outlook.com</a>
@@ -621,7 +628,7 @@
                 <h2>系统提示</h2>
             </div>
             <div class="modal-body">
-                请不要像外人展示网址及通讯方式，谢谢您的理解。获取其它信息，欢迎访问https://lvka.netlify.app/1.html。
+                请不要像外人展示网址及通讯方式，谢谢您的理解。获取其它信息，欢迎访问https://lvka.netlify.app/index.html。
             </div>
             <button class="modal-button" id="close-system-modal">确认</button>
         </div>
@@ -637,7 +644,6 @@
             </div>
             <div class="modal-body">
                 <ul class="info-list">
-                    <li>感谢“若叶”、Dream Cloud AI和DeepSeek对网页构建的指导与支持。</li>
                     <li>网页内容由梦幻云工作人员律卡独立于梦幻云构建，所显示的任何内容均不代表梦幻云立场。</li>
                     <li>现在是北京时间：<span id="beijing-time">加载中...</span></li>
                 </ul>
@@ -662,7 +668,7 @@
         
         // 更新倒计时文本
         function updateCountdown() {
-            loaderText.textContent = `预计还需 ${countdown}秒`;
+            loaderText.textContent = `预计还需${countdown}秒`;
             countdown--;
             
             if (countdown >= 0) {
