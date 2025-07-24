@@ -5,6 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在线状态说明 - 律卡</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 浏览器兼容性检测 -->
+    <script>
+        // 检测浏览器是否支持关键特性
+        const isBrowserSupported = () => {
+            // 检测ES6特性
+            try {
+                new Function("() => {}");
+                new Function("class Test {}");
+                if (typeof Promise === 'undefined') return false;
+                if (typeof Symbol === 'undefined') return false;
+                return true;
+            } catch (e) {
+                return false;
+            }
+        };
+
+        // 如果浏览器不支持关键特性
+        if (!isBrowserSupported()) {
+            // 阻止页面加载
+            document.write(`
+                <style>
+                    body {
+                        background: #1a1a2e;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        height: 100vh;
+                        margin: 0;
+                        font-family: Arial, sans-serif;
+                        color: white;
+                        text-align: center;
+                    }
+                    .browser-error {
+                        max-width: 600px;
+                        padding: 40px;
+                    }
+                    .browser-error h1 {
+                        font-size: 36px;
+                        margin-bottom: 20px;
+                        color: #ff6b6b;
+                    }
+                    .browser-error p {
+                        font-size: 20px;
+                        line-height: 1.6;
+                    }
+                </style>
+                <div class="browser-error">
+                    <h1>您的浏览器版本过低，无法访问该页面。</h1>
+                    <p>请升级您的浏览器至最新版本，或使用现代浏览器如 Chrome、Firefox、Edge 等访问本页面。</p>
+                    <p>推荐浏览器：<br>
+                    <a href="https://www.google.com/chrome/" style="color: #4fc3f7;">Google Chrome</a> | 
+                    <a href="https://www.mozilla.org/firefox/" style="color: #4fc3f7;">Mozilla Firefox</a> | 
+                    <a href="https://www.microsoft.com/edge" style="color: #4fc3f7;">Microsoft Edge</a>
+                    </p>
+                </div>
+            `);
+            // 停止执行后续脚本
+            throw new Error("Unsupported browser");
+        }
+    </script>
+    
     <style>
         /* 导入自定义字体 */
         @font-face {
@@ -246,7 +308,8 @@
             pointer-events: none;
         }
         
-        .info-card:hover {
+        /* 修复挤压效果 - 确保在标准模式下应用 */
+        body:not(.minimal-mode) .info-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 40px rgba(0,0,0,0.3);
         }
@@ -554,6 +617,33 @@
             background: linear-gradient(135deg, #4fc3f7, #2980b9);
         }
         
+        /* 退出按钮（左下角） */
+        .exit-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-family: 'HanYiShuSongErJian', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .exit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #ff6b6b, #e74c3c);
+        }
+        
         /* 时间显示样式 */
         .time-display {
             background: rgba(25, 118, 210, 0.2);
@@ -675,6 +765,14 @@
                 font-size: 16px;
             }
             
+            /* 移动端退出按钮 */
+            .exit-btn {
+                bottom: 80px;
+                left: 20px;
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+            
             .header {
                 margin-top: 30px;
                 margin-bottom: 10px;
@@ -735,6 +833,19 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             backdrop-filter: none;
             border: 1px solid rgba(255,255,255,0.1);
+            /* 禁用悬停和点击效果 */
+            transform: none !important;
+            cursor: default;
+        }
+        
+        .minimal-mode .info-card:hover {
+            transform: none !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+        }
+        
+        .minimal-mode .info-card:active {
+            transform: none !important;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
         }
         
         .minimal-mode .marquee-container {
@@ -824,6 +935,11 @@
     <div class="mode-toast" id="mode-toast">
         模式切换成功。
     </div>
+
+    <!-- 退出按钮（左下角） -->
+    <button class="exit-btn" id="exit-btn">
+        <i class="fas fa-sign-out-alt"></i> 退出
+    </button>
 
     <!-- 极简模式切换按钮 -->
     <button class="minimal-btn" id="minimal-btn">
@@ -996,31 +1112,6 @@
                 "retina_detect": true
             });
             
-            // 添加悬停效果到卡片
-            document.querySelectorAll('.info-card').forEach(card => {
-                card.addEventListener('mousemove', function(e) {
-                    const cardRect = this.getBoundingClientRect();
-                    const x = e.clientX - cardRect.left;
-                    const y = e.clientY - cardRect.top;
-                    
-                    const centerX = cardRect.width / 2;
-                    const centerY = cardRect.height / 2;
-                    
-                    const angleY = (x - centerX) / 10;
-                    const angleX = (centerY - y) / 10;
-                    
-                    this.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg) translateY(-5px)`;
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-                });
-                
-                card.addEventListener('touchend', function() {
-                    this.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
-                });
-            });
-            
             // 确保跑马灯内容加载后可见
             const marqueeWrapper = document.querySelector('.marquee-wrapper');
             const content = document.querySelector('.marquee-content');
@@ -1056,6 +1147,16 @@
             closeInfoButton.addEventListener('click', function() {
                 moreInfoModal.classList.remove('active');
                 document.body.style.overflow = '';
+            });
+            
+            // 退出按钮功能
+            const exitBtn = document.getElementById('exit-btn');
+            exitBtn.addEventListener('click', function() {
+                if (confirm('确定要退出此页面吗？')) {
+                    window.close();
+                    // 如果window.close无效，则尝试重定向到空白页
+                    window.location.href = 'about:blank';
+                }
             });
             
             // 系统提示弹窗粒子效果
@@ -1203,14 +1304,6 @@
             const minimalBtn = document.getElementById('minimal-btn');
             const body = document.body;
             const modeToast = document.getElementById('mode-toast');
-            let isModalOpen = false;
-            
-            // 监听弹窗打开状态
-            moreInfoModal.addEventListener('click', function(e) {
-                if (e.target === moreInfoModal || e.target.classList.contains('modal-button')) {
-                    isModalOpen = moreInfoModal.classList.contains('active');
-                }
-            });
             
             // 检查本地存储中的设置
             if (localStorage.getItem('minimalMode') === 'true') {
