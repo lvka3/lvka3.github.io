@@ -54,6 +54,11 @@
             margin-bottom: 25px;
         }
         
+        .loader-important {
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        
         .progress-container {
             width: 80%;
             max-width: 400px;
@@ -84,6 +89,7 @@
             color: #e6e6e6;
             overflow-x: hidden;
             position: relative;
+            transition: background 0.5s ease;
         }
         
         /* 左上角时间显示 */
@@ -101,6 +107,7 @@
             backdrop-filter: blur(5px);
             border: 1px solid rgba(79, 195, 247, 0.3);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
         
         /* 粒子画布 */
@@ -111,6 +118,7 @@
             width: 100%;
             height: 100%;
             z-index: -1;
+            transition: opacity 0.5s ease;
         }
         
         .header {
@@ -131,6 +139,7 @@
             letter-spacing: 2px;
             position: relative;
             display: inline-block;
+            transition: all 0.3s ease;
         }
         
         .title::after {
@@ -143,6 +152,7 @@
             height: 4px;
             background: linear-gradient(to right, transparent, #4fc3f7, transparent);
             border-radius: 2px;
+            transition: all 0.3s ease;
         }
         
         /* 跑马灯容器 */
@@ -158,6 +168,7 @@
             position: relative;
             border: 1px solid rgba(79, 195, 247, 0.3);
             backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
         }
         
         .marquee-wrapper {
@@ -173,6 +184,24 @@
             white-space: nowrap;
             padding: 0 20px;
             text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        
+        /* 静态公告 */
+        .static-notice {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(25, 118, 210, 0.25);
+            border-radius: 8px;
+            padding: 14px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            position: relative;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            backdrop-filter: blur(5px);
+            text-align: center;
+            font-size: 22px;
+            color: #fff;
         }
         
         /* 关键帧动画调整 */
@@ -259,6 +288,12 @@
             text-shadow: 0 0 8px rgba(79, 195, 247, 0.7);
         }
         
+        .special-text {
+            color: #ffb6c1;
+            font-weight: normal;
+            text-shadow: none;
+        }
+        
         .contact-info {
             margin-top: 30px;
             padding: 20px;
@@ -295,6 +330,15 @@
             max-width: 1200px;
             backdrop-filter: blur(5px);
             border-radius: 12px;
+            position: relative;
+        }
+        
+        .page-id {
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            font-size: 10px;
+            color: rgba(255,255,255,0.5);
         }
         
         @keyframes float {
@@ -314,6 +358,7 @@
             border-radius: 50%;
             filter: blur(60px);
             z-index: -1;
+            transition: opacity 0.5s ease;
         }
         
         .decoration-1 {
@@ -344,6 +389,7 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
+            overflow-y: auto;
         }
         
         .modal-overlay.active {
@@ -363,6 +409,8 @@
             overflow: hidden;
             transform: translateY(20px);
             transition: transform 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .modal-overlay.active .modal-content {
@@ -475,6 +523,37 @@
             background: linear-gradient(135deg, #64d2ff, #3498db);
         }
         
+        /* 极简模式切换按钮 */
+        .minimal-btn {
+            position: fixed;
+            top: 15px;
+            right: 160px;
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-family: 'HanYiShuSongErJian', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .minimal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, #868e96, #495057);
+        }
+        
+        .minimal-btn.active {
+            background: linear-gradient(135deg, #4fc3f7, #2980b9);
+        }
+        
         /* 时间显示样式 */
         .time-display {
             background: rgba(25, 118, 210, 0.2);
@@ -483,6 +562,40 @@
             margin-top: 15px;
             border: 1px solid rgba(79, 195, 247, 0.3);
             font-weight: bold;
+        }
+        
+        .system-link {
+            color: #4fc3f7;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .system-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* 模式切换提示 */
+        .mode-toast {
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(25, 118, 210, 0.9);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            z-index: 1100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .mode-toast.show {
+            opacity: 1;
         }
         
         /* 移动端优化 */
@@ -495,33 +608,44 @@
                 font-size: 18px;
             }
             
+            .static-notice {
+                font-size: 18px;
+                padding: 14px 15px;
+            }
+            
             @keyframes marquee {
                 0% { transform: translateX(0); }
                 100% { transform: translateX(-100%); }
             }
             
             .info-card {
-                padding: 25px;
+                padding: 20px 15px;
             }
             
             .info-card h2 {
-                font-size: 28px;
+                font-size: 26px;
+                margin-bottom: 20px;
             }
             
             .info-card p {
-                font-size: 20px;
+                font-size: 18px;
+                line-height: 1.6;
+                margin-bottom: 15px;
+                padding: 0 10px;
             }
             
             .contact-info {
                 font-size: 16px;
+                padding: 15px;
+                margin-top: 20px;
             }
             
             .modal-content {
-                padding: 30px 20px;
+                padding: 25px 15px;
             }
             
             .modal-header h2 {
-                font-size: 28px;
+                font-size: 26px;
             }
             
             .modal-body {
@@ -538,12 +662,22 @@
                 top: auto;
                 bottom: 20px;
                 right: 20px;
-                padding: 12px 20px;
+                padding: 10px 20px;
+                font-size: 16px;
+            }
+            
+            /* 移动端极简模式按钮 */
+            .minimal-btn {
+                top: auto;
+                bottom: 20px;
+                right: 150px;
+                padding: 10px 20px;
                 font-size: 16px;
             }
             
             .header {
-                margin-top: 30px; /* 减少顶部空间 */
+                margin-top: 30px;
+                margin-bottom: 10px;
             }
             
             .loader-title {
@@ -553,6 +687,75 @@
             .loader-text {
                 font-size: 18px;
             }
+            
+            .content-wrapper {
+                gap: 25px;
+                margin-bottom: 30px;
+            }
+            
+            /* 移动端点击效果 */
+            .info-card:active {
+                transform: scale(0.98);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+                transition: transform 0.1s, box-shadow 0.1s;
+            }
+            
+            .mode-toast {
+                top: 15%;
+                width: 90%;
+                text-align: center;
+            }
+        }
+        
+        /* 极简模式样式 */
+        body.minimal-mode {
+            background: #2c3e50;
+        }
+        
+        .minimal-mode #particles-js {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .minimal-mode .decoration {
+            opacity: 0;
+        }
+        
+        .minimal-mode .title {
+            text-shadow: none;
+            animation: none !important;
+        }
+        
+        .minimal-mode .title::after {
+            background: #4fc3f7;
+        }
+        
+        .minimal-mode .info-card {
+            background: rgba(44, 62, 80, 0.8);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            backdrop-filter: none;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .minimal-mode .marquee-container {
+            display: none;
+        }
+        
+        .minimal-mode .static-notice {
+            display: block;
+        }
+        
+        .minimal-mode .footer {
+            background: rgba(44, 62, 80, 0.8);
+            backdrop-filter: none;
+        }
+        
+        .minimal-mode .top-time {
+            background: rgba(44, 62, 80, 0.8);
+        }
+        
+        .minimal-mode .modal-content {
+            background: #2c3e50;
         }
     </style>
 </head>
@@ -565,11 +768,8 @@
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
             <p class="loader-text" id="loader-text">预计还需2秒</p>
-            <p>不重要的说明</p>
-            <p>1.卡加载请更换浏览器，PC不要用IE，老设备可能会网页卡顿。</p>
-            <p>2.QQ拦截请在浏览器打开。</p>
-            <p>3.针对手机做了一些优化，但是手机UI板压下去弹不回来问题没实力不会修。
-            <p>4.预加载配置文件以更快打开网页。</p>
+            <p class="loader-important"><strong>不重要的说明</strong></p>
+            <p>卡加载请更换浏览器，PC不要用IE，老设备可能会网页卡顿；QQ拦截请在浏览器打开；手机UI板压下去弹不回来问题没实力不会修；预加载配置文件以更快打开网页。</p>
         </div>
     </div>
 
@@ -596,12 +796,17 @@
         </div>
     </div>
     
+    <!-- 静态公告（极简模式显示） -->
+    <div class="static-notice">
+        【网页提醒】请不要向外人展示网址及通讯方式，谢谢您的理解。
+    </div>
+    
     <div class="content-wrapper">
         <div class="info-card">
             <h2>重要说明</h2>
             <p>（一）<span class="highlight">有事情请直接说</span>，问“在吗”之类一律不回。</p>
             <p>（二）<span class="highlight">2025/06/09 14:00 至 2025/06/23 16:50</span> 期间全部消息不回复。</p>
-            <p>（三）<span class="highlight">[NoReplyTimePrompt_New]2025/08/02至2028/06/09期间消息随缘回复，可能秒回，也可能几月不回。敬请理解。</span></p>
+            <p>（三）<span class="special-text">[NoReplyTimePrompt_New]2025/08/02至2028/06/09期间消息随缘回复，可能秒回，也可能几月不回。敬请理解。</span></p>
             <p>（四）<span class="highlight">QQ：3490360380</span>；<span class="highlight">微信：lvka7534</span>；<span class="highlight">钉钉（不常用）：dingtalk7lvka</span>。选中能复制。</p>
             
             <div class="contact-info">
@@ -612,7 +817,18 @@
     
     <div class="footer">
         <p>© 2022-2025 律卡 | 基于 GitHub 构建 | 与 Dream Cloud Inc. 无关</p>
+        <div class="page-id">网页编号：QTRM573</div>
     </div>
+
+    <!-- 模式切换提示 -->
+    <div class="mode-toast" id="mode-toast">
+        模式切换成功。
+    </div>
+
+    <!-- 极简模式切换按钮 -->
+    <button class="minimal-btn" id="minimal-btn">
+        <i class="fas fa-snowflake"></i> 极简模式
+    </button>
 
     <!-- 更多信息按钮（右上角） -->
     <button class="more-info-btn" id="more-info-btn">
@@ -628,7 +844,9 @@
                 <h2>系统提示</h2>
             </div>
             <div class="modal-body">
-                请不要像外人展示网址及通讯方式，谢谢您的理解。获取其它信息，欢迎访问https://lvka.netlify.app/index.html。
+                请不要像外人展示网址及通讯方式，谢谢您的理解。获取其它信息，欢迎访问
+                <a href="https://lvka.netlify.app/index.html" class="system-link" target="_blank">https://lvka.netlify.app/index.html</a>
+                （单击以访问）。
             </div>
             <button class="modal-button" id="close-system-modal">确认</button>
         </div>
@@ -831,11 +1049,13 @@
             // 打开更多信息弹窗
             moreInfoBtn.addEventListener('click', function() {
                 moreInfoModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
             });
             
             // 关闭更多信息弹窗
             closeInfoButton.addEventListener('click', function() {
                 moreInfoModal.classList.remove('active');
+                document.body.style.overflow = '';
             });
             
             // 系统提示弹窗粒子效果
@@ -893,7 +1113,7 @@
                 "retina_detect": true
             });
             
-                        // 更多信息弹窗粒子效果（不同风格）
+            // 更多信息弹窗粒子效果（不同风格）
             particlesJS("info-particles", {
                 "particles": {
                     "number": {
@@ -978,6 +1198,59 @@
                 },
                 "retina_detect": true
             });
+            
+            // 极简模式切换功能
+            const minimalBtn = document.getElementById('minimal-btn');
+            const body = document.body;
+            const modeToast = document.getElementById('mode-toast');
+            let isModalOpen = false;
+            
+            // 监听弹窗打开状态
+            moreInfoModal.addEventListener('click', function(e) {
+                if (e.target === moreInfoModal || e.target.classList.contains('modal-button')) {
+                    isModalOpen = moreInfoModal.classList.contains('active');
+                }
+            });
+            
+            // 检查本地存储中的设置
+            if (localStorage.getItem('minimalMode') === 'true') {
+                body.classList.add('minimal-mode');
+                minimalBtn.classList.add('active');
+                minimalBtn.innerHTML = '<i class="fas fa-star"></i> 标准模式';
+            }
+            
+            // 切换极简模式
+            minimalBtn.addEventListener('click', function() {
+                // 检查是否在更多信息弹窗中
+                if (moreInfoModal.classList.contains('active')) {
+                    showToast("该状态无法切换页面模式");
+                    return;
+                }
+                
+                const isMinimal = body.classList.toggle('minimal-mode');
+                
+                if (isMinimal) {
+                    minimalBtn.innerHTML = '<i class="fas fa-star"></i> 标准模式';
+                    minimalBtn.classList.add('active');
+                    localStorage.setItem('minimalMode', 'true');
+                    showToast("极简模式切换成功");
+                } else {
+                    minimalBtn.innerHTML = '<i class="fas fa-snowflake"></i> 极简模式';
+                    minimalBtn.classList.remove('active');
+                    localStorage.setItem('minimalMode', 'false');
+                    showToast("标准模式切换成功");
+                }
+            });
+            
+            // 显示提示函数
+            function showToast(message) {
+                modeToast.textContent = message;
+                modeToast.classList.add('show');
+                
+                setTimeout(() => {
+                    modeToast.classList.remove('show');
+                }, 3000);
+            }
         }
         
         // 更新时间显示
