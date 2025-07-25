@@ -8,8 +8,14 @@
     
     <!-- 浏览器兼容性检测 -->
     <script>
+        // 检测IE浏览器
+        const isIE = /MSIE|Trident/.test(navigator.userAgent);
+        
         // 检测浏览器是否支持关键特性
         const isBrowserSupported = () => {
+            // 如果是IE浏览器，直接返回false
+            if (isIE) return false;
+            
             // 检测ES6特性
             try {
                 new Function("() => {}");
@@ -51,9 +57,17 @@
                         font-size: 20px;
                         line-height: 1.6;
                     }
+                    .ie-warning {
+                        background: #e74c3c;
+                        padding: 15px;
+                        border-radius: 8px;
+                        margin-top: 20px;
+                        font-weight: bold;
+                    }
                 </style>
                 <div class="browser-error">
                     <h1>您的浏览器版本过低，无法访问该页面。</h1>
+                    ${isIE ? '<div class="ie-warning">检测到您正在使用Internet Explorer浏览器，该浏览器已不再支持</div>' : ''}
                     <p>请升级您的浏览器至最新版本，或使用现代浏览器如 Chrome、Firefox、Edge 等访问本页面。</p>
                     <p>推荐浏览器：<br>
                     <a href="https://www.google.com/chrome/" style="color: #4fc3f7;">Google Chrome</a> | 
@@ -154,22 +168,65 @@
             transition: background 0.5s ease;
         }
         
-        /* 左上角时间显示 */
-        .top-time {
+        /* 左上角信息显示 */
+        .top-info {
             position: fixed;
             top: 15px;
             left: 20px;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 220px;
+        }
+        
+        .top-time {
             background: rgba(25, 118, 210, 0.3);
             color: #fff;
             padding: 10px 15px;
             border-radius: 8px;
             font-size: 18px;
             font-weight: bold;
-            z-index: 1001;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(79, 195, 247, 0.3);
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .fps-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(46, 204, 113, 0.3);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(46, 204, 113, 0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .fps-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .fps-good { background-color: #2ecc71; }
+        .fps-medium { background-color: #f39c12; }
+        .fps-poor { background-color: #e74c3c; }
+        
+        .fps-value {
+            font-weight: bold;
+            min-width: 50px;
+            display: inline-block;
+            text-align: right;
         }
         
         /* 粒子画布 */
@@ -189,7 +246,7 @@
             width: 100%;
             padding: 15px 0;
             position: relative;
-            margin-top: 60px; /* 为左上角时间留出空间 */
+            margin-top: 100px; /* 为左上角信息留出空间 */
         }
         
         .title {
@@ -742,7 +799,7 @@
                 font-size: 18px;
             }
             
-            /* 移动端隐藏左上角时间 */
+            /* 移动端隐藏时间 */
             .top-time {
                 display: none;
             }
@@ -802,6 +859,16 @@
                 top: 15%;
                 width: 90%;
                 text-align: center;
+            }
+            
+            /* 移动端FPS显示调整 */
+            .fps-container {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+            
+            .top-info {
+                min-width: 180px;
             }
         }
         
@@ -868,6 +935,10 @@
         .minimal-mode .modal-content {
             background: #2c3e50;
         }
+        
+        .minimal-mode .fps-container {
+            background: rgba(46, 204, 113, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -884,8 +955,15 @@
         </div>
     </div>
 
-    <!-- 左上角时间显示 -->
-    <div class="top-time" id="top-time">加载中...</div>
+    <!-- 左上角信息显示 -->
+    <div class="top-info">
+        <div class="top-time" id="top-time">加载中...</div>
+        <div class="fps-container">
+            <span class="fps-indicator fps-good"></span>
+            <span>FPS: </span>
+            <span class="fps-value" id="fps-value">--</span>
+        </div>
+    </div>
     
     <!-- 粒子背景容器 -->
     <div id="particles-js"></div>
@@ -915,7 +993,7 @@
     <div class="content-wrapper">
         <div class="info-card">
             <h2>重要说明</h2>
-            <p>（一）<span class="highlight">有事情请直接说</span>，问“在吗”之类一律不回。</p>
+            <p>（一）<span class="highlight">有事情请直接说</span>，问"在吗"之类一律不回。</p>
             <p>（二）<span class="highlight">2025/06/09 14:00 至 2025/06/23 16:50</span> 期间全部消息不回复。</p>
             <p>（三）<span class="special-text">[NoReplyTimePrompt_New]2025/08/02至2028/06/09期间消息随缘回复，可能秒回，也可能几月不回。敬请理解。</span></p>
             <p>（四）<span class="highlight">QQ：3490360380</span>；<span class="highlight">微信：lvka7534</span>；<span class="highlight">钉钉（不常用）：dingtalk7lvka</span>。选中能复制。</p>
@@ -980,6 +1058,7 @@
                 <ul class="info-list">
                     <li>网页内容由梦幻云工作人员律卡独立于梦幻云构建，所显示的任何内容均不代表梦幻云立场。</li>
                     <li>现在是北京时间：<span id="beijing-time">加载中...</span></li>
+                    <li>当前页面性能：<span id="fps-info">-- FPS</span></li>
                 </ul>
                 <div class="time-display">
                     <i class="fas fa-clock"></i> <span id="current-time">--:--:--</span>
@@ -1027,91 +1106,6 @@
         
         // 初始化页面功能
         function initPage() {
-            // 初始化主页面粒子背景
-            particlesJS("particles-js", {
-                "particles": {
-                    "number": {
-                        "value": 70,
-                        "density": {
-                            "enable": true,
-                            "value_area": 800
-                        }
-                    },
-                    "color": {
-                        "value": "#4fc3f7"
-                    },
-                    "shape": {
-                        "type": "circle",
-                        "stroke": {
-                            "width": 0,
-                            "color": "#000000"
-                        }
-                    },
-                    "opacity": {
-                        "value": 0.4,
-                        "random": true,
-                        "anim": {
-                            "enable": true,
-                            "speed": 1,
-                            "opacity_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "size": {
-                        "value": 3,
-                        "random": true,
-                        "anim": {
-                            "enable": true,
-                            "speed": 2,
-                            "size_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 140,
-                        "color": "#4fc3f7",
-                        "opacity": 0.3,
-                        "width": 1
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": 1,
-                        "direction": "none",
-                        "random": true,
-                        "straight": false,
-                        "out_mode": "out",
-                        "bounce": false
-                    }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": true,
-                            "mode": "grab"
-                        },
-                        "onclick": {
-                            "enable": true,
-                            "mode": "push"
-                        },
-                        "resize": true
-                    },
-                    "modes": {
-                        "grab": {
-                            "distance": 140,
-                            "line_linked": {
-                                "opacity": 1
-                            }
-                        },
-                        "push": {
-                            "particles_nb": 4
-                        }
-                    }
-                },
-                "retina_detect": true
-            });
-            
             // 确保跑马灯内容加载后可见
             const marqueeWrapper = document.querySelector('.marquee-wrapper');
             const content = document.querySelector('.marquee-content');
@@ -1159,146 +1153,59 @@
                 }
             });
             
-            // 系统提示弹窗粒子效果
-            particlesJS("system-particles", {
-                "particles": {
-                    "number": {
-                        "value": 30,
-                        "density": {
-                            "enable": true,
-                            "value_area": 400
-                        }
-                    },
-                    "color": {
-                        "value": "#4fc3f7"
-                    },
-                    "shape": {
-                        "type": "circle"
-                    },
-                    "opacity": {
-                        "value": 0.5,
-                        "random": true
-                    },
-                    "size": {
-                        "value": 2,
-                        "random": true
-                    },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 100,
-                        "color": "#4fc3f7",
-                        "opacity": 0.3,
-                        "width": 1
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": 1,
-                        "direction": "none",
-                        "random": true,
-                        "out_mode": "out"
-                    }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": true,
-                            "mode": "grab"
-                        },
-                        "onclick": {
-                            "enable": true,
-                            "mode": "push"
-                        }
-                    }
-                },
-                "retina_detect": true
-            });
+            // FPS计算功能
+            const fpsValueElement = document.getElementById('fps-value');
+            const fpsInfo = document.getElementById('fps-info');
+            let frameCount = 0;
+            let lastTime;
+            let fps = 0;
             
-            // 更多信息弹窗粒子效果（不同风格）
-            particlesJS("info-particles", {
-                "particles": {
-                    "number": {
-                        "value": 40,
-                        "density": {
-                            "enable": true,
-                            "value_area": 500
-                        }
-                    },
-                    "color": {
-                        "value": "#e91e63"
-                    },
-                    "shape": {
-                        "type": "triangle",
-                        "stroke": {
-                            "width": 0,
-                            "color": "#000000"
-                        }
-                    },
-                    "opacity": {
-                        "value": 0.6,
-                        "random": true,
-                        "anim": {
-                            "enable": true,
-                            "speed": 1,
-                            "opacity_min": 0.2,
-                            "sync": false
-                        }
-                    },
-                    "size": {
-                        "value": 4,
-                        "random": true,
-                        "anim": {
-                            "enable": true,
-                            "speed": 3,
-                            "size_min": 1,
-                            "sync": false
-                        }
-                    },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 120,
-                        "color": "#e91e63",
-                        "opacity": 0.4,
-                        "width": 1
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": 1.5,
-                        "direction": "none",
-                        "random": true,
-                        "straight": false,
-                        "out_mode": "out",
-                        "bounce": false
+            function updateFPS() {
+                const now = performance.now();
+                
+                if (!lastTime) {
+                    lastTime = now;
+                    requestAnimationFrame(updateFPS);
+                    return;
+                }
+                
+                frameCount++;
+                const delta = now - lastTime;
+                
+                if (delta >= 1000) {
+                    fps = Math.round((frameCount * 1000) / delta * 10) / 10;
+                    frameCount = 0;
+                    lastTime = now;
+                    
+                    // 更新显示
+                    if (fpsValueElement) {
+                        fpsValueElement.textContent = fps;
                     }
-                },
-                "interactivity": {
-                    "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": true,
-                            "mode": "repulse"
-                        },
-                        "onclick": {
-                            "enable": true,
-                            "mode": "bubble"
-                        }
-                    },
-                    "modes": {
-                        "repulse": {
-                            "distance": 100,
-                            "duration": 0.4
-                        },
-                        "bubble": {
-                            "distance": 100,
-                            "size": 8,
-                            "duration": 0.3,
-                            "opacity": 0.8,
-                            "speed": 3
+                    
+                    // 更新更多信息弹窗中的FPS显示
+                    if (fpsInfo) {
+                        fpsInfo.textContent = `${fps} FPS`;
+                    }
+                    
+                    // 更新指示器颜色
+                    const indicator = document.querySelector('.fps-indicator');
+                    if (indicator) {
+                        indicator.className = 'fps-indicator ';
+                        if (fps >= 50) {
+                            indicator.classList.add('fps-good');
+                        } else if (fps >= 30) {
+                            indicator.classList.add('fps-medium');
+                        } else {
+                            indicator.classList.add('fps-poor');
                         }
                     }
-                },
-                "retina_detect": true
-            });
+                }
+                
+                requestAnimationFrame(updateFPS);
+            }
+            
+            // 启动FPS计算
+            updateFPS();
             
             // 极简模式切换功能
             const minimalBtn = document.getElementById('minimal-btn');
@@ -1327,11 +1234,33 @@
                     minimalBtn.classList.add('active');
                     localStorage.setItem('minimalMode', 'true');
                     showToast("极简模式切换成功");
+                    
+                    // 在极简模式下禁用粒子效果
+                    try {
+                        if (window.pJSDom && window.pJSDom.length > 0) {
+                            for (let i = 0; i < window.pJSDom.length; i++) {
+                                window.pJSDom[i].pJS.fn.pause();
+                            }
+                        }
+                    } catch (e) {
+                        console.error("暂停粒子效果失败:", e);
+                    }
                 } else {
                     minimalBtn.innerHTML = '<i class="fas fa-snowflake"></i> 极简模式';
                     minimalBtn.classList.remove('active');
                     localStorage.setItem('minimalMode', 'false');
                     showToast("标准模式切换成功");
+                    
+                    // 在标准模式下启用粒子效果
+                    try {
+                        if (window.pJSDom && window.pJSDom.length > 0) {
+                            for (let i = 0; i < window.pJSDom.length; i++) {
+                                window.pJSDom[i].pJS.fn.resume();
+                            }
+                        }
+                    } catch (e) {
+                        console.error("恢复粒子效果失败:", e);
+                    }
                 }
             });
             
@@ -1343,6 +1272,65 @@
                 setTimeout(() => {
                     modeToast.classList.remove('show');
                 }, 3000);
+            }
+            
+            // 初始化主页面粒子背景（轻量级）
+            try {
+                particlesJS("particles-js", {
+                    "particles": {
+                        "number": {
+                            "value": 40,  // 减少粒子数量
+                            "density": {
+                                "enable": true,
+                                "value_area": 800
+                            }
+                        },
+                        "color": {
+                            "value": "#4fc3f7"
+                        },
+                        "shape": {
+                            "type": "circle"
+                        },
+                        "opacity": {
+                            "value": 0.3,  // 降低透明度
+                            "random": true
+                        },
+                        "size": {
+                            "value": 2,  // 减小粒子大小
+                            "random": true
+                        },
+                        "line_linked": {
+                            "enable": true,
+                            "distance": 150,
+                            "color": "#4fc3f7",
+                            "opacity": 0.2,  // 降低连接线透明度
+                            "width": 1
+                        },
+                        "move": {
+                            "enable": true,
+                            "speed": 1,  // 降低移动速度
+                            "direction": "none",
+                            "random": true,
+                            "out_mode": "out"
+                        }
+                    },
+                    "interactivity": {
+                        "detect_on": "canvas",
+                        "events": {
+                            "onhover": {
+                                "enable": true,
+                                "mode": "grab"
+                            },
+                            "onclick": {
+                                "enable": true,
+                                "mode": "push"
+                            }
+                        }
+                    },
+                    "retina_detect": true
+                });
+            } catch (e) {
+                console.error("粒子效果初始化失败:", e);
             }
         }
         
