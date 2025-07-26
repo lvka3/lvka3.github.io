@@ -9,12 +9,14 @@
     <!-- 浏览器兼容性检测 -->
     <script>
         // 检测IE浏览器
-        const isIE = /MSIE|Trident/.test(navigator.userAgent);
+        const isIE = () => {
+            return /MSIE|Trident/.test(navigator.userAgent);
+        };
         
         // 检测浏览器是否支持关键特性
         const isBrowserSupported = () => {
             // 如果是IE浏览器，直接返回false
-            if (isIE) return false;
+            if (isIE()) return false;
             
             // 检测ES6特性
             try {
@@ -67,7 +69,7 @@
                 </style>
                 <div class="browser-error">
                     <h1>您的浏览器版本过低，无法访问该页面。</h1>
-                    ${isIE ? '<div class="ie-warning">检测到您正在使用Internet Explorer浏览器，该浏览器已不再支持</div>' : ''}
+                    ${isIE() ? '<div class="ie-warning">检测到您正在使用Internet Explorer浏览器，该浏览器已不再支持</div>' : ''}
                     <p>请升级您的浏览器至最新版本，或使用现代浏览器如 Chrome、Firefox、Edge 等访问本页面。</p>
                     <p>推荐浏览器：<br>
                     <a href="https://www.google.com/chrome/" style="color: #4fc3f7;">Google Chrome</a> | 
@@ -246,7 +248,7 @@
             width: 100%;
             padding: 15px 0;
             position: relative;
-            margin-top: 100px; /* 为左上角信息留出空间 */
+            margin-top: 60px; /* 为左上角信息留出空间 */
         }
         
         .title {
@@ -352,6 +354,8 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
+            transform: perspective(1000px);
+            transform-style: preserve-3d;
         }
         
         .info-card::before {
@@ -365,10 +369,16 @@
             pointer-events: none;
         }
         
-        /* 修复挤压效果 - 确保在标准模式下应用 */
+        /* 修复挤压效果 - 添加3D倾斜效果 */
         body:not(.minimal-mode) .info-card:hover {
-            transform: translateY(-5px);
+            transform: perspective(1000px) translateY(-5px) rotateX(1deg) rotateY(1deg);
             box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+        }
+        
+        .info-card:active {
+            transform: perspective(1000px) translateY(0) rotateX(0) rotateY(0);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
         
         .info-card h2 {
@@ -747,8 +757,8 @@
         
         /* 移动端优化 */
         @media (max-width: 768px) {
-            .title {
-                font-size: 32px;
+            .header {
+                display: none; /* 在移动端删除页头 */
             }
             
             .marquee-content {
@@ -804,6 +814,33 @@
                 display: none;
             }
             
+            /* 移动端FPS显示改为纯文字 */
+            .fps-container {
+                background: transparent;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+                backdrop-filter: none;
+                font-size: 14px;
+                gap: 4px;
+            }
+            
+            .fps-indicator {
+                display: none;
+            }
+            
+            .fps-value {
+                min-width: 40px;
+                font-size: 14px;
+            }
+            
+            .top-info {
+                min-width: auto;
+                flex-direction: row;
+                align-items: center;
+                gap: 10px;
+            }
+            
             /* 移动端调整"更多信息"按钮位置 */
             .more-info-btn {
                 top: auto;
@@ -830,9 +867,10 @@
                 font-size: 16px;
             }
             
-            .header {
+            .content-wrapper {
+                gap: 20px;
+                margin-bottom: 20px;
                 margin-top: 30px;
-                margin-bottom: 10px;
             }
             
             .loader-title {
@@ -843,16 +881,11 @@
                 font-size: 18px;
             }
             
-            .content-wrapper {
-                gap: 25px;
-                margin-bottom: 30px;
-            }
-            
             /* 移动端点击效果 */
             .info-card:active {
-                transform: scale(0.98);
+                transform: perspective(1000px) translateY(0) rotateX(0) rotateY(0);
                 box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-                transition: transform 0.1s, box-shadow 0.1s;
+                transition: transform 0.15s, box-shadow 0.15s;
             }
             
             .mode-toast {
@@ -861,14 +894,9 @@
                 text-align: center;
             }
             
-            /* 移动端FPS显示调整 */
-            .fps-container {
-                font-size: 14px;
-                padding: 6px 10px;
-            }
-            
-            .top-info {
-                min-width: 180px;
+            /* 移动端减少装饰元素 */
+            .decoration {
+                display: none;
             }
         }
         
@@ -951,7 +979,12 @@
             </div>
             <p class="loader-text" id="loader-text">预计还需2秒</p>
             <p class="loader-important"><strong>不重要的说明</strong></p>
-            <p>卡加载请更换浏览器，PC不要用IE，老设备可能会网页卡顿；QQ拦截请在浏览器打开；手机UI板压下去弹不回来问题没实力不会修；预加载配置文件以更快打开网页。</p>
+            <p>卡加载请更换浏览器，PC不要用IE，PC不要用IE！</p>
+            <p>老设备可能会网页卡顿，可切换极简模式。</p>
+            <p>QQ拦截请在浏览器打开。</p>
+            <p>手机UI板压下去弹不回来问题没实力不会修。</p>
+            <p>预加载配置文件以更快打开网页。</p>
+            <p>DS、DCI-AI和若叶对网页构建提供了指导。
         </div>
     </div>
 
@@ -987,26 +1020,22 @@
     
     <!-- 静态公告（极简模式显示） -->
     <div class="static-notice">
-        【网页提醒】请不要向外人展示网址及通讯方式，谢谢您的理解。
+        请勿向外人展示网址及通讯方式。
     </div>
     
     <div class="content-wrapper">
         <div class="info-card">
-            <h2>重要说明</h2>
-            <p>（一）<span class="highlight">有事情请直接说</span>，问"在吗"之类一律不回。</p>
+            <h2>说明</h2>
+            <p>（一）<span class="highlight">有事情请直接说</span>，问“在吗”之类后续没有实质内容的不回。</p>
             <p>（二）<span class="highlight">2025/06/09 14:00 至 2025/06/23 16:50</span> 期间全部消息不回复。</p>
             <p>（三）<span class="special-text">[NoReplyTimePrompt_New]2025/08/02至2028/06/09期间消息随缘回复，可能秒回，也可能几月不回。敬请理解。</span></p>
-            <p>（四）<span class="highlight">QQ：3490360380</span>；<span class="highlight">微信：lvka7534</span>；<span class="highlight">钉钉（不常用）：dingtalk7lvka</span>。选中能复制。</p>
-            
-            <div class="contact-info">
-                有问题请联系: <a href="mailto:lvka17026@outlook.com">lvka17026@outlook.com</a>
-            </div>
+            <p>（四）<span class="highlight">QQ：3490360380</span>；<span class="highlight">微信：lvka7534</span>；<span class="highlight">钉钉（不常用）：dingtalk7lvka</span>；<span class="highlight">邮箱：lvka17026@outlook.com</span>。一般PC双击/移动长按系统会自动选择有效ID复制。长时间没回应导致申请过期，若可以我会返回去申请。语音电话会录音，请见<a href="https://lvka.netlify.app/5226.html" class="system-link" target="_blank">点击这里</a>。</p>
         </div>
     </div>
     
     <div class="footer">
-        <p>© 2022-2025 律卡 | 基于 GitHub 构建 | 与 Dream Cloud Inc. 无关</p>
-        <div class="page-id">网页编号：QTRM573</div>
+        <p>© 2022-2025 律卡 | 基于 GitHub 和 Netlify 构建 | 与 Dream Cloud Inc. 无关</p>
+        <div class="page-id">网页编号：92136843735096</div>
     </div>
 
     <!-- 模式切换提示 -->
@@ -1032,8 +1061,6 @@
     <!-- 系统提示弹窗 -->
     <div class="modal-overlay" id="system-modal">
         <div class="modal-content">
-            <div id="system-particles" class="modal-particles"></div>
-            
             <div class="modal-header">
                 <h2>系统提示</h2>
             </div>
@@ -1049,16 +1076,16 @@
     <!-- 更多信息弹窗 -->
     <div class="modal-overlay" id="more-info-modal">
         <div class="modal-content">
-            <div id="info-particles" class="modal-particles"></div>
-            
             <div class="modal-header">
-                <h2>更多信息</h2>
+                <h2>More Information</h2>
             </div>
             <div class="modal-body">
                 <ul class="info-list">
                     <li>网页内容由梦幻云工作人员律卡独立于梦幻云构建，所显示的任何内容均不代表梦幻云立场。</li>
+                    <li>【2025/07/26调整】尝试增加浏览器低版本访问阻止；优化冗余代码和移动端部分页面UI效果；修复部分问题。</li>
                     <li>现在是北京时间：<span id="beijing-time">加载中...</span></li>
-                    <li>当前页面性能：<span id="fps-info">-- FPS</span></li>
+                    <li>当前页面实时刷新率：<span id="fps-info">-- FPS</span></li>
+                    <li>Build Time:1753485205.</li>
                 </ul>
                 <div class="time-display">
                     <i class="fas fa-clock"></i> <span id="current-time">--:--:--</span>
@@ -1125,10 +1152,14 @@
             
             // 显示系统提示弹窗
             systemModal.classList.add('active');
+            // 禁止页面滚动
+            document.body.style.overflow = 'hidden';
             
             // 关闭系统提示弹窗
             closeSystemButton.addEventListener('click', function() {
                 systemModal.classList.remove('active');
+                // 恢复页面滚动
+                document.body.style.overflow = '';
             });
             
             // 打开更多信息弹窗
@@ -1174,17 +1205,20 @@
                 
                 if (delta >= 1000) {
                     fps = Math.round((frameCount * 1000) / delta * 10) / 10;
+                    // 确保FPS显示一位小数
+                    const fpsDisplay = fps.toFixed(1);
+                    
                     frameCount = 0;
                     lastTime = now;
                     
                     // 更新显示
                     if (fpsValueElement) {
-                        fpsValueElement.textContent = fps;
+                        fpsValueElement.textContent = fpsDisplay;
                     }
                     
                     // 更新更多信息弹窗中的FPS显示
                     if (fpsInfo) {
-                        fpsInfo.textContent = `${fps} FPS`;
+                        fpsInfo.textContent = `${fpsDisplay} FPS`;
                     }
                     
                     // 更新指示器颜色
@@ -1219,6 +1253,9 @@
                 minimalBtn.innerHTML = '<i class="fas fa-star"></i> 标准模式';
             }
             
+            // 记录上次切换时间
+            let lastToggleTime = 0;
+            
             // 切换极简模式
             minimalBtn.addEventListener('click', function() {
                 // 检查是否在更多信息弹窗中
@@ -1227,6 +1264,14 @@
                     return;
                 }
                 
+                // 检查是否在3秒内再次切换
+                const now = Date.now();
+                if (now - lastToggleTime < 3000) {
+                    showToast("页面模式切换过于频繁，可能会导致页面崩溃，请稍后再试");
+                    return;
+                }
+                lastToggleTime = now;
+                
                 const isMinimal = body.classList.toggle('minimal-mode');
                 
                 if (isMinimal) {
@@ -1234,33 +1279,11 @@
                     minimalBtn.classList.add('active');
                     localStorage.setItem('minimalMode', 'true');
                     showToast("极简模式切换成功");
-                    
-                    // 在极简模式下禁用粒子效果
-                    try {
-                        if (window.pJSDom && window.pJSDom.length > 0) {
-                            for (let i = 0; i < window.pJSDom.length; i++) {
-                                window.pJSDom[i].pJS.fn.pause();
-                            }
-                        }
-                    } catch (e) {
-                        console.error("暂停粒子效果失败:", e);
-                    }
                 } else {
                     minimalBtn.innerHTML = '<i class="fas fa-snowflake"></i> 极简模式';
                     minimalBtn.classList.remove('active');
                     localStorage.setItem('minimalMode', 'false');
                     showToast("标准模式切换成功");
-                    
-                    // 在标准模式下启用粒子效果
-                    try {
-                        if (window.pJSDom && window.pJSDom.length > 0) {
-                            for (let i = 0; i < window.pJSDom.length; i++) {
-                                window.pJSDom[i].pJS.fn.resume();
-                            }
-                        }
-                    } catch (e) {
-                        console.error("恢复粒子效果失败:", e);
-                    }
                 }
             });
             
