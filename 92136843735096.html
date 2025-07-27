@@ -755,6 +755,55 @@
             opacity: 1;
         }
         
+        /* F12禁用提示 */
+        .f12-warning {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            z-index: 2000;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+        
+        .f12-warning h2 {
+            font-size: 32px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .f12-warning p {
+            font-size: 22px;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .f12-warning .close-btn {
+            padding: 12px 40px;
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .f12-warning .close-btn:hover {
+            background: linear-gradient(to right, #ff6b6b, #e74c3c);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
         /* 移动端优化 */
         @media (max-width: 768px) {
             .header {
@@ -809,9 +858,15 @@
                 font-size: 18px;
             }
             
-            /* 移动端隐藏时间 */
+            /* 移动端时间显示样式 */
             .top-time {
-                display: none;
+                background: transparent;
+                padding: 0;
+                box-shadow: none;
+                border: none;
+                backdrop-filter: none;
+                font-size: 14px;
+                display: block !important;
             }
             
             /* 移动端FPS显示改为纯文字 */
@@ -836,9 +891,9 @@
             
             .top-info {
                 min-width: auto;
-                flex-direction: row;
-                align-items: center;
-                gap: 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
             }
             
             /* 移动端调整"更多信息"按钮位置 */
@@ -897,6 +952,17 @@
             /* 移动端减少装饰元素 */
             .decoration {
                 display: none;
+            }
+            
+            /* 更多信息弹窗行间距调整 */
+            .info-list li {
+                margin-bottom: 5px;
+                padding-left: 20px;
+            }
+            
+            .info-list li:before {
+                font-size: 18px;
+                top: 0;
             }
         }
         
@@ -967,9 +1033,34 @@
         .minimal-mode .fps-container {
             background: rgba(46, 204, 113, 0.2);
         }
+        
+        /* 更多信息弹窗行间距调整 */
+        .info-list li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+        }
+        
+        .info-list li:before {
+            font-size: 18px;
+            top: 0;
+        }
+        
+        /* WebAddress 换行 */
+        .info-list li:nth-child(2) {
+            word-break: break-all;
+            white-space: normal;
+        }
     </style>
 </head>
 <body>
+    <!-- F12禁用提示 -->
+    <div class="f12-warning" id="f12-warning">
+        <h2>系统提示</h2>
+        <p>禁止使用开发者工具 (F12)</p>
+        <p>请关闭开发者工具以继续浏览本页面</p>
+        <button class="close-btn" id="close-f12-warning">确认</button>
+    </div>
+
     <!-- 加载界面 -->
     <div id="loader">
         <div class="loader-content">
@@ -1027,7 +1118,7 @@
         <div class="info-card">
             <h2>说明</h2>
             <p>1.QQ：<span class="highlight">3490360380</span>；微信：<span class="highlight">lvka7534</span>。一般PC双击/移动长按系统会自动选择有效ID复制。长时间没回应导致申请过期，若可以我会返回去申请。语音电话会录音，请见<a href="https://lvka.netlify.app/CallRecord.html" class="system-link" target="_blank">点击这里</a>。</p>
-            <p>2.<span class="highlight">有事情请直接说</span>，问“在吗”之类后续没有实质内容的不回。</p>
+            <p>2.<span class="highlight">有事情请直接说</span>，问"在吗"之类后续没有实质内容的不回。</p>
             <p>3.<span class="special-text">2025/08/02至2028/06/09期间消息随缘回复，可能秒回，也可能几月不回。敬请理解。</span></p>
         </div>
     </div>
@@ -1087,16 +1178,35 @@
                     <li>UserIP: <span id="user-ip">Loading...</span></li>
                 </ul>
                 <div class="time-display">
-                    <i class="fas fa-clock"></i> <span id="utc-time">--:--:-- UTC</span>
+                    <i class="fas fa-clock"></i> <span id="utc-time">-- UTC</span>
                 </div>
             </div>
             <button class="modal-button" id="close-info-modal">OK</button>
+        </div>
+    </div>
+    
+    <!-- 退出确认弹窗 -->
+    <div class="modal-overlay" id="exit-confirm-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>系统提示</h2>
+            </div>
+            <div class="modal-body">
+                确定要退出此页面吗？
+            </div>
+            <div style="display: flex; justify-content: center; gap: 20px;">
+                <button class="modal-button" id="confirm-exit" style="background: linear-gradient(to right, #e74c3c, #c0392b);">确定</button>
+                <button class="modal-button" id="cancel-exit">取消</button>
+            </div>
         </div>
     </div>
 
     <!-- 粒子效果库 -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script>
+        // 页面状态变量
+        let isSystemModalActive = true;
+        
         // 加载进度条动画
         const loader = document.getElementById('loader');
         const progressBar = document.getElementById('progress-bar');
@@ -1149,6 +1259,16 @@
             const closeInfoButton = document.getElementById('close-info-modal');
             const moreInfoBtn = document.getElementById('more-info-btn');
             
+            // 退出确认弹窗
+            const exitConfirmModal = document.getElementById('exit-confirm-modal');
+            const confirmExitBtn = document.getElementById('confirm-exit');
+            const cancelExitBtn = document.getElementById('cancel-exit');
+            const exitBtn = document.getElementById('exit-btn');
+            
+            // F12禁用提示
+            const f12Warning = document.getElementById('f12-warning');
+            const closeF12Warning = document.getElementById('close-f12-warning');
+            
             // 显示系统提示弹窗
             systemModal.classList.add('active');
             // 禁止页面滚动
@@ -1159,10 +1279,15 @@
                 systemModal.classList.remove('active');
                 // 恢复页面滚动
                 document.body.style.overflow = '';
+                isSystemModalActive = false;
             });
             
             // 打开更多信息弹窗
             moreInfoBtn.addEventListener('click', function() {
+                if (isSystemModalActive) {
+                    showToast("该状态下无法操作");
+                    return;
+                }
                 moreInfoModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
@@ -1174,13 +1299,26 @@
             });
             
             // 退出按钮功能
-            const exitBtn = document.getElementById('exit-btn');
             exitBtn.addEventListener('click', function() {
-                if (confirm('确定要退出此页面吗？')) {
-                    window.close();
-                    // 如果window.close无效，则尝试重定向到空白页
-                    window.location.href = 'about:blank';
-                }
+                exitConfirmModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // 确认退出
+            confirmExitBtn.addEventListener('click', function() {
+                window.close();
+                window.location.href = 'about:blank';
+            });
+            
+            // 取消退出
+            cancelExitBtn.addEventListener('click', function() {
+                exitConfirmModal.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+            
+            // 关闭F12警告
+            closeF12Warning.addEventListener('click', function() {
+                f12Warning.style.display = 'none';
             });
             
             // FPS计算功能
@@ -1188,6 +1326,8 @@
             let frameCount = 0;
             let lastTime;
             let fps = 0;
+            let lastFrameTime = performance.now();
+            const targetFrameTime = 1000 / 90; // 90 FPS = ~11.11ms per frame
             
             function updateFPS() {
                 const now = performance.now();
@@ -1228,7 +1368,18 @@
                     }
                 }
                 
-                requestAnimationFrame(updateFPS);
+                // 限制帧率为90FPS
+                const currentTime = performance.now();
+                const elapsed = currentTime - lastFrameTime;
+                
+                if (elapsed >= targetFrameTime) {
+                    lastFrameTime = currentTime - (elapsed % targetFrameTime);
+                    requestAnimationFrame(updateFPS);
+                } else {
+                    setTimeout(() => {
+                        requestAnimationFrame(updateFPS);
+                    }, targetFrameTime - elapsed);
+                }
             }
             
             // 启动FPS计算
@@ -1251,9 +1402,14 @@
             
             // 切换极简模式
             minimalBtn.addEventListener('click', function() {
+                if (isSystemModalActive) {
+                    showToast("该状态下无法操作");
+                    return;
+                }
+                
                 // 检查是否在更多信息弹窗中
                 if (moreInfoModal.classList.contains('active')) {
-                    showToast("该状态无法切换页面模式");
+                    showToast("该状态下无法切换页面模式");
                     return;
                 }
                 
@@ -1366,6 +1522,22 @@
             
             // 获取用户IP
             fetchUserIP();
+            
+            // F12禁用检测
+            document.addEventListener('keydown', function(e) {
+                // F12键
+                if (e.keyCode === 123) {
+                    e.preventDefault();
+                    f12Warning.style.display = 'block';
+                    return false;
+                }
+                // Ctrl+Shift+I
+                if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+                    e.preventDefault();
+                    f12Warning.style.display = 'block';
+                    return false;
+                }
+            });
         }
         
         // 更新时间显示
@@ -1392,14 +1564,10 @@
                 document.getElementById('top-time').textContent = timeString;
             }
             
-            // 更新UTC时间（用于更多信息弹窗）
-            const utcHours = now.getUTCHours().toString().padStart(2, '0');
-            const utcMinutes = now.getUTCMinutes().toString().padStart(2, '0');
-            const utcSeconds = now.getUTCSeconds().toString().padStart(2, '0');
-            const utcTimeString = `${utcHours}:${utcMinutes}:${utcSeconds} UTC`;
-            
+            // 更新更多信息弹窗中的时间戳（秒级）
+            const timestamp = Math.floor(Date.now() / 1000);
             if (document.getElementById('utc-time')) {
-                document.getElementById('utc-time').textContent = utcTimeString;
+                document.getElementById('utc-time').textContent = `${timestamp} UTC`;
             }
         }
         
