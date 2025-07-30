@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>违规消息类型</title>
+    <style>
+        /* 导入自定义字体 */
+        @font-face {
+            font-family: 'HanYiShuSong';
+            src: url('HanYiShuSongErJian-1.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'HanYiShuSong', 'Noto Serif SC', serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.5; /* 减小行间距 */
+            padding: 15px; /* 减小内边距 */
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 顶部装饰 */
+        .header-decoration {
+            height: 8px;
+            background: linear-gradient(90deg, #3498db, #8e44ad, #e74c3c);
+        }
+        
+        /* 导航样式 */
+        .nav-bar {
+            display: flex;
+            padding: 15px 20px; /* 减小内边距 */
+            background: #fff;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .nav-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            margin-right: 15px;
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 50px;
+            color: #3498db;
+            text-decoration: none;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .nav-button:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .nav-button i {
+            margin-right: 6px;
+            font-size: 14px;
+        }
+        
+        /* 公告内容样式 */
+        .notice-content {
+            padding: 20px 30px; /* 减小内边距 */
+        }
+        
+        .notice-title {
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 15px; /* 减小间距 */
+            color: #2c3e50;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .notice-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #8e44ad);
+            border-radius: 2px;
+        }
+        
+        .notice-meta {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 15px; /* 减小间距 */
+            font-size: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .notice-meta .separator {
+            margin: 0 15px;
+            font-size: 1.2rem;
+            color: #ddd;
+        }
+        
+        .notice-body {
+            font-size: 1rem;
+            color: #34495e;
+            line-height: 1.6; /* 减小行高 */
+        }
+        
+        /* 列表样式 */
+        .violation-list {
+            margin-bottom: 15px; /* 减小间距 */
+        }
+        
+        .violation-list ol {
+            counter-reset: section;
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .violation-list ol > li {
+            margin-bottom: 12px; /* 减小间距 */
+            position: relative;
+            padding-left: 2.5em;
+        }
+        
+        .violation-list ol > li::before {
+            counter-increment: section;
+            content: "（" counter(section, cjk-ideographic) "）"; /* 改为中文数字序号 */
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #3498db;
+        }
+        
+        .violation-list ul {
+            list-style-type: none;
+            padding-left: 20px;
+            margin-top: 8px; /* 减小间距 */
+        }
+        
+        .violation-list ul li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 2.2em;
+        }
+        
+        .violation-list ul li::before {
+            content: "（" counter(subsection, decimal) "）"; /* 改为括号数字序号 */
+            counter-increment: subsection;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: #8e44ad;
+        }
+        
+        .violation-list ul li:first-child {
+            counter-reset: subsection;
+        }
+        
+        /* 备注样式 */
+        .remark {
+            background-color: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 12px 15px; /* 减小内边距 */
+            margin: 20px 0; /* 减小间距 */
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5; /* 减小行高 */
+        }
+        
+        /* 签名样式 */
+        .signature {
+            text-align: right;
+            margin-top: 20px; /* 减小间距 */
+            padding-top: 12px; /* 减小内边距 */
+            border-top: 1px dashed #e0e0e0;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .signature div {
+            margin-top: 5px;
+            font-size: 0.95rem;
+            color: #7f8c8d;
+        }
+        
+        /* 页脚样式 */
+        .footer {
+            text-align: center;
+            padding: 20px; /* 减小内边距 */
+            background: #f8f9fa;
+            color: #7f8c8d;
+            font-size: 0.85rem;
+            border-top: 1px solid #eee;
+        }
+        
+        /* 响应式设计 - 移动端优化 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px; /* 减小内边距 */
+                line-height: 1.5; /* 减小行高 */
+            }
+            
+            .notice-content {
+                padding: 15px; /* 减小内边距 */
+            }
+            
+            .notice-title {
+                font-size: 1.9rem; /* 增大移动端标题字体 */
+                margin-bottom: 12px; /* 减小间距 */
+            }
+            
+            .nav-bar {
+                padding: 12px 15px; /* 减小内边距 */
+            }
+            
+            .violation-list ol > li {
+                padding-left: 2.2em;
+                font-size: 1rem; /* 增大移动端字体 */
+            }
+            
+            .violation-list ul li {
+                padding-left: 2em;
+                font-size: 0.95rem; /* 增大移动端字体 */
+            }
+            
+            .remark {
+                font-size: 0.9rem; /* 增大移动端字体 */
+                padding: 10px 12px; /* 减小内边距 */
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .notice-title {
+                font-size: 1.7rem; /* 增大移动端标题字体 */
+                padding-bottom: 10px;
+            }
+            
+            .notice-title::after {
+                width: 80px;
+            }
+            
+            .notice-meta {
+                flex-direction: column;
+                gap: 5px;
+                font-size: 0.95rem; /* 增大移动端字体 */
+            }
+            
+            .notice-meta .separator {
+                display: none;
+            }
+            
+            .violation-list ol > li {
+                padding-left: 2em;
+                font-size: 1rem; /* 增大移动端字体 */
+            }
+            
+            .violation-list ul li {
+                padding-left: 1.8em;
+                font-size: 0.95rem; /* 增大移动端字体 */
+            }
+            
+            .remark {
+                font-size: 0.9rem; /* 增大移动端字体 */
+            }
+            
+            .signature {
+                font-size: 1rem; /* 增大移动端字体 */
+            }
+        }
+    </style>
+    <!-- 引入Font Awesome图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 顶部装饰条 -->
+        <div class="header-decoration"></div>
+        
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <a href="https://lvka.netlify.app/92136843735096.html" class="nav-button">
+                <i class="fas fa-arrow-left"></i> 返回上一级
+            </a>
+        </div>
+        
+        <!-- 公告内容 -->
+        <div class="notice-content">
+            <h1 class="notice-title">违规消息类型</h1>    
+            <div class="notice-body">
+                <div class="violation-list">
+                    <ol>
+                        <li>任何关于借钱的消息。</li>
+                        <li>我国法律禁止的内容，主要包括但不限于：
+                            <ul>
+                                <li>黄（包括低俗）赌毒；</li>
+                                <li>时政或非时政不实消息；</li>
+                                <li>违反公序良俗的行为；</li>
+                                <li>暴力/“开盒”/犯罪内容；</li>
+                                <li>虚假或引起恐慌内容。</li>
+                            </ul>
+                        </li>
+                        <li>其它被普遍认为或者应被认为违规的内容。</li>
+                    </ol>
+                </div>
+                
+                <div class="remark">
+                    <i class="fas fa-info-circle"></i> <strong>备注：</strong>屏蔽形式是通过客户端收到消息后自动判定拦截，相关消息仍会正常被发送。因客户端网络原因，大概率不会有被拦截提示发出。
+                </div>
+                
+                <div class="signature">
+                    律卡
+                    <div>2025年7月25日</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <div class="footer">
+            <div>© 2022-2025 律卡</div>
+        </div>
+    </div>
+</body>
+</html>
