@@ -109,74 +109,96 @@
             100% { transform: translateX(-100%); }
         }
         
-        /* 停止维护悬浮窗 - 调整为小型通知样式 */
-        .maintenance-alert {
+        /* 弹窗样式 */
+        .modal-overlay {
             position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #fff;
-            border: 1px solid #e74c3c;
-            border-radius: 8px;
-            padding: 10px 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            z-index: 9999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
             display: flex;
-            align-items: center;
-            max-width: 90%;
-            width: auto;
-            animation: slideDown 0.5s ease-out;
-        }
-        
-        .exclamation-icon {
-            width: 20px;
-            height: 20px;
-            background: #e74c3c;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            margin-right: 10px;
-            position: relative;
-            flex-shrink: 0;
+            align-items: center;
+            z-index: 9999;
         }
         
-        .exclamation-icon::before {
-            content: "";
-            position: absolute;
-            width: 4px;
-            height: 10px;
-            background: white;
-            border-radius: 2px;
-            top: 3px;
+        .modal {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            overflow: hidden;
+            animation: modal-appear 0.3s ease-out;
         }
         
-        .exclamation-icon::after {
-            content: "";
-            position: absolute;
-            width: 4px;
-            height: 2px;
-            background: white;
-            border-radius: 50%;
-            bottom: 3px;
-        }
-        
-        .alert-text {
-            font-size: 14px;
-            color: #e74c3c;
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #eee;
             font-weight: 500;
-            white-space: nowrap;
+            font-size: 18px;
+            color: #333;
         }
         
-        @keyframes slideDown {
-            from { 
+        .modal-body {
+            padding: 20px;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .modal-footer {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            border-top: 1px solid #eee;
+        }
+        
+        .modal-footer.single-button {
+            justify-content: center;
+        }
+        
+        .modal-button {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            font-family: inherit;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .button-primary {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .button-secondary {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .button-info {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        @keyframes modal-appear {
+            from {
                 opacity: 0;
-                transform: translate(-50%, -30px);
+                transform: translateY(-20px) scale(0.95);
             }
-            to { 
+            to {
                 opacity: 1;
-                transform: translate(-50%, 0);
+                transform: translateY(0) scale(1);
             }
+        }
+        
+        /* 页面禁用滚动时的样式 */
+        body.no-scroll {
+            overflow: hidden;
+            height: 100vh;
         }
         
         @media (max-width: 768px) {
@@ -185,30 +207,22 @@
                 animation: marquee 35s linear infinite;
             }
             
-            .maintenance-alert {
-                top: 10px;
-                padding: 8px 12px;
+            .modal {
+                width: 95%;
             }
             
-            .exclamation-icon {
-                width: 16px;
-                height: 16px;
+            .modal-header {
+                font-size: 16px;
+                padding: 14px 16px;
             }
             
-            .exclamation-icon::before {
-                width: 3px;
-                height: 8px;
-                top: 2px;
+            .modal-body {
+                padding: 16px;
+                font-size: 14px;
             }
             
-            .exclamation-icon::after {
-                width: 3px;
-                height: 2px;
-                bottom: 2px;
-            }
-            
-            .alert-text {
-                font-size: 12px;
+            .modal-footer {
+                padding: 14px 16px;
             }
         }
         
@@ -217,25 +231,20 @@
                 font-size: 14px;
                 animation: marquee 40s linear infinite;
             }
-            
-            .maintenance-alert {
-                top: 5px;
-                padding: 6px 10px;
-                border-radius: 6px;
-            }
-            
-            .alert-text {
-                white-space: normal;
-                font-size: 11px;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- 停止维护悬浮通知 -->
-    <div class="maintenance-alert">
-        <div class="exclamation-icon"></div>
-        <div class="alert-text">该网页已停止维护</div>
+    <!-- 弹窗结构 -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">系统提示</div>
+            <div class="modal-body" id="modalContent">该网页已停止维护，可能不会同步最新信息。</div>
+            <div class="modal-footer" id="modalFooter">
+                <button class="modal-button button-secondary" id="backButton">返回</button>
+                <button class="modal-button button-primary" id="continueButton">继续访问</button>
+            </div>
+        </div>
     </div>
     
     <div class="header">
@@ -244,19 +253,137 @@
     
     <div class="marquee-container">
         <div class="marquee-content">
-            「网站公告」尊敬的追梦者，您好：根据《梦幻云关于深度优化Github依赖情况的公告》（梦幻云总第631号公告）通知，梦幻云所属的Github网页已于2018年12月31日全部删除。梦幻云工作人员仅用属于自己的Github页面进行静态测试或静态公告。梦幻云服务问题请前往社区联系客服；本网页及Dream Cloud Inc Bot问题可联系lvka17026@outlook.com。感谢您对梦幻云的支持和理解。
+            「网站公告」尊敬的追梦者，您好：根据《梦幻云关于深度优化Github依赖情况的公告》（梦幻云总第731号公告）通知，梦幻云所属的Github网页已于2022年12月31日全部删除。梦幻云工作人员仅用属于自己的Github页面进行静态测试或静态公告。梦幻云服务问题请前往社区联系客服；本网页及Dream Cloud Inc Bot问题可联系lvka17026@outlook.com。感谢您对梦幻云的支持和理解。
         </div>
     </div>
     
     <div class="content-wrapper">
         <div class="image-container">
-            <img src="5226.jpg" alt="通话录音提示图">
+            <img src="5227.jpg" alt="通话录音示意图">
         </div>
     </div>
     
     <div class="footer">
         <p>© 2022 律卡 | 基于 GitHub 构建 | 与 Dream Cloud Inc. 无关</p>
-        <p>该网页已于2025/02/15由律卡终止维护，WebID：5226</p>
+        <p>该网页已于2025/02/15停止维护</p>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalContent = document.getElementById('modalContent');
+            const modalFooter = document.getElementById('modalFooter');
+            const backButton = document.getElementById('backButton');
+            const continueButton = document.getElementById('continueButton');
+            
+            // 禁止页面滚动
+            document.body.classList.add('no-scroll');
+            
+            // 继续访问按钮点击事件
+            continueButton.addEventListener('click', function() {
+                modalOverlay.style.display = 'none';
+                document.body.classList.remove('no-scroll');
+            });
+            
+            // 返回按钮点击事件
+            backButton.addEventListener('click', function() {
+                // 更新弹窗内容为错误提示
+                modalContent.textContent = '执行失败：未设定返回目标。';
+                
+                // 更新按钮为单个确认按钮
+                modalFooter.innerHTML = '';
+                modalFooter.className = 'modal-footer single-button';
+                
+                const confirmButton = document.createElement('button');
+                confirmButton.className = 'modal-button button-info';
+                confirmButton.textContent = '确认';
+                
+                confirmButton.addEventListener('click', function() {
+                    // 恢复原始弹窗内容
+                    modalContent.textContent = '该网页已停止维护，可能不会同步最新信息。';
+                    
+                    // 恢复原始按钮
+                    modalFooter.className = 'modal-footer';
+                    modalFooter.innerHTML = `
+                        <button class="modal-button button-secondary" id="backButton">返回</button>
+                        <button class="modal-button button-primary" id="continueButton">继续访问</button>
+                    `;
+                    
+                    // 重新绑定事件
+                    document.getElementById('continueButton').addEventListener('click', function() {
+                        modalOverlay.style.display = 'none';
+                        document.body.classList.remove('no-scroll');
+                    });
+                    
+                    document.getElementById('backButton').addEventListener('click', function() {
+                        // 再次显示错误弹窗
+                        modalContent.textContent = '执行失败：未设定返回目标。';
+                        modalFooter.innerHTML = '';
+                        modalFooter.className = 'modal-footer single-button';
+                        
+                        const newConfirmButton = document.createElement('button');
+                        newConfirmButton.className = 'modal-button button-info';
+                        newConfirmButton.textContent = '确认';
+                        
+                        newConfirmButton.addEventListener('click', function() {
+                            // 恢复原始弹窗内容
+                            modalContent.textContent = '该网页已停止维护，可能不会同步最新信息。';
+                            modalFooter.className = 'modal-footer';
+                            modalFooter.innerHTML = `
+                                <button class="modal-button button-secondary" id="backButton">返回</button>
+                                <button class="modal-button button-primary" id="continueButton">继续访问</button>
+                            `;
+                            
+                            // 重新绑定事件
+                            document.getElementById('continueButton').addEventListener('click', function() {
+                                modalOverlay.style.display = 'none';
+                                document.body.classList.remove('no-scroll');
+                            });
+                            
+                            document.getElementById('backButton').addEventListener('click', backButtonClickHandler);
+                        });
+                        
+                        modalFooter.appendChild(newConfirmButton);
+                    });
+                });
+                
+                modalFooter.appendChild(confirmButton);
+            });
+            
+            // 保存返回按钮点击事件处理函数以便重用
+            function backButtonClickHandler() {
+                modalContent.textContent = '执行失败：未设定返回目标。';
+                modalFooter.innerHTML = '';
+                modalFooter.className = 'modal-footer single-button';
+                
+                const confirmButton = document.createElement('button');
+                confirmButton.className = 'modal-button button-info';
+                confirmButton.textContent = '确认';
+                
+                confirmButton.addEventListener('click', function() {
+                    // 恢复原始弹窗内容
+                    modalContent.textContent = '该网页已停止维护，可能不会同步最新信息。';
+                    modalFooter.className = 'modal-footer';
+                    modalFooter.innerHTML = `
+                        <button class="modal-button button-secondary" id="backButton">返回</button>
+                        <button class="modal-button button-primary" id="continueButton">继续访问</button>
+                    `;
+                    
+                    // 重新绑定事件
+                    document.getElementById('continueButton').addEventListener('click', function() {
+                        modalOverlay.style.display = 'none';
+                        document.body.classList.remove('no-scroll');
+                    });
+                    
+                    document.getElementById('backButton').addEventListener('click', backButtonClickHandler);
+                });
+                
+                modalFooter.appendChild(confirmButton);
+            }
+            
+            // 初始绑定返回按钮事件
+            backButton.addEventListener('click', backButtonClickHandler);
+        });
+    </script>
 </body>
 </html>
