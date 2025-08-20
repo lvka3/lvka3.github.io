@@ -1177,10 +1177,10 @@
                     <li>WebID: 92136843735096.</li>
                     <li>UserIP: <span id="user-ip">Loading...</span></li>
                     <li>【更新日志】</li>
-                    <li>[2023/07/02]无。</li>
-                    <li>[2025/03/27]UI优化，内容调整。</li>
-                    <li>[2025/07/26]UI优化，增加功能，内容调整，拦截老旧版本浏览器，增加附属链接。</li>
-                    <li>[2025/07/27]UI问题与描述错误修复。</li>
+                    <li>[2023/07/02]网页完成构建。</li>
+                    <li>[2025/03/27]内容调整。</li>
+                    <li>[2025/07/25]UI优化，内容调整，尝试增加拦截老旧版本浏览器，增加附属链接。</li>
+                    <li>[2025/07/26]修复UI触碰问题、时间戳计算错误和文本描述错误，IP报错提示调为中文。</li>
                 </ul>
                 <div class="time-display">
                     <i class="fas fa-clock"></i> <span id="utc-time">-- UTC</span>
@@ -1462,7 +1462,7 @@
                     })
                     .catch(error => {
                         console.error('Error fetching IP:', error);
-                        userIpElement.textContent = 'Failed to Get User IP.';
+                        userIpElement.textContent = '获取用户IP失败，请尝试切换到非中国大陆网络。';
                     });
             }
             
