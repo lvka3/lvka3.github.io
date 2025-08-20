@@ -239,7 +239,7 @@
     <div id="modalOverlay" class="modal-overlay">
         <div class="modal">
             <div class="modal-header">系统提示</div>
-            <div class="modal-body" id="modalContent">该网页已停止维护，可能不会同步最新信息。</div>
+            <div class="modal-body" id="modalContent">该网页已停止维护，可能不会同步最新信息。2025/02/16修复了添加停止维护提示后图片错误指向5227而不是5226的问题。</div>
             <div class="modal-footer" id="modalFooter">
                 <button class="modal-button button-secondary" id="backButton">返回</button>
                 <button class="modal-button button-primary" id="continueButton">继续访问</button>
@@ -259,7 +259,7 @@
     
     <div class="content-wrapper">
         <div class="image-container">
-            <img src="5227.jpg" alt="通话录音示意图">
+            <img src="5226.jpg" alt="通话录音示意图">
         </div>
     </div>
     
@@ -327,7 +327,7 @@
                         
                         newConfirmButton.addEventListener('click', function() {
                             // 恢复原始弹窗内容
-                            modalContent.textContent = '该网页已停止维护，可能不会同步最新信息。';
+                            modalContent.textContent = '该网页已停止维护，可能不会同步最新信息。2025/02/16修复了添加停止维护提示后图片错误指向5227而不是5226的问题。';
                             modalFooter.className = 'modal-footer';
                             modalFooter.innerHTML = `
                                 <button class="modal-button button-secondary" id="backButton">返回</button>
@@ -362,7 +362,7 @@
                 
                 confirmButton.addEventListener('click', function() {
                     // 恢复原始弹窗内容
-                    modalContent.textContent = '该网页已停止维护，可能不会同步最新信息。';
+                    modalContent.textContent = '该网页已停止维护，可能不会同步最新信息。2025/02/16修复了添加停止维护提示后图片错误指向5227而不是5226的问题。';
                     modalFooter.className = 'modal-footer';
                     modalFooter.innerHTML = `
                         <button class="modal-button button-secondary" id="backButton">返回</button>
