@@ -1,0 +1,47 @@
+' 防弟弟妹妹玩电脑脚本
+' 开机后运行，要求在 1 分钟内输入密码 "lvka"，否则关机
+
+Dim WshShell, startTime, elapsed, password, correct, timeoutSeconds, shutdownTimeout
+Set WshShell = CreateObject("WScript.Shell")
+
+' 先取消任何现有的关机计划，避免冲突
+WshShell.Run "shutdown -a", 0, False
+
+timeoutSeconds = 60          ' 用户输入时限（秒）
+shutdownTimeout = timeoutSeconds + 5   ' 系统实际关机延迟（秒），预留缓冲
+
+' 计划关机（65秒后执行）
+WshShell.Run "shutdown -s -t " & shutdownTimeout, 0, False
+
+startTime = Now()
+correct = False
+
+Do While Not correct
+    elapsed = DateDiff("s", startTime, Now())
+    If elapsed >= timeoutSeconds Then
+        Exit Do        ' 超时，退出循环
+    End If
+    remaining = timeoutSeconds - elapsed
+    password = InputBox("请在 " & remaining & " 秒内输入密码，否则电脑将自动关机。" & vbCrLf & vbCrLf & "密码：", "验证", "")
+    
+    If Not IsEmpty(password) Then
+        If password = "lvka" Then
+            correct = True
+        Else
+            If remaining > 0 Then
+                MsgBox "密码错误！剩余 " & remaining & " 秒。", vbExclamation, "密码错误"
+            End If
+        End If
+    Else
+        ' 用户点击取消，继续计时，不提示错误
+    End If
+Loop
+
+If correct Then
+    ' 取消关机计划
+    WshShell.Run "shutdown -a", 0, False
+    MsgBox "密码正确，已取消关机。祝您使用愉快！", vbInformation, "验证成功"
+Else
+    ' 超时未输入正确密码，系统将自动关机
+    MsgBox "未在限定时间内输入正确密码，电脑将关机。", vbCritical, "超时"
+End If
