@@ -1,4 +1,268 @@
-' 防弟弟妹妹玩电脑脚本
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>VBS 电脑防玩脚本 · 一键复制工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #1a2a3a 0%, #0f1a24 100%);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(0px);
+            transition: all 0.2s;
+        }
+
+        .header {
+            background: #0b2b3b;
+            padding: 1.8rem 2rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .header h1::before {
+            content: "🛡️";
+            font-size: 2rem;
+        }
+
+        .header p {
+            margin-top: 0.6rem;
+            opacity: 0.85;
+            font-size: 1rem;
+            border-left: 3px solid #ffb347;
+            padding-left: 1rem;
+        }
+
+        .content {
+            padding: 2rem;
+        }
+
+        .info-box {
+            background: #eef3fc;
+            border-radius: 1.2rem;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 6px solid #2c7da0;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #1e3b44;
+        }
+
+        .info-box strong {
+            color: #0f5b6e;
+        }
+
+        .code-section {
+            margin-bottom: 2rem;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 0 0.2rem;
+        }
+
+        .code-header span {
+            font-weight: 600;
+            background: #e9ecef;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #2c3e50;
+            font-family: monospace;
+        }
+
+        .copy-btn {
+            background: #2c7da0;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .copy-btn:hover {
+            background: #1f5e7a;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .copy-btn:active {
+            transform: translateY(1px);
+        }
+
+        pre {
+            background: #0f1e24;
+            color: #e2f0f7;
+            padding: 1.5rem;
+            border-radius: 1.2rem;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+            tab-size: 4;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05), 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .steps {
+            background: #f8f9fc;
+            border-radius: 1.2rem;
+            padding: 1.2rem 1.8rem;
+            margin-top: 1rem;
+            border: 1px solid #dce5ec;
+        }
+
+        .steps h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: #1a4b5e;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .steps ol {
+            margin-left: 1.5rem;
+            padding-left: 0.2rem;
+        }
+
+        .steps li {
+            margin: 0.7rem 0;
+            line-height: 1.45;
+            color: #2c4e5c;
+        }
+
+        .steps code {
+            background: #eef2f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #c7254e;
+        }
+
+        .tips {
+            margin-top: 1.5rem;
+            background: #fff6e5;
+            border-radius: 1rem;
+            padding: 1rem 1.3rem;
+            font-size: 0.85rem;
+            border: 1px solid #ffe0b5;
+            color: #a6641a;
+        }
+
+        hr {
+            margin: 1.2rem 0;
+            border: none;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .footer {
+            font-size: 0.75rem;
+            text-align: center;
+            color: #6f8a9a;
+            padding: 1rem 1.5rem 1.5rem;
+            border-top: 1px solid #e9edf2;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 550px) {
+            body {
+                padding: 1rem;
+            }
+            .content {
+                padding: 1.2rem;
+            }
+            pre {
+                font-size: 0.75rem;
+                padding: 1rem;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e2f3a;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            pointer-events: none;
+            backdrop-filter: blur(6px);
+            background: rgba(20, 40, 50, 0.95);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <div class="header">
+        <h1>防弟弟妹妹玩电脑 · 自动锁机脚本</h1>
+        <p>开机后弹出密码窗口，60秒内输入正确密码 <code style="background:#2c5a6e; color:#ffd966; padding:2px 6px; border-radius:20px;">lvka</code> 否则自动关机</p>
+    </div>
+    <div class="content">
+        <div class="info-box">
+            ⚙️ <strong>工作原理</strong>：VBS脚本开机启动 → 倒计时60秒 → 输入正确密码“lvka”则取消关机，否则电脑自动关机。<br>
+            ✅ 无需安装任何软件，利用系统自带 <code>shutdown</code> 命令，适合Win7/Win10/Win11。
+        </div>
+
+        <div class="code-section">
+            <div class="code-header">
+                <span>📜 Protect.vbs 完整代码</span>
+                <button class="copy-btn" id="copyVbsBtn">📋 一键复制脚本</button>
+            </div>
+            <pre id="vbsCodeBlock">' 防弟弟妹妹玩电脑脚本
 ' 开机后运行，要求在 1 分钟内输入密码 "lvka"，否则关机
 
 Dim WshShell, startTime, elapsed, password, correct, timeoutSeconds, shutdownTimeout
@@ -44,4 +308,98 @@ If correct Then
 Else
     ' 超时未输入正确密码，系统将自动关机
     MsgBox "未在限定时间内输入正确密码，电脑将关机。", vbCritical, "超时"
-End If
+End If</pre>
+        </div>
+
+        <div class="steps">
+            <h3>📌 如何使用这个脚本（设置开机启动）</h3>
+            <ol>
+                <li>将上面代码复制到记事本中，<strong>另存为</strong> <code style="background:#e9ecef;">Protect.vbs</code>（注意扩展名必须是 <code>.vbs</code>，而不是 <code>.txt</code>）。</li>
+                <li>按下键盘 <code>Win + R</code> 打开运行窗口，输入 <code>shell:startup</code> 并回车，打开“启动”文件夹。</li>
+                <li>将刚才保存的 <code>Protect.vbs</code> 文件（或创建快捷方式）放入这个文件夹中。</li>
+                <li>重启电脑测试：开机进入桌面后会自动弹出密码输入框，60秒内输入 <strong style="color:#bf5e00;">lvka</strong> 即可正常使用。</li>
+            </ol>
+            <div class="tips">
+                💡 <strong>小提示</strong>：如果弟弟妹妹强行结束进程（任务管理器里结束 wscript.exe），防护会失效。但对大部分孩子已经足够。<br>
+                🔧 可以修改代码开头的 <code>timeoutSeconds = 60</code> 来调整倒计时秒数（例如改成 30）。<br>
+                ⚠️ 首次测试前请先保存好工作，以防意外关机。你也可以将关机延迟改成更大值方便调试。
+            </div>
+        </div>
+
+        <hr>
+        <div style="font-size:0.85rem; background:#f2f6f9; border-radius:1rem; padding:1rem;">
+            📂 <strong>手动关闭/卸载方法</strong>：从“启动”文件夹中删除 <code>Protect.vbs</code> 即可。若脚本正在运行，可打开任务管理器结束 <code>wscript.exe</code> 进程。
+        </div>
+        <div class="footer">
+            ⚡ 纯VBS实现 | 无第三方依赖 | 复制代码后按步骤放置即可生效
+        </div>
+    </div>
+</div>
+<div id="toastMsg" class="toast-msg">✅ 已复制到剪贴板</div>
+
+<script>
+    (function() {
+        const vbsCode = document.getElementById('vbsCodeBlock').innerText;
+        const copyBtn = document.getElementById('copyVbsBtn');
+        const toast = document.getElementById('toastMsg');
+        let toastTimer = null;
+
+        function showToast(message) {
+            if (toastTimer) clearTimeout(toastTimer);
+            toast.textContent = message || '✅ 脚本代码已复制！';
+            toast.style.opacity = '1';
+            toastTimer = setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 2000);
+        }
+
+        async function copyToClipboard(text) {
+            // 优先使用现代 Clipboard API
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showToast('✅ VBS 代码已复制！');
+                    return true;
+                } catch (err) {
+                    console.warn('Clipboard API 失败:', err);
+                    // fallback 到传统方法
+                }
+            }
+            // 传统 fallback (execCommand)
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.top = '-9999px';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+            textarea.setSelectionRange(0, text.length);
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+            } catch (err) {
+                console.error('复制失败', err);
+            }
+            document.body.removeChild(textarea);
+            if (success) {
+                showToast('📋 脚本代码已复制！');
+            } else {
+                showToast('❌ 复制失败，请手动选择复制');
+            }
+            return success;
+        }
+
+        copyBtn.addEventListener('click', () => {
+            // 获取预格式化区块内的原始文本（保留原始缩进和换行）
+            const preBlock = document.getElementById('vbsCodeBlock');
+            let codeText = preBlock.innerText;
+            // 确保不丢失任何字符 (innerText 已经保留换行，完美)
+            copyToClipboard(codeText);
+        });
+
+        // 额外优雅处理: 点击代码区域也可以? 但主要按钮足够
+        // 防止pre中样式干扰复制空白
+    })();
+</script>
+</body>
+</html>
