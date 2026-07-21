@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>封丘一中</title>
+    <title>服务器维护公告</title>
     <style>
-        @font-face {
-            font-family: '微软雅黑自定义';
-            src: url('微软雅黑-6.25.ttc') format('truetype');
+        :root {
+            --bg: #f5f6fa;
+            --card-bg: #ffffff;
+            --text-primary: #1e1e2f;
+            --text-secondary: #4a4f5c;
+            --text-muted: #8b8f9a;
+            --accent: #e07b1f;
+            --border: #edf0f4;
+            --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
+            --shadow-banner: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --radius-sm: 8px;
+            --radius: 14px;
+            --radius-lg: 18px;
+            --transition: 0.2s ease;
         }
 
         * {
@@ -17,423 +28,435 @@
         }
 
         body {
-            background-color: #fff9f9;
-            font-family: '微软雅黑自定义', 'Microsoft YaHei', '微软雅黑', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+            background-color: var(--bg);
+            background-image:
+                linear-gradient(rgba(0, 0, 0, 0.018) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.018) 1px, transparent 1px);
+            background-size: 44px 44px;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 20px 10px;
+            justify-content: center;
+            padding: 16px;
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 背景装饰光晕 */
+        .bg-decoration {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .circle-1 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(224, 123, 31, 0.04) 0%, transparent 70%);
+            top: -200px;
+            right: -140px;
+        }
+        .circle-2 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(66, 133, 244, 0.03) 0%, transparent 70%);
+            bottom: -180px;
+            left: -120px;
+        }
+
+        .page-wrapper {
             position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 580px;
+            animation: fadeInUp 0.5s ease-out;
         }
 
-        /* 右上角实时时间悬浮窗 */
-        .live-time {
-            position: fixed;
-            top: 16px;
-            right: 20px;
-            background: rgba(180, 30, 30, 0.92);
-            color: #ffd700;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 8px 18px;
-            border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(150, 0, 0, 0.3);
-            letter-spacing: 1px;
-            z-index: 9999;
-            backdrop-filter: blur(4px);
-            border: 1px solid #f0c040;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* 左上角“关于我们”按钮 */
-        .about-btn {
-            position: fixed;
-            top: 16px;
-            left: 20px;
-            background: rgba(180, 30, 30, 0.92);
-            color: #ffd700;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 8px 18px;
-            border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(150, 0, 0, 0.3);
-            letter-spacing: 1px;
-            z-index: 9998;
-            backdrop-filter: blur(4px);
-            border: 1px solid #f0c040;
-            cursor: pointer;
+        /* 顶部更新提示 */
+        .update-banner {
+            background: #fffef9;
+            border: 1px solid #f0e4cc;
+            border-left: 4px solid #e07b1f;
+            border-radius: var(--radius-sm);
+            padding: 10px 16px;
+            margin-bottom: 14px;
+            font-size: 0.84rem;
+            color: #6b5514;
+            box-shadow: var(--shadow-banner);
+            animation: fadeInUp 0.5s ease-out 0.05s both;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .banner-dot {
+            flex-shrink: 0;
+            width: 8px;
+            height: 8px;
+            background: #e07b1f;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(224, 123, 31, 0.18);
+        }
+        .banner-text strong {
+            font-weight: 650;
+            color: #4b3c1a;
+        }
+
+        /* 主卡片 */
+        .main-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            animation: fadeInUp 0.5s ease-out 0.1s both;
+        }
+        .card-accent-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #e07b1f 0%, #f5a623 50%, #e07b1f 100%);
+        }
+        .card-body {
+            padding: 30px 32px 28px;
+        }
+
+        /* 标题区域 */
+        .header-section {
+            text-align: center;
+            margin-bottom: 26px;
+        }
+        .main-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #1e1e2f;
+            letter-spacing: 0.03em;
+            margin: 0;
+        }
+
+        /* 信息列表 */
+        .info-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .info-item {
+            padding: 14px 12px;
+            border-radius: var(--radius-sm);
             transition: background 0.2s;
         }
-        .about-btn:hover {
-            background: rgba(200, 30, 30, 0.95);
+        .info-item:hover {
+            background: #fafbfc;
+        }
+        .info-item+.info-item {
+            border-top: 1px solid #f2f3f7;
+        }
+        .info-item-label {
+            font-size: 0.76rem;
+            font-weight: 650;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .info-item-value {
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+        .info-item-value.empty-value {
+            color: #c5cad3;
+            font-style: italic;
+            font-weight: 400;
+        }
+        .divider {
+            border: none;
+            border-top: 1px dashed #e5e7eb;
+            margin: 6px 0;
         }
 
-        /* 自定义弹窗遮罩 */
-        .modal-overlay {
+        /* 底部联系客服 */
+        .contact-section {
+            text-align: center;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f1f4;
+            font-size: 0.92rem;
+            color: #4b5563;
+            line-height: 1.7;
+        }
+        .contact-text {
+            color: #4b5563;
+        }
+        .contact-link {
+            color: #1e40af;
+            text-decoration: underline;
+            cursor: pointer;
+            font-weight: 550;
+            transition: color 0.2s;
+            text-underline-offset: 2px;
+        }
+        .contact-link:hover {
+            color: #e07b1f;
+            text-decoration: underline;
+        }
+        .contact-link:active {
+            opacity: 0.8;
+        }
+
+        /* Toast 提示 */
+        .toast-overlay {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            backdrop-filter: blur(2px);
-        }
-        .modal-overlay.active {
+            right: 0;
+            bottom: 0;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
         }
-
-        /* 弹窗内容 */
-        .modal-content {
-            background: #fff;
-            width: 90%;
-            max-width: 700px;
-            max-height: 80vh;
+        .toast-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .toast-box {
+            background: #1e1e2f;
+            color: #f9fafb;
+            padding: 16px 28px;
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(180, 0, 0, 0.3);
-            padding: 30px 28px 25px;
-            position: relative;
-            overflow-y: auto;
-            border-top: 4px solid #d32f2f;
-            animation: modalFadeIn 0.3s ease;
-        }
-        @keyframes modalFadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 12px;
-            right: 18px;
-            font-size: 28px;
-            color: #a31525;
-            cursor: pointer;
-            line-height: 1;
-            transition: color 0.2s;
-        }
-        .modal-close:hover {
-            color: #d32f2f;
-        }
-
-        .modal-title {
-            font-size: 24px;
-            font-weight: bold;
-            color: #c41e3a;
-            margin-bottom: 18px;
+            font-size: 0.92rem;
+            font-weight: 500;
             text-align: center;
-            letter-spacing: 2px;
-        }
-
-        .modal-body {
-            font-size: 16px;
-            color: #3a2222;
-            line-height: 1.8;
-            text-indent: 2em;
-        }
-
-        /* 党政风格头部装饰 */
-        .header-decoration {
-            width: 100%;
-            height: 5px;
-            background: linear-gradient(90deg, #d32f2f, #ff6659, #d32f2f);
-            margin-bottom: 15px;
-            border-radius: 2px;
-        }
-
-        /* 扫光标题样式 - 动画时长延长至8秒 */
-        .main-title {
-            font-family: '微软雅黑自定义', 'Microsoft YaHei', '微软雅黑', sans-serif;
-            font-weight: bold;
-            font-size: 68px;
-            text-align: center;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            letter-spacing: 6px;
-            position: relative;
-            color: #c41e3a;
-            background: linear-gradient(90deg,
-                    #c41e3a 0%,
-                    #ff9988 20%,
-                    #ffffff 40%,
-                    #ffccaa 55%,
-                    #c41e3a 75%,
-                    #ff8877 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: sweepLight 8s ease-in-out infinite;  /* 从3.5s延长至8s */
-            text-shadow: none;
-        }
-
-        @keyframes sweepLight {
-            0% {
-                background-position: 200% center;
-            }
-            100% {
-                background-position: -200% center;
-            }
-        }
-
-        .main-title::after {
-            display: none;
-        }
-
-        .marquee-container {
-            width: 1100px;
-            max-width: 95vw;
-            height: 45px;
-            overflow: hidden;
-            background-color: #fdf2f2;
-            border: 1px solid #e6b8b8;
-            border-radius: 4px;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            box-shadow: inset 0 1px 3px rgba(200, 0, 0, 0.08);
-        }
-
-        .marquee-text {
-            display: inline-block;
-            white-space: nowrap;
-            font-size: 18px;
-            color: #a31525;
-            font-weight: bold;
-            animation: marqueeScroll linear infinite;
-            animation-duration: 10s;
-            padding-left: 100%;
-        }
-
-        @keyframes marqueeScroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-200%); }
-        }
-
-        .content-wrapper {
-            display: flex;
-            width: 1200px;
-            max-width: 98vw;
-            gap: 35px;
-            align-items: flex-start;
-        }
-
-        .carousel-section {
-            flex: 5;
-            min-width: 0;
-            position: relative;
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            max-height: 500px;
-            overflow: hidden;
-            border: 2px solid #d32f2f;
-            border-radius: 6px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 12px rgba(180, 0, 0, 0.12);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .carousel-section img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            display: block;
-            transition: opacity 0.3s ease;
-        }
-
-        .qa-section {
-            flex: 4;
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            padding: 12px 0;
-        }
-
-        .qa-item {
-            border-bottom: 1px solid #f0d0d0;
-            padding-bottom: 14px;
-        }
-        .qa-item:last-child {
-            border-bottom: none;
-        }
-
-        .qa-question {
-            font-weight: bold;
-            font-size: 18px;
-            color: #b71c1c;
-            margin-bottom: 6px;
-        }
-
-        .qa-answer {
-            font-size: 16px;
-            color: #4a2c2c;
+            max-width: 85vw;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            letter-spacing: 0.02em;
             line-height: 1.6;
         }
-
-        @media (max-width: 700px) {
-            .content-wrapper {
-                flex-direction: column;
-                gap: 20px;
+        .toast-overlay.closing .toast-box {
+            animation: toastOut 0.2s ease-in forwards;
+        }
+        @keyframes toastIn {
+            from {
+                opacity: 0;
+                transform: translateY(18px) scale(0.95);
             }
-            .carousel-section {
-                aspect-ratio: 16 / 10;
-                max-height: 300px;
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes toastOut {
+            from {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            to {
+                opacity: 0;
+                transform: translateY(-12px) scale(0.93);
+            }
+        }
+
+        /* ---------- 手机适配 ---------- */
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+                align-items: flex-start;
+                padding-top: 30px;
+            }
+            .card-body {
+                padding: 24px 18px 22px;
             }
             .main-title {
-                font-size: 42px;
-                margin-top: 10px;
+                font-size: 1.45rem;
             }
-            .qa-question { font-size: 16px; }
-            .qa-answer { font-size: 15px; }
-            .live-time, .about-btn {
-                font-size: 14px;
-                padding: 6px 14px;
-                top: 10px;
+            .info-item {
+                padding: 12px 8px;
             }
-            .about-btn { left: 10px; }
-            .live-time { right: 10px; }
+            .info-item-label {
+                font-size: 0.7rem;
+            }
+            .info-item-value {
+                font-size: 0.88rem;
+            }
+            .contact-section {
+                font-size: 0.85rem;
+            }
+            .update-banner {
+                font-size: 0.78rem;
+                padding: 10px 14px;
+            }
+            .toast-box {
+                font-size: 0.85rem;
+                padding: 14px 18px;
+            }
+        }
+        @media (max-width: 380px) {
+            .card-body {
+                padding: 20px 14px 18px;
+            }
+            .main-title {
+                font-size: 1.3rem;
+            }
+            .info-item {
+                padding: 10px 6px;
+            }
+            .info-item-value {
+                font-size: 0.82rem;
+            }
+            .contact-section {
+                font-size: 0.8rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="bg-decoration circle-1"></div>
+    <div class="bg-decoration circle-2"></div>
 
-    <!-- 右上角实时时间悬浮窗 -->
-    <div class="live-time" id="liveTime"></div>
+    <div class="page-wrapper">
+        <!-- 更新提示 -->
+        <div class="update-banner">
+            <span class="banner-dot"></span>
+            <span class="banner-text">
+                本网页更新于 <strong>2026/07/21 18:00</strong>，请注意公告内容的有效期限。
+            </span>
+        </div>
 
-    <!-- 左上角“关于我们”按钮 -->
-    <div class="about-btn" id="aboutBtn">关于这个页面</div>
+        <!-- 主卡片 -->
+        <div class="main-card">
+            <div class="card-accent-bar"></div>
+            <div class="card-body">
+                <div class="header-section">
+                    <h1 class="main-title">服务器维护公告</h1>
+                </div>
 
-    <!-- 自定义弹窗 -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <span class="modal-close" id="modalClose">&times;</span>
-            <div class="modal-title">关于这个页面</div>
-            <div class="modal-body">
-                <p>这个页面原本是封丘一中所谓联网的、高级的量化分管理系统，目前已经被攻击，你只要访问，就会重定向到这个页面。没有动你校管理系统的任何数据，只做了跳转。</p>
-                <p>为什么会这样：2026年6月17日，封丘一中通知全体学生端午不放假，所谓“一切为了学生”实则是“一切为了升学率”。当晚，小部分学生塞爆校长信箱，你校予以无视并以拍照扣分威胁学生。18日早上，一楼示威范围扩大，张贴抗议宣传单，你校领导再次予以无视并威胁。经过全体封丘一中学生不懈努力，政教处被迫宣布学生下午返校。原本不想弄，我想着你让一步我让一步，——但是，你校是什么态度？原本就是你做法有问题，广播通知不让学生提前放行李急死你了，下午又延后半小时。明显在做无用的垂死挣扎。所以：</p>
-                <p>为了与全体封丘一中学生一道、给全体被你校拖欠工资的普通老师和班主任（他们和我们一样累，再看看你们？！）出口气，我决定，实施此次“代号：史诗狂怒”行动。（正义的伊朗反攻美以也是此代号，我们的行为是正义的！）我再次说明，我没有动你校管理系统的任何数据。要修复非常好修复。你也别想知道我是谁，真机在境外（我委托境外人员在境外实施原始攻击），加上几个跳板服务器。</p>
-                <p>近年来，学校大力推行素质教育，开展丰富多彩的社团活动和社会实践，形成了“勤奋、严谨、团结、进取”的优良校风，被评为河南省德育工作先进单位、河南省教育科研基地、河南省中小学心理健康教育示范校。</p>
-                <p>封丘一中，你就知道你为什么不出名吗，你知道你为什么越来越觉得金瀚是个压力吗？你一直在压榨学生，就没有想过你校领导全是问题！此次行动只是“和平示威”。别给我说影响你校的声誉，你校在封丘县也没什么声誉，别的地方也不来你这里上，这个网站也只有你们学校内部人自己访问，最多有一两个学生没事干了，来访问你这个网站。我没发抖音，没发快手，没发B站，已经很给你脸了，如果我知道你进行溯源，或者后续再有特别压榨学生的行为，或者再不让我们在法定节假日放假，行动将升级。我们不惜资金成本！</p>
-                <p>至于我到底是谁，反正是封丘一中学生。我就是要让你们知道，封丘一中学生“是不好惹的，惹急了是不好办的”！封丘一中官僚体系就是“纸老虎”！——引号内容摘自伟大领袖毛主席</p>
+                <ul class="info-list">
+                    <li class="info-item">
+                        <div class="info-item-label">维护对象</div>
+                        <div class="info-item-value">测试32线_CN-TW_lvka</div>
+                    </li>
+                    <li class="info-item">
+                        <div class="info-item-label">维护时间</div>
+                        <div class="info-item-value">
+                            2026年7月21日 23:50 &nbsp;～&nbsp; 7月23日 07:50
+                        </div>
+                    </li>
+                    <li class="info-item">
+                        <div class="info-item-label">维护影响</div>
+                        <div class="info-item-value">
+                            维护期间您无法使用该线路下的任何联网服务，我们建议您更换到其他线路。
+                        </div>
+                    </li>
+                    <hr class="divider">
+                    <li class="info-item">
+                        <div class="info-item-label">维护内容</div>
+                        <div class="info-item-value empty-value">——</div>
+                    </li>
+                    <li class="info-item">
+                        <div class="info-item-label">维护补偿</div>
+                        <div class="info-item-value empty-value">——</div>
+                    </li>
+                </ul>
+
+                <div class="contact-section">
+                    <span class="contact-text">若对该公告内容有疑问，请</span>
+                    <span class="contact-link" id="contactLink">单击此处</span>
+                    <span class="contact-text">联系客服。</span>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- 党政风格红色装饰条 -->
-    <div class="header-decoration"></div>
-
-    <!-- 扫光标题 -->
-    <div class="main-title">封丘一中学生的「代号：史诗狂怒」行动</div>
-
-    <div class="marquee-container">
-        <span class="marquee-text" id="marqueeText">全体封丘一中学生抗议端午不放假，维护自己正当权益的行为万岁、万岁、万万岁！全体封丘一中学生抗议端午不放假，维护自己正当权益的行为万岁、万岁、万万岁！全体封丘一中学生正义行为万岁！某些人就是党内走资派，是封丘一中、封丘县教育系统的最大败类！伟大的领袖和导师毛泽东主席教导学生要推翻你们的反动行为，维护我们的权益！</span>
+    <!-- Toast 提示 -->
+    <div class="toast-overlay" id="toastOverlay">
+        <div class="toast-box">请联系您的组织的管理员。</div>
     </div>
-
-    <div class="content-wrapper">
-        <div class="carousel-section">
-            <img id="carouselImg" src="1.jpg" alt="封丘一中图片">
-        </div>
-
-        <div class="qa-section">
-            <div class="qa-item">
-                <div class="qa-question">1.网站内容及用意</div>
-                <div class="qa-answer">这个网站十图轮放，N问封丘一中，《万岁毛主席》（“你们这群牛鬼蛇神无处躲藏！”）、《歌唱祖国1968版》、《东方红》、《中华人民共和国国歌》（“起来！不愿做奴隶的人们！”）四曲轮播。幕后黑手告诉你，QQ号2071773966。（别查了，这就是政教处注册网站时的QQ，自作自受！警告：如果我知道你查了，并且后续再有法定节假日不放假，我将开你校领导地球Online的18位游戏ID并公布！别给我说什么中招高招原来就不该放假，你校作为封丘县最“牛逼”的学校，是中招高招考场和我们有关系吗？不是因为你们学校有名吗？不是因为你们学校选址优越吗？谁给你的权利，不让我们法定节日放假？</div>
-            </div>
-            <div class="qa-item">
-                <div class="qa-question">2.行动目的</div>
-                <div class="qa-answer">看到你校让学生回家了，我原本是不想弄这个的，你也不看看你家领导在喇叭里什么语气，急死你了是吧，对学生又是什么作为，所以为了让某学校知道，学生“不是好惹的，惹急的是不好办的”！我后续会不定时附加DDOS攻击耗你学校服务器费用，直到你修好你的破网站。你们学校没钱，或者你们学校公关牛逼，就快点修；你们学校有钱啊，那就不修呗？另外你校官网用AI写的都不说了，有一句实话吗？90多的一本率逗傻子呢？你校领导嘴里有一句实话吗？一切为了学生是剥夺学生权利的理由？</div>
-            </div>
-            <div class="qa-item">
-                <div class="qa-question">3.锐评某学校</div>
-                <div class="qa-answer">名义上的重高，实则是10。天天清北清北，某领导可是连高中都没上过捏。问：各所谓领导，①你今天为学生做实事了吗，②你今天为了业绩抓违纪了吗，③你今天贪污受贿腐败了吗，④你今天压榨老师学生了吗，⑤你正常发放老师工资了吗，⑥你们互相看不顺眼准备夺权篡位吗，⑦你今天进行形式主义和官僚主义了吗，⑧你记得入党誓词全心全意为人民服务吗，⑨你知道全校0个人看你们顺眼吗？……</div>
-            </div>
-            <div class="qa-item">
-                <div class="qa-question">4.补充说明</div>
-                <div class="qa-answer">做人留一线，日后好相见，我这次不搞你多大，下次再不让学生放假，或者特别压榨学生，我们走着瞧。</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 自动播放背景音乐 -->
-    <audio src="测试.mp3" autoplay loop hidden></audio>
 
     <script>
-        // ========== 弹窗控制 ==========
-        const aboutBtn = document.getElementById('aboutBtn');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const modalClose = document.getElementById('modalClose');
-
-        aboutBtn.addEventListener('click', () => {
-            modalOverlay.classList.add('active');
-        });
-
-        modalClose.addEventListener('click', () => {
-            modalOverlay.classList.remove('active');
-        });
-
-        // 点击遮罩外部关闭弹窗
-        modalOverlay.addEventListener('click', function(e) {
-            if (e.target === modalOverlay) {
-                modalOverlay.classList.remove('active');
-            }
-        });
-
-        // ========== 右上角实时时间 ==========
-        function updateLiveTime() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = now.getMonth() + 1;
-            const date = now.getDate();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const timeString = `${year}年${month}月${date}日 ${hours}:${minutes}:${seconds}`;
-            document.getElementById('liveTime').textContent = timeString;
-        }
-        updateLiveTime();
-        setInterval(updateLiveTime, 1000);
-
-        // ========== 跑马灯速度自定义 ==========
-        const marqueeSpeed = 30; // 修改此处改变跑马灯一圈时长（秒）
-
         (function() {
-            const marqueeText = document.getElementById('marqueeText');
-            marqueeText.style.animationDuration = marqueeSpeed + 's';
-        })();
+            const contactLink = document.getElementById('contactLink');
+            const toastOverlay = document.getElementById('toastOverlay');
+            let toastTimer = null;
+            let isToastVisible = false;
 
-        // ========== 图片轮播（6张，5秒切换） ==========
-        (function() {
-            const img = document.getElementById('carouselImg');
-            const totalImages = 10;
-            let currentIndex = 0;
-            const imageSources = [];
-            for (let i = 1; i <= totalImages; i++) {
-                imageSources.push(i + '.jpg');
+            function showToast() {
+                if (toastTimer) {
+                    clearTimeout(toastTimer);
+                    toastTimer = null;
+                }
+                if (isToastVisible) {
+                    toastOverlay.classList.add('closing');
+                    toastOverlay.classList.remove('active');
+                    setTimeout(() => {
+                        toastOverlay.classList.remove('closing');
+                        displayToast();
+                    }, 220);
+                } else {
+                    displayToast();
+                }
             }
 
-            setInterval(function() {
-                currentIndex = (currentIndex + 1) % totalImages;
-                img.style.opacity = '0.4';
-                setTimeout(function() {
-                    img.src = imageSources[currentIndex];
-                    img.onload = function() {
-                        img.style.opacity = '1';
-                    };
-                    setTimeout(function() {
-                        if (img.style.opacity !== '1') {
-                            img.style.opacity = '1';
-                        }
-                    }, 150);
-                }, 200);
-            }, 5000);
+            function displayToast() {
+                toastOverlay.classList.add('active');
+                toastOverlay.classList.remove('closing');
+                isToastVisible = true;
+                toastTimer = setTimeout(() => {
+                    hideToast();
+                }, 3000);
+            }
+
+            function hideToast() {
+                toastOverlay.classList.add('closing');
+                toastOverlay.classList.remove('active');
+                isToastVisible = false;
+                if (toastTimer) {
+                    clearTimeout(toastTimer);
+                    toastTimer = null;
+                }
+                setTimeout(() => {
+                    toastOverlay.classList.remove('closing');
+                }, 250);
+            }
+
+            contactLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showToast();
+            });
+
+            toastOverlay.addEventListener('click', function(e) {
+                if (e.target === toastOverlay && isToastVisible) {
+                    hideToast();
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && isToastVisible) {
+                    hideToast();
+                }
+            });
+
+            toastOverlay.addEventListener('touchstart', function(e) {
+                if (e.target === toastOverlay && isToastVisible) {
+                    e.preventDefault();
+                    hideToast();
+                }
+            }, { passive: false });
         })();
     </script>
 </body>
