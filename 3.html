@@ -2,23 +2,27 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>服务器维护公告</title>
     <style>
+        @font-face {
+            font-family: 'NeuBZ';
+            src: url('neu_bz_s92.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         :root {
-            --bg: #f5f6fa;
-            --card-bg: #ffffff;
+            --bg: #f5f7fb;
+            --card-bg: rgba(255, 255, 255, 0.85);
             --text-primary: #1e1e2f;
-            --text-secondary: #4a4f5c;
             --text-muted: #8b8f9a;
             --accent: #e07b1f;
-            --border: #edf0f4;
-            --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
-            --shadow-banner: 0 2px 8px rgba(0, 0, 0, 0.04);
-            --radius-sm: 8px;
-            --radius: 14px;
-            --radius-lg: 18px;
-            --transition: 0.2s ease;
+            --accent-soft: rgba(224, 123, 31, 0.08);
+            --shadow-card: 0 15px 30px rgba(0, 0, 0, 0.06);
+            --radius-sm: 10px;
+            --radius-lg: 22px;
+            --drawer-width: 260px;
         }
 
         * {
@@ -28,23 +32,22 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
-            background-color: var(--bg);
-            background-image:
-                linear-gradient(rgba(0, 0, 0, 0.018) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.018) 1px, transparent 1px);
-            background-size: 44px 44px;
+            font-family: 'NeuBZ', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+            font-weight: 600; /* 全局加粗 */
+            background: radial-gradient(circle at 30% 10%, #fff7ed 0%, #f0f4fa 60%, #eef1f6 100%);
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 14px;
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        /* 背景装饰光晕 */
         .bg-decoration {
             position: fixed;
             border-radius: 50%;
@@ -52,411 +55,640 @@
             z-index: 0;
         }
         .circle-1 {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(224, 123, 31, 0.04) 0%, transparent 70%);
-            top: -200px;
-            right: -140px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(224, 123, 31, 0.05) 0%, transparent 70%);
+            top: -250px;
+            right: -200px;
         }
         .circle-2 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(66, 133, 244, 0.03) 0%, transparent 70%);
-            bottom: -180px;
-            left: -120px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 125, 255, 0.04) 0%, transparent 70%);
+            bottom: -240px;
+            left: -160px;
+        }
+        .circle-3 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(224, 123, 31, 0.03) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: float 8s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.08); }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .particle {
+            position: absolute;
+            background: rgba(224, 123, 31, 0.16);
+            border-radius: 50%;
+            animation: rise 10s infinite;
+            bottom: -40px;
+        }
+        .particle:nth-child(1) { left: 10%; width: 5px; height: 5px; animation-duration: 9s; }
+        .particle:nth-child(2) { left: 25%; width: 7px; height: 7px; animation-duration: 12s; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 45%; width: 4px; height: 4px; animation-duration: 8s; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 65%; width: 8px; height: 8px; animation-duration: 11s; animation-delay: 1s; }
+        .particle:nth-child(5) { left: 80%; width: 6px; height: 6px; animation-duration: 10s; animation-delay: 3s; }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) scale(1.3); opacity: 0; }
         }
 
         .page-wrapper {
             position: relative;
-            z-index: 1;
+            z-index: 2;
             width: 100%;
             max-width: 580px;
             animation: fadeInUp 0.5s ease-out;
         }
-
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* 顶部更新提示 */
         .update-banner {
-            background: #fffef9;
-            border: 1px solid #f0e4cc;
+            background: rgba(255, 254, 248, 0.75);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(230, 210, 170, 0.5);
             border-left: 4px solid #e07b1f;
             border-radius: var(--radius-sm);
             padding: 10px 16px;
-            margin-bottom: 14px;
-            font-size: 0.84rem;
-            color: #6b5514;
-            box-shadow: var(--shadow-banner);
-            animation: fadeInUp 0.5s ease-out 0.05s both;
+            margin-bottom: 12px;
+            font-size: 0.82rem;
+            color: #5e4516;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.04);
             display: flex;
             align-items: center;
             gap: 10px;
         }
         .banner-dot {
-            flex-shrink: 0;
             width: 8px;
             height: 8px;
             background: #e07b1f;
             border-radius: 50%;
-            box-shadow: 0 0 0 3px rgba(224, 123, 31, 0.18);
-        }
-        .banner-text strong {
-            font-weight: 650;
-            color: #4b3c1a;
+            box-shadow: 0 0 0 4px rgba(224,123,31,0.15);
+            flex-shrink: 0;
         }
 
-        /* 主卡片 */
         .main-card {
             background: var(--card-bg);
+            backdrop-filter: blur(18px);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-card);
             overflow: hidden;
-            animation: fadeInUp 0.5s ease-out 0.1s both;
+            border: 1px solid rgba(255,255,255,0.6);
         }
         .card-accent-bar {
-            height: 4px;
+            height: 3px;
             background: linear-gradient(90deg, #e07b1f 0%, #f5a623 50%, #e07b1f 100%);
         }
         .card-body {
-            padding: 30px 32px 28px;
+            padding: 24px 28px 22px;
         }
 
-        /* 标题区域 */
         .header-section {
             text-align: center;
-            margin-bottom: 26px;
+            margin-bottom: 20px;
         }
         .main-title {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            color: #1e1e2f;
-            letter-spacing: 0.03em;
-            margin: 0;
         }
 
-        /* 信息列表 */
-        .info-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
+        .info-list { list-style: none; }
         .info-item {
-            padding: 14px 12px;
+            padding: 12px 10px;
             border-radius: var(--radius-sm);
             transition: background 0.2s;
         }
-        .info-item:hover {
-            background: #fafbfc;
-        }
-        .info-item+.info-item {
-            border-top: 1px solid #f2f3f7;
-        }
+        .info-item:hover { background: rgba(0,0,0,0.02); }
+        .info-item+.info-item { border-top: 1px solid rgba(0,0,0,0.04); }
         .info-item-label {
-            font-size: 0.76rem;
-            font-weight: 650;
+            font-size: 0.7rem;
+            font-weight: 700;
             color: var(--text-muted);
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
             margin-bottom: 4px;
         }
         .info-item-value {
-            font-size: 0.95rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            line-height: 1.6;
+            font-size: 0.92rem;
+            font-weight: 600;
             word-break: break-word;
         }
-        .info-item-value.empty-value {
-            color: #c5cad3;
-            font-style: italic;
-            font-weight: 400;
-        }
+        .empty-value { color: #c5cad3; font-style: italic; font-weight: 500; }
         .divider {
             border: none;
             border-top: 1px dashed #e5e7eb;
             margin: 6px 0;
         }
 
-        /* 底部联系客服 */
         .contact-section {
             text-align: center;
-            margin-top: 24px;
-            padding-top: 20px;
+            margin-top: 20px;
+            padding-top: 18px;
             border-top: 1px solid #f0f1f4;
-            font-size: 0.92rem;
-            color: #4b5563;
-            line-height: 1.7;
-        }
-        .contact-text {
+            font-size: 0.88rem;
             color: #4b5563;
         }
-        .contact-link {
-            color: #1e40af;
-            text-decoration: underline;
-            cursor: pointer;
-            font-weight: 550;
-            transition: color 0.2s;
-            text-underline-offset: 2px;
-        }
-        .contact-link:hover {
-            color: #e07b1f;
-            text-decoration: underline;
-        }
-        .contact-link:active {
-            opacity: 0.8;
+        .contact-link { color: #1e40af; text-decoration: underline; cursor: pointer; font-weight: 700; }
+        .contact-link:hover { color: #e07b1f; }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.65rem;
+            color: #9aa0b0;
+            letter-spacing: 0.04em;
         }
 
-        /* Toast 提示 */
-        .toast-overlay {
+        .lang-fab,
+        .detail-fab {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            bottom: 24px;
+            z-index: 1001;
+            height: 46px;
+            padding: 0 22px;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.15);
+            transition: all 0.25s;
+            white-space: nowrap;
+            backdrop-filter: blur(8px);
+            font-family: inherit;
+        }
+        .lang-fab {
+            right: 24px;
+            background: rgba(224, 123, 31, 0.9);
+            color: #fff;
+        }
+        .lang-fab:hover { background: #c96a18; transform: translateY(-2px); }
+        .detail-fab {
+            left: 24px;
+            background: rgba(30, 30, 47, 0.9);
+            color: #fff;
+        }
+        .detail-fab:hover { background: #1a1a2e; transform: translateY(-2px); }
+
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.35);
+            backdrop-filter: blur(6px);
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .drawer-overlay.active { opacity: 1; pointer-events: auto; }
+        .drawer-panel {
+            width: var(--drawer-width);
+            max-width: 85vw;
+            height: 100%;
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(16px);
+            box-shadow: -8px 0 30px rgba(0,0,0,0.12);
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+            display: flex;
+            flex-direction: column;
+        }
+        .drawer-overlay.active .drawer-panel { transform: translateX(0); }
+        .drawer-header {
+            padding: 20px 22px 14px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .drawer-title { font-size: 1rem; font-weight: 700; }
+        .drawer-close {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #6b7280;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
+            font-family: inherit;
+        }
+        .drawer-lang-list {
+            list-style: none;
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .drawer-lang-btn {
+            width: 100%;
+            text-align: left;
+            padding: 12px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 600;
+            background: transparent;
+            border: 1px solid transparent;
+            cursor: pointer;
+            color: #1e1e2f;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .drawer-lang-btn:hover { background: #f9fafb; border-color: #e5e7eb; }
+        .drawer-lang-btn.active {
+            background: var(--accent-soft);
+            border-color: var(--accent);
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(6px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-box {
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(25px);
+            border-radius: 26px;
+            width: 92%;
+            max-width: 480px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+            padding: 24px 22px;
+            animation: modalPop 0.25s ease-out;
+        }
+        @keyframes modalPop { from { transform: scale(0.93); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+        .modal-title { font-size: 1.2rem; font-weight: 700; }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: inherit;
+        }
+        .info-block { margin-bottom: 20px; }
+        .info-block h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            font-size: 0.85rem;
+        }
+        .info-row span:first-child { color: #4a4f5c; font-weight: 600; white-space: nowrap; }
+        .info-row span:last-child { font-weight: 700; color: #1e1e2f; text-align: right; }
+        .load-high { color: #c44536; font-weight: 700; }
+
+        .toast-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
             pointer-events: none;
             opacity: 0;
-            transition: opacity 0.25s ease;
+            transition: opacity 0.25s;
         }
-        .toast-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .toast-overlay.active { opacity: 1; pointer-events: auto; }
         .toast-box {
             background: #1e1e2f;
             color: #f9fafb;
-            padding: 16px 28px;
+            padding: 14px 28px;
             border-radius: 12px;
-            font-size: 0.92rem;
-            font-weight: 500;
+            font-size: 0.88rem;
+            font-weight: 600;
             text-align: center;
             max-width: 85vw;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            animation: toastIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            letter-spacing: 0.02em;
-            line-height: 1.6;
-        }
-        .toast-overlay.closing .toast-box {
-            animation: toastOut 0.2s ease-in forwards;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            animation: toastIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
         }
         @keyframes toastIn {
-            from {
-                opacity: 0;
-                transform: translateY(18px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-        @keyframes toastOut {
-            from {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            to {
-                opacity: 0;
-                transform: translateY(-12px) scale(0.93);
-            }
+            from { opacity: 0; transform: translateY(18px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* ---------- 手机适配 ---------- */
         @media (max-width: 600px) {
-            body {
-                padding: 12px;
-                align-items: flex-start;
-                padding-top: 30px;
-            }
-            .card-body {
-                padding: 24px 18px 22px;
-            }
-            .main-title {
-                font-size: 1.45rem;
-            }
-            .info-item {
-                padding: 12px 8px;
-            }
-            .info-item-label {
-                font-size: 0.7rem;
-            }
-            .info-item-value {
-                font-size: 0.88rem;
-            }
-            .contact-section {
-                font-size: 0.85rem;
-            }
-            .update-banner {
-                font-size: 0.78rem;
-                padding: 10px 14px;
-            }
-            .toast-box {
-                font-size: 0.85rem;
-                padding: 14px 18px;
-            }
-        }
-        @media (max-width: 380px) {
-            .card-body {
-                padding: 20px 14px 18px;
-            }
-            .main-title {
-                font-size: 1.3rem;
-            }
-            .info-item {
-                padding: 10px 6px;
-            }
-            .info-item-value {
-                font-size: 0.82rem;
-            }
-            .contact-section {
+            body { padding: 10px; }
+            .card-body { padding: 20px 18px 18px; }
+            .lang-fab, .detail-fab {
+                height: 42px;
+                padding: 0 16px;
                 font-size: 0.8rem;
+                bottom: 18px;
             }
+            .lang-fab { right: 14px; }
+            .detail-fab { left: 14px; }
+            .main-title { font-size: 1.4rem; }
+            .update-banner { font-size: 0.78rem; padding: 8px 14px; }
+            .info-item-value { font-size: 0.85rem; }
+            .modal-box { padding: 20px 16px; }
         }
     </style>
 </head>
 <body>
     <div class="bg-decoration circle-1"></div>
     <div class="bg-decoration circle-2"></div>
+    <div class="bg-decoration circle-3"></div>
+    <div class="particles">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div>
+    </div>
 
     <div class="page-wrapper">
-        <!-- 更新提示 -->
-        <div class="update-banner">
-            <span class="banner-dot"></span>
-            <span class="banner-text">
-                本网页由系统自动更新于 <strong>2026/07/23 07:52</strong>，请注意公告内容的有效期限。
-            </span>
-        </div>
-
-        <!-- 主卡片 -->
+        <div class="update-banner" id="updateBanner"><span class="banner-dot"></span><span class="banner-text" id="bannerText">本网页由系统自动更新于 <strong>2026/07/24 07:52</strong>，请注意公告内容的有效期限。</span></div>
         <div class="main-card">
             <div class="card-accent-bar"></div>
             <div class="card-body">
-                <div class="header-section">
-                    <h1 class="main-title">服务器维护公告</h1>
-                </div>
-
+                <div class="header-section"><h1 class="main-title" id="mainTitle">服务器维护公告</h1></div>
                 <ul class="info-list">
-                    <li class="info-item">
-                        <div class="info-item-label">维护对象</div>
-                        <div class="info-item-value">测试32线_CN-TW_lvka</div>
-                    </li>
-                    <li class="info-item">
-                        <div class="info-item-label">维护时间</div>
-                        <div class="info-item-value">
-                            2026年7月23日 07:50 &nbsp;～&nbsp; 7月23日 18:50 （UTC+8，预计）
-                        </div>
-                    </li>
-                    <li class="info-item">
-                        <div class="info-item-label">维护影响</div>
-                        <div class="info-item-value">
-                            维护期间您无法使用该线路下的任何联网服务，我们建议您更换到其他线路。
-                        </div>
-                    </li>
+                    <li class="info-item"><div class="info-item-label" id="labelTarget">维护对象</div><div class="info-item-value">测试32线_CN-TW_lvka</div></li>
+                    <li class="info-item"><div class="info-item-label" id="labelTime">维护时间</div><div class="info-item-value" id="valueTime">2026年7月24日 07:50 &nbsp;～&nbsp; 7月24日 18:50 （UTC+8，预计）</div></li>
+                    <li class="info-item"><div class="info-item-label" id="labelImpact">维护影响</div><div class="info-item-value" id="valueImpact">维护期间您无法使用该线路下的任何联网服务，建议更换到其他线路。</div></li>
                     <hr class="divider">
-                    <li class="info-item">
-                        <div class="info-item-label">维护内容</div>
-                        <div class="info-item-value empty-value">——</div>
-                    </li>
-                    <li class="info-item">
-                        <div class="info-item-label">维护补偿</div>
-                        <div class="info-item-value empty-value">——</div>
-                    </li>
+                    <li class="info-item"><div class="info-item-label" id="labelContent">维护内容</div><div class="info-item-value empty-value" id="valueContent">——</div></li>
+                    <li class="info-item"><div class="info-item-label" id="labelCompensation">维护补偿</div><div class="info-item-value empty-value" id="valueCompensation">——</div></li>
                 </ul>
-
-                <div class="contact-section">
-                    <span class="contact-text">若对该公告内容有疑问，请</span>
-                    <span class="contact-link" id="contactLink">单击此处</span>
-                    <span class="contact-text">联系客服。</span>
-                </div>
+                <div class="contact-section" id="contactSection"><span>若对该公告内容有疑问，请</span><span class="contact-link" id="contactLink">单击此处</span><span>联系客服。</span></div>
             </div>
+        </div>
+        <div class="footer-note" id="footerNote">本网页由DeepSeek自动生成。</div>
+    </div>
+
+    <button class="lang-fab" id="langFab">语言</button>
+    <button class="detail-fab" id="detailFab">详情</button>
+
+    <div class="drawer-overlay" id="drawerOverlay">
+        <div class="drawer-panel">
+            <div class="drawer-header"><span class="drawer-title" id="drawerTitle">选择语言</span><button class="drawer-close" id="drawerClose">✕</button></div>
+            <div class="drawer-lang-list" id="drawerLangList"></div>
         </div>
     </div>
 
-    <!-- Toast 提示 -->
-    <div class="toast-overlay" id="toastOverlay">
-        <div class="toast-box">请联系您的组织的管理员。</div>
+    <div class="modal-overlay" id="detailModal">
+        <div class="modal-box">
+            <div class="modal-header"><span class="modal-title" id="detailTitle">设备与服务器详情</span><button class="modal-close" id="modalClose">✕</button></div>
+            <div class="info-block"><h3 id="deviceInfoHeading">设备信息</h3><div id="deviceInfoContent"></div></div>
+            <div class="info-block"><h3 id="serverStatusHeading">服务器状态</h3><div id="serverStatusContent"></div></div>
+        </div>
     </div>
+
+    <div class="toast-overlay" id="toastOverlay"><div class="toast-box" id="toastBox">请联系您的组织的管理员。</div></div>
 
     <script>
         (function() {
-            const contactLink = document.getElementById('contactLink');
-            const toastOverlay = document.getElementById('toastOverlay');
-            let toastTimer = null;
-            let isToastVisible = false;
+            const i18n = {
+                'zh-CN': { langLabel:'简体中文', langBtn:'语言', banner:'本网页由系统自动更新于 <strong>2026/07/24 07:52</strong>，请注意公告内容的有效期限。', title:'服务器维护公告', target:'维护对象', time:'维护时间', timeVal:'2026年7月24日 07:50 &nbsp;～&nbsp; 7月24日 18:50 （UTC+8，预计）', impact:'维护影响', impactVal:'维护期间您无法使用该线路下的任何联网服务，建议更换到其他线路。', content:'维护内容', comp:'维护补偿', dash:'——', contact:'若对该公告内容有疑问，请<span class="contact-link" id="contactLink">单击此处</span>联系客服。', toast:'请联系您的组织的管理员。', footer:'本网页由DeepSeek自动生成。', drawerTitle:'选择语言', detailBtn:'详情', detailTitle:'设备与服务器详情', devHead:'设备信息', srvHead:'服务器状态', ua:'用户代理', plat:'平台', lang:'语言', scr:'屏幕分辨率', vp:'视口尺寸', net:'网络类型', online:'在线状态', onlineYes:'在线', onlineNo:'离线', timeNow:'当前时间', load:'负载', loadHigh:'高' },
+                'zh-TW': { langLabel:'繁體中文', langBtn:'語言', banner:'本網頁由系統自動更新於 <strong>2026/07/24 07:52</strong>，請注意公告內容的有效期限。', title:'伺服器維護公告', target:'維護對象', time:'維護時間', timeVal:'2026年7月24日 07:50 &nbsp;～&nbsp; 7月24日 18:50 （UTC+8，預計）', impact:'維護影響', impactVal:'維護期間您無法使用該線路下的任何聯網服務，建議更換到其他線路。', content:'維護內容', comp:'維護補償', dash:'——', contact:'若對該公告內容有疑問，請<span class="contact-link" id="contactLink">按一下此處</span>聯絡客服。', toast:'請聯繫您的組織的管理員。', footer:'本網頁由DeepSeek自動生成。', drawerTitle:'選擇語言', detailBtn:'詳情', detailTitle:'設備與伺服器詳情', devHead:'設備資訊', srvHead:'伺服器狀態', ua:'使用者代理', plat:'平台', lang:'語言', scr:'螢幕解析度', vp:'視埠尺寸', net:'網路類型', online:'連線狀態', onlineYes:'在線', onlineNo:'離線', timeNow:'目前時間', load:'負載', loadHigh:'高' },
+                'en-US': { langLabel:'English (US)', langBtn:'Language', banner:'This page was automatically updated on <strong>2026/07/24 07:52</strong> (US).', title:'Server Maintenance Notice', target:'Maintenance Target', time:'Maintenance Time', timeVal:'July 24, 2026 07:50 – July 24, 18:50 (UTC+8)', impact:'Impact', impactVal:'Services on this line will be unavailable during maintenance.', content:'Details', comp:'Compensation', dash:'—', contact:'Questions? <span class="contact-link" id="contactLink">Click here</span> for support.', toast:'Contact your organization admin.', footer:'Generated by DeepSeek.', drawerTitle:'Language', detailBtn:'Details', detailTitle:'Device & Server', devHead:'Device', srvHead:'Server', ua:'User Agent', plat:'Platform', lang:'Language', scr:'Screen Resolution', vp:'Viewport', net:'Network', online:'Online', onlineYes:'Online', onlineNo:'Offline', timeNow:'Time', load:'Load', loadHigh:'High' },
+                'en-GB': { langLabel:'English (UK)', langBtn:'Language', banner:'This page was automatically updated on <strong>2026/07/24 07:52</strong> (UK).', title:'Server Maintenance Notice', target:'Maintenance Target', time:'Maintenance Time', timeVal:'24 July 2026 07:50 – 24 July 18:50 (UTC+8)', impact:'Impact', impactVal:'Services on this line will be unavailable during maintenance.', content:'Details', comp:'Compensation', dash:'—', contact:'Questions? <span class="contact-link" id="contactLink">Click here</span> for support.', toast:'Contact your organisation administrator.', footer:'Generated by DeepSeek.', drawerTitle:'Language', detailBtn:'Details', detailTitle:'Device & Server', devHead:'Device', srvHead:'Server', ua:'User Agent', plat:'Platform', lang:'Language', scr:'Screen Resolution', vp:'Viewport', net:'Network', online:'Online', onlineYes:'Online', onlineNo:'Offline', timeNow:'Time', load:'Load', loadHigh:'High' },
+                'ja': { langLabel:'日本語', langBtn:'言語', banner:'このページは <strong>2026/07/24 07:52</strong> に自動更新されました。', title:'サーバーメンテナンスのお知らせ', target:'メンテナンス対象', time:'メンテナンス時間', timeVal:'2026年7月24日 07:50 ～ 7月24日 18:50（UTC+8）', impact:'影響', impactVal:'メンテナンス期間中は、この回線でのネットワークサービスをご利用いただけません。', content:'メンテナンス内容', comp:'補償', dash:'—', contact:'お問い合わせは<span class="contact-link" id="contactLink">こちら</span>', toast:'組織の管理者にお問い合わせください。', footer:'DeepSeekにより自動生成。', drawerTitle:'言語', detailBtn:'詳細', detailTitle:'デバイスとサーバー', devHead:'デバイス', srvHead:'サーバー', ua:'ユーザーエージェント', plat:'プラットフォーム', lang:'言語', scr:'画面解像度', vp:'ビューポート', net:'ネットワーク', online:'オンライン', onlineYes:'オンライン', onlineNo:'オフライン', timeNow:'現在時刻', load:'負荷', loadHigh:'高' },
+                'ko': { langLabel:'한국어', langBtn:'언어', banner:'본 페이지는 <strong>2026/07/24 07:52</strong>에 자동 업데이트되었습니다.', title:'서버 점검 공지', target:'점검 대상', time:'점검 시간', timeVal:'2026년 7월 24일 07:50 ~ 7월 24일 18:50 (UTC+8)', impact:'영향', impactVal:'점검 기간 동안 해당 회선의 네트워크 서비스를 이용할 수 없습니다.', content:'점검 내용', comp:'보상', dash:'—', contact:'문의사항은 <span class="contact-link" id="contactLink">여기를 클릭</span>', toast:'관리자에게 문의하십시오.', footer:'DeepSeek에서 생성됨.', drawerTitle:'언어', detailBtn:'상세', detailTitle:'장치 및 서버', devHead:'장치', srvHead:'서버', ua:'사용자 에이전트', plat:'플랫폼', lang:'언어', scr:'화면 해상도', vp:'뷰포트', net:'네트워크', online:'온라인', onlineYes:'온라인', onlineNo:'오프라인', timeNow:'현재 시간', load:'부하', loadHigh:'높음' },
+                'ar': { langLabel:'العربية', langBtn:'اللغة', banner:'تم تحديث الصفحة تلقائياً في <strong>2026/07/24 07:52</strong>.', title:'إشعار صيانة الخادم', target:'هدف الصيانة', time:'وقت الصيانة', timeVal:'24 يوليو 2026 07:50 – 24 يوليو 18:50', impact:'التأثير', impactVal:'الخدمات غير متاحة أثناء الصيانة.', content:'التفاصيل', comp:'التعويض', dash:'—', contact:'للأسئلة <span class="contact-link" id="contactLink">انقر هنا</span>', toast:'اتصل بالمسؤول.', footer:'تم بواسطة DeepSeek.', drawerTitle:'اللغة', detailBtn:'تفاصيل', detailTitle:'الجهاز والخادم', devHead:'الجهاز', srvHead:'الخادم', ua:'الوكيل', plat:'المنصة', lang:'اللغة', scr:'الدقة', vp:'إطار العرض', net:'الشبكة', online:'متصل', onlineYes:'نعم', onlineNo:'لا', timeNow:'الوقت', load:'الحمل', loadHigh:'عالي' },
+                'fr': { langLabel:'Français', langBtn:'Langue', banner:'Page mise à jour le <strong>2026/07/24 07:52</strong>.', title:'Avis de maintenance', target:'Cible', time:'Horaire', timeVal:'24 juil. 2026 07:50 – 24 juil. 18:50', impact:'Impact', impactVal:'Services indisponibles pendant la maintenance.', content:'Détails', comp:'Compensation', dash:'—', contact:'Questions ? <span class="contact-link" id="contactLink">Cliquez ici</span>', toast:'Contactez l\'administrateur.', footer:'Généré par DeepSeek.', drawerTitle:'Langue', detailBtn:'Détails', detailTitle:'Appareil et serveur', devHead:'Appareil', srvHead:'Serveur', ua:'Agent', plat:'Plateforme', lang:'Langue', scr:'Résolution', vp:'Viewport', net:'Réseau', online:'En ligne', onlineYes:'Oui', onlineNo:'Non', timeNow:'Heure', load:'Charge', loadHigh:'Élevée' },
+                'de': { langLabel:'Deutsch', langBtn:'Sprache', banner:'Seite aktualisiert am <strong>2026/07/24 07:52</strong>.', title:'Wartungsmitteilung', target:'Ziel', time:'Zeit', timeVal:'24. Juli 2026 07:50 – 24. Juli 18:50', impact:'Auswirkung', impactVal:'Dienste während der Wartung nicht verfügbar.', content:'Details', comp:'Entschädigung', dash:'—', contact:'Fragen? <span class="contact-link" id="contactLink">Hier klicken</span>', toast:'Administrator kontaktieren.', footer:'Generiert von DeepSeek.', drawerTitle:'Sprache', detailBtn:'Details', detailTitle:'Gerät & Server', devHead:'Gerät', srvHead:'Server', ua:'Agent', plat:'Plattform', lang:'Sprache', scr:'Auflösung', vp:'Viewport', net:'Netzwerk', online:'Online', onlineYes:'Ja', onlineNo:'Nein', timeNow:'Zeit', load:'Last', loadHigh:'Hoch' },
+                'es': { langLabel:'Español', langBtn:'Idioma', banner:'Página actualizada el <strong>2026/07/24 07:52</strong>.', title:'Aviso de mantenimiento', target:'Objetivo', time:'Horario', timeVal:'24 jul 2026 07:50 – 24 jul 18:50', impact:'Impacto', impactVal:'Servicios no disponibles durante el mantenimiento.', content:'Detalles', comp:'Compensación', dash:'—', contact:'¿Preguntas? <span class="contact-link" id="contactLink">Haga clic aquí</span>', toast:'Contacte al administrador.', footer:'Generado por DeepSeek.', drawerTitle:'Idioma', detailBtn:'Detalles', detailTitle:'Dispositivo y servidor', devHead:'Dispositivo', srvHead:'Servidor', ua:'Agente', plat:'Plataforma', lang:'Idioma', scr:'Resolución', vp:'Viewport', net:'Red', online:'En línea', onlineYes:'Sí', onlineNo:'No', timeNow:'Hora', load:'Carga', loadHigh:'Alta' },
+                'ru': { langLabel:'Русский', langBtn:'Язык', banner:'Страница обновлена <strong>2026/07/24 07:52</strong>.', title:'Уведомление об обслуживании', target:'Объект', time:'Время', timeVal:'24 июля 2026 07:50 – 24 июля 18:50', impact:'Влияние', impactVal:'Сервисы недоступны во время обслуживания.', content:'Детали', comp:'Компенсация', dash:'—', contact:'Вопросы? <span class="contact-link" id="contactLink">Нажмите здесь</span>', toast:'Свяжитесь с администратором.', footer:'Создано DeepSeek.', drawerTitle:'Язык', detailBtn:'Подробно', detailTitle:'Устройство и сервер', devHead:'Устройство', srvHead:'Сервер', ua:'Агент', plat:'Платформа', lang:'Язык', scr:'Разрешение', vp:'Viewport', net:'Сеть', online:'Онлайн', onlineYes:'Да', onlineNo:'Нет', timeNow:'Время', load:'Нагрузка', loadHigh:'Высокая' },
+                'hi': { langLabel:'हिन्दी', langBtn:'भाषा', banner:'यह पृष्ठ <strong>2026/07/24 07:52</strong> पर अपडेट हुआ।', title:'सर्वर रखरखाव सूचना', target:'लक्ष्य', time:'समय', timeVal:'24 जुलाई 2026 07:50 – 24 जुलाई 18:50', impact:'प्रभाव', impactVal:'रखरखाव के दौरान सेवाएं अनुपलब्ध रहेंगी।', content:'विवरण', comp:'मुआवजा', dash:'—', contact:'प्रश्नों के लिए <span class="contact-link" id="contactLink">यहां क्लिक करें</span>', toast:'व्यवस्थापक से संपर्क करें।', footer:'DeepSeek द्वारा उत्पन्न', drawerTitle:'भाषा', detailBtn:'विवरण', detailTitle:'डिवाइस और सर्वर', devHead:'डिवाइस', srvHead:'सर्वर', ua:'एजेंट', plat:'प्लेटफॉर्म', lang:'भाषा', scr:'स्क्रीन', vp:'व्यूपोर्ट', net:'नेटवर्क', online:'ऑनलाइन', onlineYes:'हाँ', onlineNo:'नहीं', timeNow:'समय', load:'लोड', loadHigh:'उच्च' },
+                'pt': { langLabel:'Português', langBtn:'Idioma', banner:'Página atualizada em <strong>2026/07/24 07:52</strong>.', title:'Aviso de Manutenção', target:'Alvo', time:'Horário', timeVal:'24 jul. 2026 07:50 – 24 jul. 18:50', impact:'Impacto', impactVal:'Serviços indisponíveis durante a manutenção.', content:'Detalhes', comp:'Compensação', dash:'—', contact:'Dúvidas? <span class="contact-link" id="contactLink">Clique aqui</span>', toast:'Contate o administrador.', footer:'Gerado pelo DeepSeek.', drawerTitle:'Idioma', detailBtn:'Detalhes', detailTitle:'Dispositivo e Servidor', devHead:'Dispositivo', srvHead:'Servidor', ua:'Agente', plat:'Plataforma', lang:'Idioma', scr:'Resolução', vp:'Viewport', net:'Rede', online:'Online', onlineYes:'Sim', onlineNo:'Não', timeNow:'Hora', load:'Carga', loadHigh:'Alta' },
+                'id': { langLabel:'Bahasa Indonesia', langBtn:'Bahasa', banner:'Halaman diperbarui <strong>2026/07/24 07:52</strong>.', title:'Pemberitahuan Pemeliharaan', target:'Target', time:'Waktu', timeVal:'24 Juli 2026 07:50 – 24 Juli 18:50', impact:'Dampak', impactVal:'Layanan tidak tersedia selama pemeliharaan.', content:'Detail', comp:'Kompensasi', dash:'—', contact:'Pertanyaan? <span class="contact-link" id="contactLink">Klik di sini</span>', toast:'Hubungi administrator.', footer:'Dihasilkan oleh DeepSeek.', drawerTitle:'Bahasa', detailBtn:'Detail', detailTitle:'Perangkat & Server', devHead:'Perangkat', srvHead:'Server', ua:'Agen', plat:'Platform', lang:'Bahasa', scr:'Resolusi', vp:'Viewport', net:'Jaringan', online:'Online', onlineYes:'Ya', onlineNo:'Tidak', timeNow:'Waktu', load:'Beban', loadHigh:'Tinggi' },
+                'ur': { langLabel:'اردو', langBtn:'زبان', banner:'صفحہ اپ ڈیٹ ہوا <strong>2026/07/24 07:52</strong>', title:'سرور کی دیکھ بھال', target:'ہدف', time:'وقت', timeVal:'24 جولائی 2026 07:50 – 24 جولائی 18:50', impact:'اثر', impactVal:'خدمات دستیاب نہیں', content:'تفصیلات', comp:'معاوضہ', dash:'—', contact:'سوالات؟ <span class="contact-link" id="contactLink">یہاں کلک کریں</span>', toast:'ایڈمن سے رابطہ کریں', footer:'DeepSeek کا تیار کردہ', drawerTitle:'زبان', detailBtn:'تفصیل', detailTitle:'آلہ اور سرور', devHead:'آلہ', srvHead:'سرور', ua:'ایجنٹ', plat:'پلیٹ فارم', lang:'زبان', scr:'اسکرین', vp:'ویو پورٹ', net:'نیٹ ورک', online:'آن لائن', onlineYes:'ہاں', onlineNo:'نہیں', timeNow:'وقت', load:'لوڈ', loadHigh:'زیادہ' },
+                'th': { langLabel:'ไทย', langBtn:'ภาษา', banner:'อัปเดตหน้าเมื่อ <strong>2026/07/24 07:52</strong>', title:'ประกาศการบำรุงรักษา', target:'เป้าหมาย', time:'เวลา', timeVal:'24 ก.ค. 2026 07:50 – 24 ก.ค. 18:50', impact:'ผลกระทบ', impactVal:'บริการไม่พร้อมใช้งานระหว่างการบำรุงรักษา', content:'รายละเอียด', comp:'ค่าชดเชย', dash:'—', contact:'มีคำถาม? <span class="contact-link" id="contactLink">คลิกที่นี่</span>', toast:'ติดต่อผู้ดูแลระบบ', footer:'สร้างโดย DeepSeek', drawerTitle:'ภาษา', detailBtn:'รายละเอียด', detailTitle:'อุปกรณ์และเซิร์ฟเวอร์', devHead:'อุปกรณ์', srvHead:'เซิร์ฟเวอร์', ua:'เอเย่นต์', plat:'แพลตฟอร์ม', lang:'ภาษา', scr:'ความละเอียด', vp:'วิวพอร์ต', net:'เครือข่าย', online:'ออนไลน์', onlineYes:'ใช่', onlineNo:'ไม่', timeNow:'เวลา', load:'โหลด', loadHigh:'สูง' },
+                'vi': { langLabel:'Tiếng Việt', langBtn:'Ngôn ngữ', banner:'Trang cập nhật <strong>2026/07/24 07:52</strong>', title:'Thông báo bảo trì', target:'Mục tiêu', time:'Thời gian', timeVal:'24/07/2026 07:50 – 24/07/2026 18:50', impact:'Ảnh hưởng', impactVal:'Dịch vụ không khả dụng trong thời gian bảo trì.', content:'Chi tiết', comp:'Bồi thường', dash:'—', contact:'Thắc mắc? <span class="contact-link" id="contactLink">Nhấp vào đây</span>', toast:'Liên hệ quản trị viên.', footer:'Được tạo bởi DeepSeek.', drawerTitle:'Ngôn ngữ', detailBtn:'Chi tiết', detailTitle:'Thiết bị & Máy chủ', devHead:'Thiết bị', srvHead:'Máy chủ', ua:'Tác nhân', plat:'Nền tảng', lang:'Ngôn ngữ', scr:'Độ phân giải', vp:'Viewport', net:'Mạng', online:'Trực tuyến', onlineYes:'Có', onlineNo:'Không', timeNow:'Thời gian', load:'Tải', loadHigh:'Cao' },
+                'tr': { langLabel:'Türkçe', langBtn:'Dil', banner:'Sayfa güncellendi <strong>2026/07/24 07:52</strong>', title:'Sunucu Bakımı', target:'Hedef', time:'Zaman', timeVal:'24 Tem 2026 07:50 – 24 Tem 18:50', impact:'Etki', impactVal:'Bakım sırasında hizmetler kullanılamaz.', content:'Detaylar', comp:'Tazminat', dash:'—', contact:'Sorular? <span class="contact-link" id="contactLink">Buraya tıklayın</span>', toast:'Yöneticiyle iletişime geçin.', footer:'DeepSeek tarafından oluşturuldu', drawerTitle:'Dil', detailBtn:'Detay', detailTitle:'Cihaz ve Sunucu', devHead:'Cihaz', srvHead:'Sunucu', ua:'Ajan', plat:'Platform', lang:'Dil', scr:'Çözünürlük', vp:'Viewport', net:'Ağ', online:'Çevrimiçi', onlineYes:'Evet', onlineNo:'Hayır', timeNow:'Saat', load:'Yük', loadHigh:'Yüksek' },
+                'fa': { langLabel:'فارسی', langBtn:'زبان', banner:'صفحه به‌روز شد <strong>2026/07/24 07:52</strong>', title:'اطلاعیه نگهداری', target:'هدف', time:'زمان', timeVal:'24 ژوئیه 2026 07:50 – 24 ژوئیه 18:50', impact:'تاثیر', impactVal:'سرویس‌ها در دسترس نیستند.', content:'جزئیات', comp:'جبران', dash:'—', contact:'سوالی دارید؟ <span class="contact-link" id="contactLink">اینجا کلیک کنید</span>', toast:'با مدیر تماس بگیرید.', footer:'تولید شده توسط DeepSeek', drawerTitle:'زبان', detailBtn:'جزئیات', detailTitle:'دستگاه و سرور', devHead:'دستگاه', srvHead:'سرور', ua:'عامل', plat:'پلتفرم', lang:'زبان', scr:'رزولوشن', vp:'Viewport', net:'شبکه', online:'آنلاین', onlineYes:'بله', onlineNo:'خیر', timeNow:'زمان', load:'بار', loadHigh:'بالا' },
+                'yue': { langLabel:'粵語', langBtn:'語言', banner:'此頁於 <strong>2026/07/24 07:52</strong> 自動更新，請留意公告有效期。', title:'伺服器維護公告', target:'維護對象', time:'維護時間', timeVal:'2026年7月24日 07:50 ～ 7月24日 18:50 （UTC+8）', impact:'影響', impactVal:'維護期間呢條線嘅聯網服務都用唔到，建議換去第二條線。', content:'維護內容', comp:'補償', dash:'——', contact:'有疑問請<span class="contact-link" id="contactLink">撳呢度</span>聯絡客服。', toast:'請聯絡你組織嘅管理員。', footer:'由DeepSeek自動生成。', drawerTitle:'語言', detailBtn:'詳情', detailTitle:'裝置同伺服器', devHead:'裝置', srvHead:'伺服器', ua:'用戶代理', plat:'平台', lang:'語言', scr:'螢幕解像度', vp:'視埠', net:'網絡', online:'在線', onlineYes:'在線', onlineNo:'離線', timeNow:'而家時間', load:'負載', loadHigh:'高' },
+                'wuu': { langLabel:'吳語', langBtn:'語言', banner:'搿隻頁面勒 <strong>2026/07/24 07:52</strong> 自動更新，請注意公告有效期。', title:'服務器維護公告', target:'維護對象', time:'維護辰光', timeVal:'2026年7月24號 07:50 ～ 7月24號 18:50 （UTC+8）', impact:'影響', impactVal:'維護期間儂弗好用搿條線路個任何聯網服務，建議換到別個線路。', content:'維護內容', comp:'補償', dash:'——', contact:'有疑問請<span class="contact-link" id="contactLink">點擊此地</span>聯繫客服。', toast:'請聯繫儂組織個管理員。', footer:'由DeepSeek自動生成。', drawerTitle:'語言', detailBtn:'詳情', detailTitle:'裝置搭伺服器', devHead:'裝置', srvHead:'伺服器', ua:'用戶代理', plat:'平台', lang:'語言', scr:'螢幕分辨率', vp:'視口', net:'網絡', online:'在線', onlineYes:'在線', onlineNo:'離線', timeNow:'現在辰光', load:'負載', loadHigh:'高' },
+                'jv': { langLabel:'Basa Jawa', langBtn:'Basa', banner:'Kaca iki dianyari <strong>2026/07/24 07:52</strong>.', title:'Wara-wara Pangopènan', target:'Sasaran', time:'Wektu', timeVal:'24 Juli 2026 07:50 – 24 Juli 18:50', impact:'Dampak', impactVal:'Layanan ora kasedhiya sajrone pangopènan.', content:'Rincian', comp:'Kompensasi', dash:'—', contact:'Pitakonan? <span class="contact-link" id="contactLink">Klik ing kene</span>', toast:'Hubungi administrator.', footer:'Digawé déning DeepSeek.', drawerTitle:'Basa', detailBtn:'Rinci', detailTitle:'Piranti & Server', devHead:'Piranti', srvHead:'Server', ua:'Agen', plat:'Platform', lang:'Basa', scr:'Resolusi', vp:'Viewport', net:'Jaringan', online:'Online', onlineYes:'Ya', onlineNo:'Ora', timeNow:'Wektu', load:'Beban', loadHigh:'Dhuwur' },
+                'lzh': { langLabel:'文言', langBtn:'語言', banner:'此頁於 <strong>2026/07/24 07:52</strong> 由系統自動更新，請留意公告之有效期限。', title:'伺服器修治告示', target:'修治對象', time:'修治之期', timeVal:'二零二六年七月廿四日 07:50 ～ 七月廿四日 18:50 （UTC+8）', impact:'影響', impactVal:'修治期間，此線路之聯網服務皆不可用，建議改用他線。', content:'修治細目', comp:'補償', dash:'——', contact:'若對本告示有疑，請<span class="contact-link" id="contactLink">點此</span>聯繫客服。', toast:'請聯繫貴組織之管理員。', footer:'DeepSeek 自動生成。', drawerTitle:'語言', detailBtn:'詳情', detailTitle:'器械與伺服器', devHead:'器械', srvHead:'伺服器', ua:'用戶代理', plat:'平台', lang:'語言', scr:'螢幕', vp:'視口', net:'網絡', online:'在線', onlineYes:'在線', onlineNo:'離線', timeNow:'當前時刻', load:'負載', loadHigh:'高' }
+            };
+
+            const langOrder = ['zh-CN','zh-TW','en-US','en-GB','ja','ko','ar','fr','de','es','ru','hi','pt','id','ur','th','vi','tr','fa','yue','wuu','jv','lzh'];
+            const rtlLangs = ['ar','fa','ur','ps','arz'];
+
+            function getLangData(lang) {
+                return i18n[lang] || i18n['en-US'] || i18n['zh-CN'];
+            }
+
+            let currentLang = 'zh-CN';
+            const $ = (id) => document.getElementById(id);
+            const bannerText = $('bannerText'), mainTitle = $('mainTitle'), labelTarget = $('labelTarget');
+            const labelTime = $('labelTime'), valueTime = $('valueTime'), labelImpact = $('labelImpact');
+            const valueImpact = $('valueImpact'), labelContent = $('labelContent'), valueContent = $('valueContent');
+            const labelComp = $('labelCompensation'), valueComp = $('valueCompensation');
+            const contactSection = $('contactSection'), toastBox = $('toastBox'), toastOverlay = $('toastOverlay');
+            const langFab = $('langFab'), detailFab = $('detailFab'), drawerOverlay = $('drawerOverlay');
+            const drawerClose = $('drawerClose'), drawerList = $('drawerLangList'), drawerTitle = $('drawerTitle');
+            const footerNote = $('footerNote'), detailModal = $('detailModal'), modalClose = $('modalClose');
+            const detailTitle = $('detailTitle'), devHead = $('deviceInfoHeading'), srvHead = $('serverStatusHeading');
+            const devContent = $('deviceInfoContent'), srvContent = $('serverStatusContent');
+
+            function buildDrawer() {
+                drawerList.innerHTML = '';
+                langOrder.forEach(lang => {
+                    const d = getLangData(lang);
+                    const btn = document.createElement('button');
+                    btn.className = 'drawer-lang-btn';
+                    btn.setAttribute('data-lang', lang);
+                    btn.textContent = d.langLabel || lang;
+                    btn.onclick = () => { switchLanguage(lang); closeDrawer(); };
+                    drawerList.appendChild(btn);
+                });
+            }
+
+            function updateUI(lang) {
+                const d = getLangData(lang);
+                bannerText.innerHTML = d.banner;
+                mainTitle.textContent = d.title;
+                document.title = d.title;
+                labelTarget.textContent = d.target;
+                labelTime.textContent = d.time;
+                valueTime.innerHTML = d.timeVal;
+                labelImpact.textContent = d.impact;
+                valueImpact.textContent = d.impactVal;
+                labelContent.textContent = d.content;
+                valueContent.textContent = d.dash;
+                labelComp.textContent = d.comp;
+                valueComp.textContent = d.dash;
+                contactSection.innerHTML = d.contact;
+                toastBox.textContent = d.toast;
+                footerNote.textContent = d.footer;
+                drawerTitle.textContent = d.drawerTitle;
+                langFab.textContent = d.langBtn || d.drawerTitle;  // 关键修复：动态更新语言按钮文字
+                detailFab.textContent = d.detailBtn;
+                detailTitle.textContent = d.detailTitle;
+                devHead.textContent = d.devHead;
+                srvHead.textContent = d.srvHead;
+                document.documentElement.lang = lang;
+                document.documentElement.dir = rtlLangs.includes(lang) ? 'rtl' : 'ltr';
+                updateDrawerActive(lang);
+                rebindContact();
+                if (detailModal.classList.contains('active')) renderDetailModal(lang);
+            }
+
+            function updateDrawerActive(lang) {
+                drawerList.querySelectorAll('.drawer-lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+            }
+
+            function switchLanguage(lang) {
+                if (lang === currentLang || !langOrder.includes(lang)) return;
+                currentLang = lang;
+                updateUI(lang);
+                try { localStorage.setItem('preferred-language', lang); } catch(e) {}
+            }
+
+            function openDrawer() { drawerOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+            function closeDrawer() { drawerOverlay.classList.remove('active'); document.body.style.overflow = ''; }
+
+            function rebindContact() {
+                const link = document.getElementById('contactLink');
+                if (link) link.onclick = (e) => { e.preventDefault(); showToast(); };
+            }
 
             function showToast() {
-                if (toastTimer) {
-                    clearTimeout(toastTimer);
-                    toastTimer = null;
-                }
-                if (isToastVisible) {
-                    toastOverlay.classList.add('closing');
+                if (toastOverlay.classList.contains('active')) {
                     toastOverlay.classList.remove('active');
                     setTimeout(() => {
-                        toastOverlay.classList.remove('closing');
-                        displayToast();
-                    }, 220);
+                        toastBox.textContent = getLangData(currentLang).toast;
+                        toastOverlay.classList.add('active');
+                    }, 200);
                 } else {
-                    displayToast();
+                    toastBox.textContent = getLangData(currentLang).toast;
+                    toastOverlay.classList.add('active');
                 }
+                clearTimeout(toastOverlay._timeout);
+                toastOverlay._timeout = setTimeout(() => toastOverlay.classList.remove('active'), 3000);
             }
 
-            function displayToast() {
-                toastOverlay.classList.add('active');
-                toastOverlay.classList.remove('closing');
-                isToastVisible = true;
-                toastTimer = setTimeout(() => {
-                    hideToast();
-                }, 3000);
+            function renderDetailModal(lang) {
+                const d = getLangData(lang);
+                const online = navigator.onLine;
+                const now = new Date().toLocaleTimeString();
+                devContent.innerHTML = `
+                    <div class="info-row"><span>${d.ua}</span><span>${navigator.userAgent || '—'}</span></div>
+                    <div class="info-row"><span>${d.plat}</span><span>${navigator.platform || '—'}</span></div>
+                    <div class="info-row"><span>${d.lang}</span><span>${navigator.language || '—'}</span></div>
+                    <div class="info-row"><span>${d.scr}</span><span>${screen.width}×${screen.height}</span></div>
+                    <div class="info-row"><span>${d.vp}</span><span>${window.innerWidth}×${window.innerHeight}</span></div>
+                    <div class="info-row"><span>${d.net}</span><span>${navigator.connection?.effectiveType || 'unknown'}</span></div>
+                    <div class="info-row"><span>${d.online}</span><span>${online ? d.onlineYes : d.onlineNo}</span></div>
+                    <div class="info-row"><span>${d.timeNow}</span><span id="liveTime">${now}</span></div>
+                `;
+                // 仅保留负载，移除延迟显示
+                srvContent.innerHTML = `
+                    <div class="info-row"><span>${d.load}</span><span class="load-high">${d.loadHigh}</span></div>
+                `;
             }
 
-            function hideToast() {
-                toastOverlay.classList.add('closing');
-                toastOverlay.classList.remove('active');
-                isToastVisible = false;
-                if (toastTimer) {
-                    clearTimeout(toastTimer);
-                    toastTimer = null;
-                }
-                setTimeout(() => {
-                    toastOverlay.classList.remove('closing');
-                }, 250);
+            function updateLiveTime() {
+                if (!detailModal.classList.contains('active')) return;
+                const liveTime = document.getElementById('liveTime');
+                if (liveTime) liveTime.textContent = new Date().toLocaleTimeString();
             }
 
-            contactLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                showToast();
-            });
+            let liveTimer = null;
+            function openDetailModal() {
+                detailModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                renderDetailModal(currentLang);
+                if (liveTimer) clearInterval(liveTimer);
+                liveTimer = setInterval(updateLiveTime, 1000);
+            }
 
-            toastOverlay.addEventListener('click', function(e) {
-                if (e.target === toastOverlay && isToastVisible) {
-                    hideToast();
+            function closeDetailModal() {
+                detailModal.classList.remove('active');
+                document.body.style.overflow = '';
+                if (liveTimer) { clearInterval(liveTimer); liveTimer = null; }
+            }
+
+            langFab.onclick = () => drawerOverlay.classList.contains('active') ? closeDrawer() : openDrawer();
+            drawerClose.onclick = closeDrawer;
+            drawerOverlay.onclick = (e) => { if (e.target === drawerOverlay) closeDrawer(); };
+            detailFab.onclick = openDetailModal;
+            modalClose.onclick = closeDetailModal;
+            detailModal.onclick = (e) => { if (e.target === detailModal) closeDetailModal(); };
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (drawerOverlay.classList.contains('active')) closeDrawer();
+                    else if (detailModal.classList.contains('active')) closeDetailModal();
                 }
             });
 
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && isToastVisible) {
-                    hideToast();
-                }
-            });
-
-            toastOverlay.addEventListener('touchstart', function(e) {
-                if (e.target === toastOverlay && isToastVisible) {
-                    e.preventDefault();
-                    hideToast();
-                }
-            }, { passive: false });
+            function init() {
+                buildDrawer();
+                const saved = (() => { try { return localStorage.getItem('preferred-language'); } catch(e) { return null; } })();
+                const browser = navigator.language || '';
+                let def = 'zh-CN';
+                if (saved && langOrder.includes(saved)) def = saved;
+                else if (browser === 'zh-TW' || browser.startsWith('zh-Hant')) def = 'zh-TW';
+                else if (browser.startsWith('zh')) def = 'zh-CN';
+                else if (langOrder.includes(browser)) def = browser;
+                else { const base = browser.split('-')[0]; if (langOrder.includes(base)) def = base; }
+                currentLang = def;
+                updateUI(def);
+                rebindContact();
+            }
+            init();
         })();
     </script>
 </body>
