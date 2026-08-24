@@ -16,21 +16,28 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
-            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', 'Noto Sans SC', sans-serif;
             background: #f0f0f0;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 30px 16px 40px;
+            padding: 42px 16px 70px;
             font-size: 16px;
             color: #1a1a1a;
-            line-height: 1.55;
+            line-height: 1.5;
             letter-spacing: 0.01em;
             position: relative;
             font-weight: 400;
+            overflow-x: hidden;
         }
 
         .en-num {
@@ -39,33 +46,84 @@
             letter-spacing: 0.02em;
         }
 
-        .floating-update {
+        .particle {
             position: fixed;
-            top: 14px;
-            right: 18px;
-            background: transparent;
-            border: none;
-            padding: 0;
-            font-size: 13px;
-            color: #555555;
-            z-index: 999;
-            letter-spacing: 0.02em;
+            border-radius: 50%;
+            background: rgba(120, 160, 200, 0.25);
             pointer-events: none;
-            user-select: none;
+            z-index: 0;
+            animation: float-particle 12s infinite ease-in-out;
+        }
+        .particle:nth-child(1) { width: 8px; height: 8px; top: 15%; left: 8%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 10px; height: 10px; top: 55%; left: 20%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 6px; height: 6px; top: 80%; left: 75%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 12px; height: 12px; top: 30%; left: 90%; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 7px; height: 7px; top: 70%; left: 45%; animation-delay: 3s; }
+        .particle:nth-child(6) { width: 9px; height: 9px; top: 10%; left: 60%; animation-delay: 5s; }
+
+        @keyframes float-particle {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-20px) translateX(10px); }
+            50% { transform: translateY(-40px) translateX(-5px); }
+            75% { transform: translateY(-15px) translateX(-15px); }
         }
 
+        /* 右上角水印 */
+        .watermark {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1001;
+            pointer-events: none;
+            user-select: none;
+            font-family: 'neu_bz_s92', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            color: rgba(30, 50, 70, 0.65);
+            text-align: right;
+            white-space: nowrap;
+            letter-spacing: 0.05em;
+            line-height: 1.4;
+            background: transparent;
+        }
+        .watermark span {
+            display: block;
+        }
+
+        /* 顶部悬浮警示文字 */
+        .warning-top-center {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            font-size: 15px;
+            color: #e57373;
+            letter-spacing: 0.08em;
+            pointer-events: none;
+            user-select: none;
+            text-align: center;
+            padding: 4px 10px;
+            font-weight: 400;
+            text-shadow: 0 0 8px rgba(229, 115, 115, 0.5);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(2px);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        /* 左下角悬浮 */
         .floating-left {
             position: fixed;
-            top: 14px;
-            left: 18px;
+            bottom: 16px;
+            left: 16px;
             background: #ffffff;
-            border: 1px solid #bbbbbb;
+            border: 1px solid #cccccc;
             border-radius: 3px;
-            padding: 4px 8px;
+            padding: 3px 8px;
             font-size: 13px;
             color: #333333;
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
-            z-index: 999;
+            z-index: 1000;
             letter-spacing: 0.02em;
             display: flex;
             align-items: center;
@@ -73,12 +131,10 @@
             pointer-events: auto;
             user-select: none;
         }
-
         .floating-left .wechat-text {
             white-space: nowrap;
             pointer-events: none;
         }
-
         .floating-left .question-btn {
             background: #f5f5f5;
             border: 1px solid #bbbbbb;
@@ -95,10 +151,27 @@
             transition: background 0.15s ease, border-color 0.15s ease;
             white-space: nowrap;
         }
-
         .floating-left .question-btn:hover {
             background: #e8e8e8;
             border-color: #999999;
+        }
+
+        /* 右下角悬浮 */
+        .floating-update {
+            position: fixed;
+            bottom: 16px;
+            right: 16px;
+            background: #ffffff;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            padding: 3px 10px;
+            font-size: 13px;
+            color: #555555;
+            z-index: 1000;
+            letter-spacing: 0.02em;
+            pointer-events: none;
+            user-select: none;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
         }
 
         .main-container {
@@ -107,48 +180,69 @@
             background: #ffffff;
             border: 1px solid #d0d0d0;
             border-radius: 4px;
-            padding: 28px 32px 24px;
-            margin-bottom: 10px;
+            padding: 20px 24px 20px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 2;
         }
 
         .time-section {
             text-align: center;
-            padding: 16px 10px 18px;
+            padding: 12px 10px 14px;
             border-bottom: 1px solid #cccccc;
-            margin-bottom: 18px;
+            margin-bottom: 14px;
         }
-
         .time-label {
             display: block;
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 400;
             color: #000000;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
             letter-spacing: 0.03em;
         }
-
         .time-value {
             display: block;
-            font-size: 42px;
+            font-size: 56px;
             font-weight: 400;
             color: #1a1a1a;
             letter-spacing: 0.04em;
+            margin-top: 2px;
+        }
+        .expired-message {
+            font-size: 14px;
+            color: #c0392b;
+            line-height: 1.6;
             margin-top: 4px;
+            text-align: center;
+            display: none;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 100%;
+            position: relative;
+        }
+        .expired-message .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-100%, 0); }
         }
 
         .button-row {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 16px;
             justify-content: center;
         }
-
         .btn {
             background: #f5f5f5;
             border: 1px solid #bbbbbb;
             border-radius: 3px;
-            padding: 10px 18px;
+            padding: 8px 16px;
             font-size: 15px;
             font-weight: 400;
             color: #1a1a1a;
@@ -161,149 +255,117 @@
             outline: none;
             white-space: nowrap;
         }
-
-        .btn:hover {
-            background: #e8e8e8;
-            border-color: #999999;
-        }
-
-        .btn:focus {
-            background: #e8e8e8;
-            border-color: #888888;
-        }
-
-        .btn.active {
-            background: #dddddd;
-            border-color: #888888;
-            font-weight: 400;
-        }
+        .btn:hover { background: #e8e8e8; border-color: #999999; }
+        .btn:focus { background: #e8e8e8; border-color: #888888; }
+        .btn.active { background: #dddddd; border-color: #888888; font-weight: 400; }
 
         .content-panel {
             background: #fafafa;
             border: 1px solid #d5d5d5;
             border-radius: 3px;
-            padding: 18px 24px 18px;
+            padding: 14px 18px 14px;
         }
-
         .placeholder-message {
             text-align: center;
-            font-size: 16px;
+            font-size: 15px;
             color: #666666;
-            padding: 10px 0;
+            padding: 8px 0;
             font-weight: 400;
             letter-spacing: 0.03em;
         }
-
-        .content-section {
-            display: block;
-        }
-
-        .content-section.hidden {
-            display: none;
-        }
+        .content-section { display: block; }
+        .content-section.hidden { display: none; }
 
         .content-section h1 {
             text-align: center;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 400;
             color: #000000;
             letter-spacing: 0.03em;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
             border-bottom: 1px solid #cccccc;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             line-height: 1.3;
         }
-
         .content-section h2 {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 400;
             color: #111111;
-            margin: 16px 0 4px 0;
+            margin: 14px 0 3px 0;
             line-height: 1.35;
         }
-
         .content-section h3 {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 400;
             color: #1a1a1a;
-            margin: 10px 0 3px 0;
+            margin: 8px 0 2px 0;
             line-height: 1.35;
         }
-
         .content-section p {
-            margin-bottom: 3px;
-            color: #1a1a1a;
-            line-height: 1.55;
-            font-weight: 400;
-        }
-
-        .content-section ul {
-            padding-left: 20px;
-            margin: 3px 0 6px 0;
-            list-style: none;
-        }
-
-        .content-section li {
-            position: relative;
-            padding-left: 16px;
             margin-bottom: 2px;
             color: #1a1a1a;
             line-height: 1.5;
             font-weight: 400;
         }
-
+        .content-section ul {
+            padding-left: 20px;
+            margin: 2px 0 5px 0;
+            list-style: none;
+        }
+        .content-section li {
+            position: relative;
+            padding-left: 14px;
+            margin-bottom: 1px;
+            color: #1a1a1a;
+            line-height: 1.45;
+            font-weight: 400;
+        }
         .content-section li::before {
             content: '';
             position: absolute;
             left: 0;
-            top: 0.55em;
+            top: 0.5em;
             width: 5px;
             height: 5px;
             border-radius: 50%;
             background: #888888;
             opacity: 0.6;
         }
-
         .content-section .note-box {
             background: #eeeeee;
             border-left: 3px solid #888888;
-            padding: 8px 14px;
-            margin: 8px 0 10px 0;
+            padding: 6px 12px;
+            margin: 6px 0 8px 0;
             color: #1a1a1a;
             font-size: 0.95em;
-            line-height: 1.45;
+            line-height: 1.4;
             font-weight: 400;
         }
-
         .content-section .divider-light {
             border: none;
             height: 1px;
             background: #cccccc;
-            margin: 12px 0 10px 0;
+            margin: 10px 0 8px 0;
         }
 
         .global-footer {
-            margin-top: 12px;
-            padding-top: 10px;
+            margin-top: 8px;
+            padding-top: 8px;
             border-top: 1px solid #cccccc;
-            font-size: 14px;
+            font-size: 13px;
             color: #444444;
             text-align: center;
             letter-spacing: 0.02em;
             font-weight: 400;
         }
 
-        .note-principle {
-            font-weight: 400;
-        }
-
+        .note-principle { font-weight: 400; }
         .note-question-wrapper {
             position: relative;
             display: inline-block;
             vertical-align: middle;
             margin-left: 4px;
         }
-
         .note-question-btn {
             background: #f5f5f5;
             border: 1px solid #bbbbbb;
@@ -320,46 +382,40 @@
             transition: background 0.15s ease, border-color 0.15s ease;
             white-space: nowrap;
         }
-
         .note-question-btn:hover {
             background: #e8e8e8;
             border-color: #999999;
         }
 
-        /* 自制弹窗样式 */
+        /* 弹窗样式 */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(0, 0, 0, 0.15);
             z-index: 2000;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
-
-        .modal-overlay.show {
-            display: flex;
-        }
-
+        .modal-overlay.show { display: flex; }
         .modal-box {
             background: #ffffff;
             border: 1px solid #cccccc;
             border-radius: 4px;
-            padding: 20px 24px;
+            padding: 18px 22px;
             max-width: 520px;
             width: 100%;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
             position: relative;
             font-weight: 400;
-            line-height: 1.55;
+            line-height: 1.5;
             letter-spacing: 0.01em;
         }
-
         .modal-close {
             position: absolute;
-            top: 8px;
-            right: 12px;
+            top: 6px;
+            right: 10px;
             background: transparent;
             border: none;
             font-size: 22px;
@@ -371,11 +427,7 @@
             -webkit-tap-highlight-color: transparent;
             user-select: none;
         }
-
-        .modal-close:hover {
-            color: #000000;
-        }
-
+        .modal-close:hover { color: #000000; }
         .modal-content {
             font-size: 15px;
             color: #1a1a1a;
@@ -384,207 +436,72 @@
         }
 
         @media (max-width: 640px) {
-            body {
-                padding: 14px 8px 30px;
-                font-size: 15px;
-                font-weight: 400;
-            }
-            .floating-update {
-                top: 8px;
-                right: 10px;
-                font-size: 11px;
-            }
-            .floating-left {
-                top: 8px;
-                left: 10px;
-                padding: 3px 6px;
-                font-size: 11px;
-                gap: 4px;
-            }
-            .floating-left .question-btn {
-                font-size: 11px;
-                padding: 2px 6px;
-            }
-            .main-container {
-                padding: 16px 12px 16px;
-                border-radius: 3px;
-                margin-bottom: 6px;
-            }
-            .time-label {
-                font-size: 20px;
-                font-weight: 400;
-            }
-            .time-value {
-                font-size: 30px;
-                font-weight: 400;
-            }
-            .button-row {
-                flex-direction: row;
-                flex-wrap: nowrap;
-                gap: 6px;
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 4px;
-                justify-content: flex-start;
-                margin-bottom: 14px;
-            }
-            .btn {
-                background: transparent;
-                border: none;
-                border-radius: 0;
-                padding: 4px 6px;
-                font-size: 13px;
-                font-weight: 400;
-                color: #1a1a1a;
-                text-decoration: underline;
-                text-underline-offset: 3px;
-                white-space: nowrap;
-                flex-shrink: 0;
-                cursor: pointer;
-                -webkit-tap-highlight-color: transparent;
-                outline: none;
-                transition: color 0.15s ease;
-                letter-spacing: 0.01em;
-            }
-            .btn:hover,
-            .btn:focus {
-                background: transparent;
-                border: none;
-                color: #555555;
-            }
-            .btn.active {
-                background: transparent;
-                border: none;
-                font-weight: 400;
-                color: #000000;
-                text-decoration-thickness: 2px;
-            }
-            .content-panel {
-                padding: 12px 10px 14px;
-            }
-            .content-section h1 {
-                font-size: 18px;
-                padding-bottom: 6px;
-                margin-bottom: 10px;
-                font-weight: 400;
-            }
-            .content-section h2 {
-                font-size: 16px;
-                margin-top: 12px;
-                font-weight: 400;
-            }
-            .content-section h3 {
-                font-size: 15px;
-                margin-top: 8px;
-                font-weight: 400;
-            }
-            .content-section li {
-                padding-left: 12px;
-                font-size: 14px;
-                font-weight: 400;
-            }
-            .global-footer {
-                font-size: 12px;
-                margin-top: 8px;
-                padding-top: 8px;
-                font-weight: 400;
-            }
-            .note-question-btn {
-                font-size: 11px;
-                padding: 2px 5px;
-            }
-            .modal-box {
-                padding: 16px 18px;
-            }
-            .modal-content {
-                font-size: 14px;
-            }
+            body { padding: 36px 8px 80px; font-size: 15px; }
+            .warning-top-center { font-size: 12px; padding: 3px 8px; }
+            .floating-left, .floating-update { font-size: 11px; padding: 3px 6px; bottom: 10px; }
+            .floating-left { left: 10px; }
+            .floating-update { right: 10px; }
+            .main-container { padding: 12px 10px 12px; border-radius: 3px; }
+            .time-label { font-size: 18px; }
+            .time-value { font-size: 40px; }
+            .button-row { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 4px; }
+            .btn { background: transparent; border: none; padding: 3px 6px; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+            .btn:hover, .btn:focus { background: transparent; border: none; }
+            .btn.active { background: transparent; border: none; text-decoration-thickness: 2px; }
+            .content-panel { padding: 10px 8px 10px; }
+            .content-section h1 { font-size: 17px; }
+            .watermark { font-size: 11px; top: 5px; right: 5px; }
         }
-
         @media (max-width: 420px) {
-            body {
-                font-size: 14px;
-                padding: 8px 4px 20px;
-                font-weight: 400;
-            }
-            .floating-update {
-                top: 6px;
-                right: 6px;
-                font-size: 10px;
-            }
-            .floating-left {
-                top: 6px;
-                left: 6px;
-                padding: 2px 4px;
-                font-size: 10px;
-            }
-            .floating-left .question-btn {
-                font-size: 10px;
-                padding: 2px 4px;
-            }
-            .main-container {
-                padding: 10px 6px 12px;
-                margin-bottom: 4px;
-            }
-            .time-label {
-                font-size: 17px;
-                font-weight: 400;
-            }
-            .time-value {
-                font-size: 24px;
-                font-weight: 400;
-            }
-            .btn {
-                padding: 3px 5px;
-                font-size: 12px;
-                font-weight: 400;
-            }
-            .content-panel {
-                padding: 10px 8px 10px;
-            }
-            .content-section h1 {
-                font-size: 16px;
-                font-weight: 400;
-            }
-            .content-section h2 {
-                font-size: 15px;
-                font-weight: 400;
-            }
-            .content-section h3 {
-                font-size: 14px;
-                font-weight: 400;
-            }
-            .global-footer {
-                font-size: 11px;
-                font-weight: 400;
-            }
-            .note-question-btn {
-                font-size: 10px;
-                padding: 2px 4px;
-            }
-            .modal-box {
-                padding: 12px 14px;
-            }
-            .modal-content {
-                font-size: 13px;
-            }
+            body { font-size: 14px; padding: 36px 4px 80px; }
+            .warning-top-center { font-size: 10px; }
+            .floating-left .wechat-text { font-size: 10px; }
+            .floating-left .question-btn { font-size: 10px; padding: 2px 4px; }
+            .floating-update { font-size: 10px; }
+            .time-value { font-size: 32px; }
+            .btn { padding: 2px 4px; font-size: 12px; }
+            .content-section h1 { font-size: 15px; }
+            .watermark { font-size: 10px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- 粒子装饰 -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+
+    <!-- 右上角水印（自定义字体，只显示信息） -->
+    <div class="watermark" id="watermark">
+        <span id="watermark-time">--</span>
+        <span id="watermark-device">--</span>
+        <span id="watermark-ip">--</span>
+    </div>
+
+    <!-- 顶部警示文字 -->
+    <div class="warning-top-center">请勿传播此页面链接！</div>
+
+    <!-- 左下角悬浮 -->
     <div class="floating-left">
         <span class="wechat-text">建议使用微信联系</span>
         <button class="question-btn" id="questionBtn">备注</button>
     </div>
 
+    <!-- 右下角悬浮 -->
     <div class="floating-update">上一次更新：August 25, 2026</div>
 
     <div class="main-container">
 
         <div class="time-section">
-            <span class="time-label">下一次预计可回复时间</span>
-            <span class="time-value">26年10月1日</span>
+            <span class="time-label">QQ下一次预计可回复时间</span>
+            <span class="time-value" id="timeValue">26年10月1日</span>
+            <div class="expired-message" id="expiredMessage">
+                <span class="marquee-content" id="expiredText"></span>
+            </div>
         </div>
 
         <div class="button-row">
@@ -668,10 +585,10 @@
 
             <div id="content-about" class="content-section hidden">
                 <h1>关于此页面</h1>
-                <p>① 这个页面由deepseek辅助生成，该网页链接根据服务器端配置决定发送，请勿泄露本网页链接。</p>
-                <p>② 如果服务器登录掉了（这个特别容易掉登录），会有AI尝试操作，如果均失败，所有备份和消息下发等操作均无法进行。</p>
-                <p>③ 回复时间特指QQ，微信看情况，平常回家会回复，高三的话肯定不能。</p>
-                <p>④ 感谢您的理解。</p>
+                <p>①这个页面由DeepSeek辅助生成，该网页链接根据服务器端配置决定发送，请勿泄露本网页链接。</p>
+                <p>②如果服务器登录掉了（这个特别容易掉登录），会有AI尝试操作，如果均失败，所有备份和消息下发等操作均无法进行。</p>
+                <p>③回复时间特指QQ，微信看情况，平常回家会回复，高三的话肯定不能。</p>
+                <p>④感谢您的理解。</p>
             </div>
         </div>
 
@@ -697,25 +614,29 @@
                 while (walker.nextNode()) textNodes.push(walker.currentNode);
                 textNodes.forEach(node => {
                     const text = node.nodeValue;
-                    if (!/[A-Za-z0-9\u2460-\u2473]/.test(text)) return;
+                    if (!text.trim()) return;
                     const parent = node.parentNode;
-                    if (parent.nodeName === 'SCRIPT' || parent.nodeName === 'STYLE') return;
+                    if (parent.nodeName === 'SCRIPT' || parent.nodeName === 'STYLE' || (parent.classList && parent.classList.contains('en-num'))) return;
                     const fragment = document.createDocumentFragment();
                     let lastIndex = 0;
-                    text.replace(/[A-Za-z0-9\u2460-\u2473]+/g, (match, offset) => {
-                        if (offset > lastIndex) {
-                            fragment.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
+                    const regex = /[^\u4e00-\u9fff\s]+/g;
+                    let match;
+                    while ((match = regex.exec(text)) !== null) {
+                        if (match.index > lastIndex) {
+                            fragment.appendChild(document.createTextNode(text.slice(lastIndex, match.index)));
                         }
                         const span = document.createElement('span');
                         span.className = 'en-num';
-                        span.textContent = match;
+                        span.textContent = match[0];
                         fragment.appendChild(span);
-                        lastIndex = offset + match.length;
-                    });
+                        lastIndex = match.index + match[0].length;
+                    }
                     if (lastIndex < text.length) {
                         fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
                     }
-                    parent.replaceChild(fragment, node);
+                    if (fragment.childNodes.length > 0) {
+                        parent.replaceChild(fragment, node);
+                    }
                 });
             }
 
@@ -754,18 +675,15 @@
                 modalContent.textContent = message;
                 modalOverlay.classList.add('show');
             }
-
             function hideModal() {
                 modalOverlay.classList.remove('show');
             }
 
-            // 左上角备注按钮：显示微信号获取说明
             const questionBtn = document.getElementById('questionBtn');
             questionBtn.addEventListener('click', () => {
-                showModal('或者现在就给QQ发私信，AI会自动分析聊天记录决定您是否可以获取微信号（没响应就是服务器掉了，一般回家的时候我会重新弄一遍，系统反应过来后回回复并完成期间其他操作的处理）');
+                showModal('用QQ发私信，AI会自动分析聊天记录决定您是否可以获取微信号（没响应就是服务器掉了，一般回家的时候我会重新弄一遍，系统反应过来后会回复并完成期间其他操作的处理）');
             });
 
-            // 原理备注按钮：显示是否违规由AI决定
             document.querySelectorAll('.note-question-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     showModal('是否违规由AI决定');
@@ -776,6 +694,119 @@
             modalOverlay.addEventListener('click', function(e) {
                 if (e.target === modalOverlay) hideModal();
             });
+
+            // 日期过期判断 + 滚动显示
+            function checkExpiry() {
+                const timeValueElement = document.getElementById('timeValue');
+                const expiredMessageElement = document.getElementById('expiredMessage');
+                const expiredTextElement = document.getElementById('expiredText');
+                if (!timeValueElement || !expiredMessageElement || !expiredTextElement) return;
+
+                const rawText = timeValueElement.textContent.trim();
+                const dateMatch = rawText.match(/(\d{2}|\d{4})年(\d{1,2})月(\d{1,2})日/);
+                if (!dateMatch) return;
+
+                let year = parseInt(dateMatch[1], 10);
+                if (year < 100) year += 2000;
+                const month = parseInt(dateMatch[2], 10);
+                const day = parseInt(dateMatch[3], 10);
+
+                const targetDate = new Date(year, month - 1, day);
+                if (isNaN(targetDate.getTime())) return;
+
+                const today = new Date();
+                const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+                const targetDateOnly = new Date(targetDate.getFullYear(), targetDate.getMonth(), targetDate.getDate());
+
+                if (todayDate > targetDateOnly) {
+                    const diffTime = todayDate.getTime() - targetDateOnly.getTime();
+                    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                    const originalDateStr = year + '年' + month + '月' + day + '日';
+                    const message = '该页面已经过期，现在已经过了原设定可回复日期' + diffDays + '天（原设定：' + originalDateStr + '）。这可能是因为封丘一中过于死人修改了回家时间。有事请先留言，请以实际回复情况为准。';
+                    timeValueElement.style.display = 'none';
+                    expiredMessageElement.style.display = 'block';
+                    expiredTextElement.textContent = message;
+                } else {
+                    timeValueElement.style.display = 'block';
+                    expiredMessageElement.style.display = 'none';
+                }
+            }
+
+            checkExpiry();
+
+            // 获取设备型号（仅型号，不含操作系统）
+            function getDeviceModel() {
+                const ua = navigator.userAgent;
+                if (/iPhone/i.test(ua)) {
+                    // 尝试提取更具体的 iPhone 型号（通常 UA 不包含具体型号，可尝试从 CPU 等信息判断）
+                    return 'iPhone';
+                } else if (/iPad/i.test(ua)) {
+                    return 'iPad';
+                } else if (/Android/i.test(ua)) {
+                    // 提取 Android 设备型号：通常位于 "Android x.x; [Model]" 部分
+                    const match = ua.match(/Android\s[\d.]+;\s*([^;\)]+)/);
+                    if (match) {
+                        return match[1].trim();
+                    }
+                    return 'Android Device';
+                } else if (/Windows NT/i.test(ua)) {
+                    return 'Windows PC';
+                } else if (/Mac OS X/i.test(ua)) {
+                    return 'Mac';
+                } else if (/Linux/i.test(ua)) {
+                    return 'Linux Device';
+                } else {
+                    return 'Unknown';
+                }
+            }
+
+            // 水印信息更新
+            function updateWatermark() {
+                const now = new Date();
+                const pad = (n) => String(n).padStart(2, '0');
+                const timeStr = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+                document.getElementById('watermark-time').textContent = timeStr;
+                document.getElementById('watermark-device').textContent = getDeviceModel();
+
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('watermark-ip').textContent = data.ip;
+                    })
+                    .catch(() => {
+                        document.getElementById('watermark-ip').textContent = 'Failed to get IP';
+                    });
+            }
+
+            updateWatermark();
+            setInterval(updateWatermark, 1000);
+
+            // 尝试禁止截图/录屏（能力有限，仅作尝试）
+            function preventCapture() {
+                // 窗口失焦时模糊页面
+                window.addEventListener('blur', function() {
+                    document.body.style.filter = 'blur(10px)';
+                });
+                window.addEventListener('focus', function() {
+                    document.body.style.filter = 'none';
+                });
+                // 拦截 PrintScreen 键（浏览器通常无法拦截，但尝试）
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'PrintScreen') {
+                        e.preventDefault();
+                        alert('截图已被禁止');
+                    }
+                });
+                // 检测页面可见性变化
+                document.addEventListener('visibilitychange', function() {
+                    if (document.hidden) {
+                        document.body.style.filter = 'blur(10px)';
+                    } else {
+                        document.body.style.filter = 'none';
+                    }
+                });
+            }
+            preventCapture();
 
             // 禁用交互
             document.addEventListener('contextmenu', e => e.preventDefault());
