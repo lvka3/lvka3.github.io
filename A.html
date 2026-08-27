@@ -68,7 +68,6 @@
             75% { transform: translateY(-15px) translateX(-15px); }
         }
 
-        /* 右上角水印 */
         .watermark {
             position: fixed;
             top: 10px;
@@ -90,7 +89,6 @@
             display: block;
         }
 
-        /* 顶部悬浮警示文字 */
         .warning-top-center {
             position: fixed;
             top: 0;
@@ -111,7 +109,6 @@
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
         }
 
-        /* 左下角悬浮 */
         .floating-left {
             position: fixed;
             bottom: 16px;
@@ -150,13 +147,13 @@
             user-select: none;
             transition: background 0.15s ease, border-color 0.15s ease;
             white-space: nowrap;
+            font-family: 'neu_bz_s92', sans-serif;
         }
         .floating-left .question-btn:hover {
             background: #e8e8e8;
             border-color: #999999;
         }
 
-        /* 右下角悬浮 */
         .floating-update {
             position: fixed;
             bottom: 16px;
@@ -381,29 +378,35 @@
             user-select: none;
             transition: background 0.15s ease, border-color 0.15s ease;
             white-space: nowrap;
+            font-family: 'neu_bz_s92', sans-serif;
         }
         .note-question-btn:hover {
             background: #e8e8e8;
             border-color: #999999;
         }
 
-        /* 弹窗样式 */
         .modal-overlay {
-            display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.15);
+            background: rgba(0, 0, 0, 0.3);
             z-index: 2000;
+            display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
         }
-        .modal-overlay.show { display: flex; }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
         .modal-box {
             background: #ffffff;
             border: 1px solid #cccccc;
-            border-radius: 4px;
-            padding: 18px 22px;
+            border-radius: 8px;
+            padding: 20px 24px;
             max-width: 520px;
             width: 100%;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -411,11 +414,16 @@
             font-weight: 400;
             line-height: 1.5;
             letter-spacing: 0.01em;
+            transform: scale(0.9);
+            transition: transform 0.2s ease;
+        }
+        .modal-overlay.show .modal-box {
+            transform: scale(1);
         }
         .modal-close {
             position: absolute;
-            top: 6px;
-            right: 10px;
+            top: 8px;
+            right: 12px;
             background: transparent;
             border: none;
             font-size: 22px;
@@ -433,6 +441,26 @@
             color: #1a1a1a;
             white-space: pre-wrap;
             word-break: break-word;
+            margin-bottom: 16px;
+        }
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+        }
+        .modal-confirm-btn {
+            background: #f5f5f5;
+            border: 1px solid #bbbbbb;
+            border-radius: 4px;
+            padding: 6px 18px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        .modal-confirm-btn:hover {
+            background: #e8e8e8;
         }
 
         @media (max-width: 640px) {
@@ -467,7 +495,6 @@
 </head>
 <body>
 
-    <!-- 粒子装饰 -->
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
@@ -475,24 +502,20 @@
     <div class="particle"></div>
     <div class="particle"></div>
 
-    <!-- 右上角水印（自定义字体，只显示信息） -->
     <div class="watermark" id="watermark">
         <span id="watermark-time">--</span>
         <span id="watermark-device">--</span>
-        <span id="watermark-ip">--</span>
+        <span id="watermark-ip"></span>
     </div>
 
-    <!-- 顶部警示文字 -->
     <div class="warning-top-center">请勿传播此页面链接！</div>
 
-    <!-- 左下角悬浮 -->
     <div class="floating-left">
         <span class="wechat-text">建议使用微信联系</span>
         <button class="question-btn" id="questionBtn">备注</button>
     </div>
 
-    <!-- 右下角悬浮 -->
-    <div class="floating-update">上一次更新：August 27, 2026</div>
+    <div class="floating-update">上一次更新：August 27, 2026 07:26</div>
 
     <div class="main-container">
 
@@ -585,7 +608,7 @@
 
             <div id="content-about" class="content-section hidden">
                 <h1>关于此页面</h1>
-                <p>①这个页面由DeepSeek辅助生成，该网页链接根据服务器端配置决定发送，请勿泄露本网页链接。</p>
+                <p>①这个页面由DeepSeek辅助生成，该网页链接根据服务器端配置决定发送，请勿泄露本网页链接。这个页面就是个静态html，所以不能进行相关交互。你让任何AI写也能写出来。</p>
                 <p>②如果服务器登录掉了（这个特别容易掉登录），会有AI尝试操作，如果均失败，所有备份和消息下发等操作均无法进行。</p>
                 <p>③回复时间特指QQ，微信看情况，平常回家会回复，高三的话肯定不能。</p>
                 <p>④感谢您的理解。</p>
@@ -593,16 +616,18 @@
         </div>
 
         <div class="global-footer">
-            该网页由DeepSeek辅助生成｜律卡｜Update Time: August 27, 2026 05:36
+            该网页由DeepSeek辅助生成｜律卡
         </div>
 
     </div>
 
-    <!-- 自制弹窗 -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
             <button class="modal-close" id="modalClose">&times;</button>
             <div class="modal-content" id="modalContent"></div>
+            <div class="modal-footer">
+                <button class="modal-confirm-btn" id="modalConfirmBtn">确定</button>
+            </div>
         </div>
     </div>
 
@@ -643,11 +668,25 @@
             const buttons = document.querySelectorAll('.btn');
             const sections = document.querySelectorAll('.content-section');
             const placeholder = document.getElementById('initial-placeholder');
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalContent = document.getElementById('modalContent');
+            const modalClose = document.getElementById('modalClose');
+            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
 
             function showSection(targetId) {
                 if (placeholder) placeholder.style.display = 'none';
                 sections.forEach(section => {
                     section.classList.toggle('hidden', section.id !== targetId);
+                });
+            }
+
+            function showPlaceholder() {
+                if (placeholder) placeholder.style.display = '';
+                sections.forEach(section => {
+                    section.classList.add('hidden');
+                });
+                buttons.forEach(btn => {
+                    btn.classList.remove('active');
                 });
             }
 
@@ -659,20 +698,21 @@
 
             buttons.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    showSection(btn.getAttribute('data-target'));
-                    setActiveButton(btn);
+                    const targetId = btn.getAttribute('data-target');
+                    if (btn.classList.contains('active')) {
+                        showPlaceholder();
+                    } else {
+                        showSection(targetId);
+                        setActiveButton(btn);
+                    }
                 });
             });
 
             wrapEnglishAndNumbers(document.body);
 
-            // 弹窗逻辑
-            const modalOverlay = document.getElementById('modalOverlay');
-            const modalContent = document.getElementById('modalContent');
-            const modalClose = document.getElementById('modalClose');
-
             function showModal(message) {
                 modalContent.textContent = message;
+                wrapEnglishAndNumbers(modalContent);
                 modalOverlay.classList.add('show');
             }
             function hideModal() {
@@ -691,11 +731,16 @@
             });
 
             modalClose.addEventListener('click', hideModal);
+            modalConfirmBtn.addEventListener('click', hideModal);
             modalOverlay.addEventListener('click', function(e) {
                 if (e.target === modalOverlay) hideModal();
             });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modalOverlay.classList.contains('show')) {
+                    hideModal();
+                }
+            });
 
-            // 日期过期判断 + 滚动显示
             function checkExpiry() {
                 const timeValueElement = document.getElementById('timeValue');
                 const expiredMessageElement = document.getElementById('expiredMessage');
@@ -734,19 +779,20 @@
 
             checkExpiry();
 
-            // 获取设备型号（仅型号，不含操作系统）
             function getDeviceModel() {
                 const ua = navigator.userAgent;
                 if (/iPhone/i.test(ua)) {
-                    // 尝试提取更具体的 iPhone 型号（通常 UA 不包含具体型号，可尝试从 CPU 等信息判断）
                     return 'iPhone';
                 } else if (/iPad/i.test(ua)) {
                     return 'iPad';
                 } else if (/Android/i.test(ua)) {
-                    // 提取 Android 设备型号：通常位于 "Android x.x; [Model]" 部分
                     const match = ua.match(/Android\s[\d.]+;\s*([^;\)]+)/);
                     if (match) {
-                        return match[1].trim();
+                        const candidate = match[1].trim();
+                        if (/^[A-Z0-9_\.\-]+$/.test(candidate) && candidate.length > 5 && !/^[A-Z][a-z]/.test(candidate)) {
+                            return 'Android Device';
+                        }
+                        return candidate;
                     }
                     return 'Android Device';
                 } else if (/Windows NT/i.test(ua)) {
@@ -760,7 +806,6 @@
                 }
             }
 
-            // 水印信息更新
             function updateWatermark() {
                 const now = new Date();
                 const pad = (n) => String(n).padStart(2, '0');
@@ -768,36 +813,35 @@
                 document.getElementById('watermark-time').textContent = timeStr;
                 document.getElementById('watermark-device').textContent = getDeviceModel();
 
+                const ipSpan = document.getElementById('watermark-ip');
                 fetch('https://api.ipify.org?format=json')
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('watermark-ip').textContent = data.ip;
+                        ipSpan.textContent = data.ip;
+                        ipSpan.style.display = '';
                     })
                     .catch(() => {
-                        document.getElementById('watermark-ip').textContent = 'Failed to get IP';
+                        ipSpan.textContent = '';
+                        ipSpan.style.display = 'none';
                     });
             }
 
             updateWatermark();
             setInterval(updateWatermark, 1000);
 
-            // 尝试禁止截图/录屏（能力有限，仅作尝试）
             function preventCapture() {
-                // 窗口失焦时模糊页面
                 window.addEventListener('blur', function() {
                     document.body.style.filter = 'blur(10px)';
                 });
                 window.addEventListener('focus', function() {
                     document.body.style.filter = 'none';
                 });
-                // 拦截 PrintScreen 键（浏览器通常无法拦截，但尝试）
                 document.addEventListener('keydown', function(e) {
                     if (e.key === 'PrintScreen') {
                         e.preventDefault();
                         alert('截图已被禁止');
                     }
                 });
-                // 检测页面可见性变化
                 document.addEventListener('visibilitychange', function() {
                     if (document.hidden) {
                         document.body.style.filter = 'blur(10px)';
@@ -808,7 +852,6 @@
             }
             preventCapture();
 
-            // 禁用交互
             document.addEventListener('contextmenu', e => e.preventDefault());
             document.addEventListener('copy', e => e.preventDefault());
             document.addEventListener('cut', e => e.preventDefault());
