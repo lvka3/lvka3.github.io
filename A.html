@@ -185,14 +185,28 @@
         }
 
         .time-section {
-            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            justify-content: center;
             padding: 12px 10px 14px;
             border-bottom: 1px solid #cccccc;
             margin-bottom: 14px;
         }
+
+        .time-block {
+            flex: 1 1 280px;
+            min-width: 0;
+            text-align: center;
+            padding: 8px 6px;
+            background: #fafafa;
+            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+        }
+
         .time-label {
             display: block;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 400;
             color: #000000;
             margin-bottom: 4px;
@@ -200,14 +214,14 @@
         }
         .time-value {
             display: block;
-            font-size: 56px;
+            font-size: 42px;
             font-weight: 400;
             color: #1a1a1a;
             letter-spacing: 0.04em;
             margin-top: 2px;
         }
         .expired-message {
-            font-size: 14px;
+            font-size: 13px;
             color: #c0392b;
             line-height: 1.6;
             margin-top: 4px;
@@ -470,8 +484,10 @@
             .floating-left { left: 10px; }
             .floating-update { right: 10px; }
             .main-container { padding: 12px 10px 12px; border-radius: 3px; }
+            .time-section { flex-direction: column; gap: 8px; }
+            .time-block { flex: 1 1 auto; }
             .time-label { font-size: 18px; }
-            .time-value { font-size: 40px; }
+            .time-value { font-size: 32px; }
             .button-row { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 4px; }
             .btn { background: transparent; border: none; padding: 3px 6px; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
             .btn:hover, .btn:focus { background: transparent; border: none; }
@@ -486,7 +502,7 @@
             .floating-left .wechat-text { font-size: 10px; }
             .floating-left .question-btn { font-size: 10px; padding: 2px 4px; }
             .floating-update { font-size: 10px; }
-            .time-value { font-size: 32px; }
+            .time-value { font-size: 28px; }
             .btn { padding: 2px 4px; font-size: 12px; }
             .content-section h1 { font-size: 15px; }
             .watermark { font-size: 10px; }
@@ -515,15 +531,24 @@
         <button class="question-btn" id="questionBtn">备注</button>
     </div>
 
-    <div class="floating-update">上一次更新：August 27, 2026 07:26</div>
+    <div class="floating-update">上一次更新：1788043332</div>
 
     <div class="main-container">
 
         <div class="time-section">
-            <span class="time-label">QQ下一次预计可回复时间</span>
-            <span class="time-value" id="timeValue">26年10月1日</span>
-            <div class="expired-message" id="expiredMessage">
-                <span class="marquee-content" id="expiredText"></span>
+            <div class="time-block">
+                <span class="time-label">QQ下一次预计可回复时间</span>
+                <span class="time-value" id="timeValue">26年10月1日</span>
+                <div class="expired-message" id="expiredMessage">
+                    <span class="marquee-content" id="expiredText"></span>
+                </div>
+            </div>
+            <div class="time-block">
+                <span class="time-label">微信下一次预计可回复时间</span>
+                <span class="time-value" id="wechatTimeValue">26年10月1日</span>
+                <div class="expired-message" id="wechatExpiredMessage">
+                    <span class="marquee-content" id="wechatExpiredText"></span>
+                </div>
             </div>
         </div>
 
@@ -536,7 +561,7 @@
         </div>
 
         <div class="content-panel">
-            <div id="initial-placeholder" class="placeholder-message">手机/竖屏上面的按钮（或下划线）是可以左右滑动显示更多选项并且进行点击的</div>
+            <div id="initial-placeholder" class="placeholder-message">上面的按钮（或下划线）是可以左右滑动显示更多选项并且进行点击的</div>
 
             <div id="content-msg-handle" class="content-section hidden">
                 <h1>消息处理说明</h1>
@@ -608,7 +633,7 @@
 
             <div id="content-about" class="content-section hidden">
                 <h1>关于此页面</h1>
-                <p>①这个页面由DeepSeek辅助生成，该网页链接根据服务器端配置决定发送，请勿泄露本网页链接。这个页面就是个静态html，所以不能进行相关交互。你让任何AI写也能写出来。</p>
+                <p>①这个页面由DeepSeek辅助生成，该网页链接根据服务器端配置决定发送，请勿泄露本网页链接。这个页面就是个静态html，所以不能进行交互。我也无权查看你访问的IP。你让任何AI写也能写出来。</p>
                 <p>②如果服务器登录掉了（这个特别容易掉登录），会有AI尝试操作，如果均失败，所有备份和消息下发等操作均无法进行。</p>
                 <p>③回复时间特指QQ，微信看情况，平常回家会回复，高三的话肯定不能。</p>
                 <p>④感谢您的理解。</p>
@@ -721,7 +746,7 @@
 
             const questionBtn = document.getElementById('questionBtn');
             questionBtn.addEventListener('click', () => {
-                showModal('用QQ发私信，AI会自动分析聊天记录决定您是否可以获取微信号（没响应就是服务器掉了，一般回家的时候我会重新弄一遍，系统反应过来后会回复并完成期间其他操作的处理）');
+                showModal('微信提示预留');
             });
 
             document.querySelectorAll('.note-question-btn').forEach(btn => {
@@ -741,15 +766,19 @@
                 }
             });
 
-            function checkExpiry() {
-                const timeValueElement = document.getElementById('timeValue');
-                const expiredMessageElement = document.getElementById('expiredMessage');
-                const expiredTextElement = document.getElementById('expiredText');
+            function checkExpiry(valueElementId, messageElementId, textElementId) {
+                const timeValueElement = document.getElementById(valueElementId);
+                const expiredMessageElement = document.getElementById(messageElementId);
+                const expiredTextElement = document.getElementById(textElementId);
                 if (!timeValueElement || !expiredMessageElement || !expiredTextElement) return;
 
                 const rawText = timeValueElement.textContent.trim();
                 const dateMatch = rawText.match(/(\d{2}|\d{4})年(\d{1,2})月(\d{1,2})日/);
-                if (!dateMatch) return;
+                if (!dateMatch) {
+                    timeValueElement.style.display = 'block';
+                    expiredMessageElement.style.display = 'none';
+                    return;
+                }
 
                 let year = parseInt(dateMatch[1], 10);
                 if (year < 100) year += 2000;
@@ -757,7 +786,11 @@
                 const day = parseInt(dateMatch[3], 10);
 
                 const targetDate = new Date(year, month - 1, day);
-                if (isNaN(targetDate.getTime())) return;
+                if (isNaN(targetDate.getTime())) {
+                    timeValueElement.style.display = 'block';
+                    expiredMessageElement.style.display = 'none';
+                    return;
+                }
 
                 const today = new Date();
                 const todayDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
@@ -777,7 +810,8 @@
                 }
             }
 
-            checkExpiry();
+            checkExpiry('timeValue', 'expiredMessage', 'expiredText');
+            checkExpiry('wechatTimeValue', 'wechatExpiredMessage', 'wechatExpiredText');
 
             function getDeviceModel() {
                 const ua = navigator.userAgent;
