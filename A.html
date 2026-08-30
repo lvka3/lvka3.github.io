@@ -46,26 +46,30 @@
             letter-spacing: 0.02em;
         }
 
+        /* 粒子装饰（灰色） */
         .particle {
             position: fixed;
             border-radius: 50%;
-            background: rgba(120, 160, 200, 0.25);
+            background: rgba(150, 150, 150, 0.2);
             pointer-events: none;
             z-index: 0;
-            animation: float-particle 12s infinite ease-in-out;
+            animation: float-particle 14s infinite ease-in-out;
+            box-shadow: 0 0 6px rgba(150, 150, 150, 0.2);
         }
-        .particle:nth-child(1) { width: 8px; height: 8px; top: 15%; left: 8%; animation-delay: 0s; }
-        .particle:nth-child(2) { width: 10px; height: 10px; top: 55%; left: 20%; animation-delay: 2s; }
-        .particle:nth-child(3) { width: 6px; height: 6px; top: 80%; left: 75%; animation-delay: 4s; }
-        .particle:nth-child(4) { width: 12px; height: 12px; top: 30%; left: 90%; animation-delay: 1s; }
-        .particle:nth-child(5) { width: 7px; height: 7px; top: 70%; left: 45%; animation-delay: 3s; }
-        .particle:nth-child(6) { width: 9px; height: 9px; top: 10%; left: 60%; animation-delay: 5s; }
+        .particle:nth-child(1) { width: 5px; height: 5px; top: 12%; left: 6%; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 4px; height: 4px; top: 48%; left: 18%; animation-delay: 2s; }
+        .particle:nth-child(3) { width: 6px; height: 6px; top: 75%; left: 72%; animation-delay: 4s; }
+        .particle:nth-child(4) { width: 4px; height: 4px; top: 22%; left: 88%; animation-delay: 1s; }
+        .particle:nth-child(5) { width: 5px; height: 5px; top: 65%; left: 40%; animation-delay: 3s; }
+        .particle:nth-child(6) { width: 3px; height: 3px; top: 8%; left: 55%; animation-delay: 5s; }
+        .particle:nth-child(7) { width: 4px; height: 4px; top: 85%; left: 25%; animation-delay: 6s; }
+        .particle:nth-child(8) { width: 6px; height: 6px; top: 40%; left: 65%; animation-delay: 7s; }
 
         @keyframes float-particle {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            25% { transform: translateY(-20px) translateX(10px); }
-            50% { transform: translateY(-40px) translateX(-5px); }
-            75% { transform: translateY(-15px) translateX(-15px); }
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0.5; }
+            25% { transform: translateY(-28px) translateX(12px); opacity: 0.9; }
+            50% { transform: translateY(-50px) translateX(-8px); opacity: 0.6; }
+            75% { transform: translateY(-18px) translateX(-18px); opacity: 0.85; }
         }
 
         .watermark {
@@ -77,8 +81,8 @@
             user-select: none;
             font-family: 'neu_bz_s92', sans-serif;
             font-weight: 700;
-            font-size: 12px;
-            color: rgba(30, 50, 70, 0.65);
+            font-size: 11px;
+            color: rgba(60, 60, 60, 0.5);
             text-align: right;
             white-space: nowrap;
             letter-spacing: 0.05em;
@@ -95,31 +99,32 @@
             left: 0;
             width: 100%;
             z-index: 1000;
-            font-size: 15px;
-            color: #e57373;
+            font-size: 14px;
+            color: #d45c5c;
             letter-spacing: 0.08em;
             pointer-events: none;
             user-select: none;
             text-align: center;
             padding: 4px 10px;
             font-weight: 400;
-            text-shadow: 0 0 8px rgba(229, 115, 115, 0.5);
+            text-shadow: 0 0 8px rgba(212, 92, 92, 0.4);
             background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(2px);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(4px);
+            border-bottom: 1px solid #cccccc;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
         }
 
         .floating-left {
             position: fixed;
             bottom: 16px;
             left: 16px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid #cccccc;
-            border-radius: 3px;
+            border-radius: 4px;
             padding: 3px 8px;
             font-size: 13px;
             color: #333333;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             z-index: 1000;
             letter-spacing: 0.02em;
             display: flex;
@@ -127,6 +132,7 @@
             gap: 6px;
             pointer-events: auto;
             user-select: none;
+            backdrop-filter: blur(4px);
         }
         .floating-left .wechat-text {
             white-space: nowrap;
@@ -158,9 +164,9 @@
             position: fixed;
             bottom: 16px;
             right: 16px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.9);
             border: 1px solid #cccccc;
-            border-radius: 3px;
+            border-radius: 4px;
             padding: 3px 10px;
             font-size: 13px;
             color: #555555;
@@ -168,7 +174,8 @@
             letter-spacing: 0.02em;
             pointer-events: none;
             user-select: none;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            backdrop-filter: blur(4px);
         }
 
         .main-container {
@@ -176,12 +183,29 @@
             width: 100%;
             background: #ffffff;
             border: 1px solid #d0d0d0;
-            border-radius: 4px;
+            border-radius: 8px;
             padding: 20px 24px 20px;
             margin-bottom: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 0 30px rgba(0, 0, 0, 0.03);
             position: relative;
             z-index: 2;
+        }
+
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(120, 120, 120, 0.4) 15%,
+                rgba(150, 150, 150, 0.7) 50%,
+                rgba(120, 120, 120, 0.4) 85%,
+                transparent 100%);
+            border-radius: 8px 8px 0 0;
+            pointer-events: none;
         }
 
         .time-section {
@@ -198,10 +222,28 @@
             flex: 1 1 280px;
             min-width: 0;
             text-align: center;
-            padding: 8px 6px;
+            padding: 10px 8px;
             background: #fafafa;
-            border-radius: 4px;
+            border-radius: 6px;
             border: 1px solid #e0e0e0;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .time-block.expired-block {
+            border-color: #e86060;
+            animation: expired-glow 1.5s ease-in-out infinite alternate;
+        }
+
+        @keyframes expired-glow {
+            from {
+                box-shadow: 0 0 6px rgba(232, 96, 96, 0.25);
+                border-color: #e86060;
+            }
+            to {
+                box-shadow: 0 0 20px rgba(232, 96, 96, 0.5), 0 0 35px rgba(232, 96, 96, 0.3);
+                border-color: #f08a8a;
+            }
         }
 
         .time-label {
@@ -227,19 +269,15 @@
             margin-top: 4px;
             text-align: center;
             display: none;
-            overflow: hidden;
-            white-space: nowrap;
+            white-space: normal;
+            overflow: visible;
             width: 100%;
             position: relative;
         }
         .expired-message .marquee-content {
-            display: inline-block;
-            padding-left: 100%;
-            animation: marquee 10s linear infinite;
-        }
-        @keyframes marquee {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-100%, 0); }
+            display: block;
+            padding-left: 0;
+            animation: none;
         }
 
         .button-row {
@@ -252,7 +290,7 @@
         .btn {
             background: #f5f5f5;
             border: 1px solid #bbbbbb;
-            border-radius: 3px;
+            border-radius: 4px;
             padding: 8px 16px;
             font-size: 15px;
             font-weight: 400;
@@ -265,15 +303,27 @@
             -webkit-tap-highlight-color: transparent;
             outline: none;
             white-space: nowrap;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
-        .btn:hover { background: #e8e8e8; border-color: #999999; }
-        .btn:focus { background: #e8e8e8; border-color: #888888; }
-        .btn.active { background: #dddddd; border-color: #888888; font-weight: 400; }
+        .btn:hover {
+            background: #e8e8e8;
+            border-color: #999999;
+        }
+        .btn:focus {
+            background: #e8e8e8;
+            border-color: #888888;
+        }
+        .btn.active {
+            background: #dddddd;
+            border-color: #888888;
+            font-weight: 400;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+        }
 
         .content-panel {
             background: #fafafa;
             border: 1px solid #d5d5d5;
-            border-radius: 3px;
+            border-radius: 5px;
             padding: 14px 18px 14px;
         }
         .placeholder-message {
@@ -283,6 +333,7 @@
             padding: 8px 0;
             font-weight: 400;
             letter-spacing: 0.03em;
+            line-height: 1.6;
         }
         .content-section { display: block; }
         .content-section.hidden { display: none; }
@@ -351,6 +402,7 @@
             font-size: 0.95em;
             line-height: 1.4;
             font-weight: 400;
+            border-radius: 0 4px 4px 0;
         }
         .content-section .divider-light {
             border: none;
@@ -399,6 +451,7 @@
             border-color: #999999;
         }
 
+        /* 弹窗样式 */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -472,6 +525,8 @@
             outline: none;
             -webkit-tap-highlight-color: transparent;
             user-select: none;
+            font-family: inherit;
+            color: #1a1a1a;
         }
         .modal-confirm-btn:hover {
             background: #e8e8e8;
@@ -483,15 +538,15 @@
             .floating-left, .floating-update { font-size: 11px; padding: 3px 6px; bottom: 10px; }
             .floating-left { left: 10px; }
             .floating-update { right: 10px; }
-            .main-container { padding: 12px 10px 12px; border-radius: 3px; }
+            .main-container { padding: 12px 10px 12px; border-radius: 6px; }
             .time-section { flex-direction: column; gap: 8px; }
             .time-block { flex: 1 1 auto; }
             .time-label { font-size: 18px; }
             .time-value { font-size: 32px; }
             .button-row { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 4px; }
-            .btn { background: transparent; border: none; padding: 3px 6px; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
-            .btn:hover, .btn:focus { background: transparent; border: none; }
-            .btn.active { background: transparent; border: none; text-decoration-thickness: 2px; }
+            .btn { background: transparent; border: none; padding: 3px 6px; font-size: 13px; text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; box-shadow: none; }
+            .btn:hover, .btn:focus { background: transparent; border: none; box-shadow: none; }
+            .btn.active { background: transparent; border: none; text-decoration-thickness: 2px; box-shadow: none; }
             .content-panel { padding: 10px 8px 10px; }
             .content-section h1 { font-size: 17px; }
             .watermark { font-size: 11px; top: 5px; right: 5px; }
@@ -517,6 +572,8 @@
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
 
     <div class="watermark" id="watermark">
         <span id="watermark-time">--</span>
@@ -531,21 +588,21 @@
         <button class="question-btn" id="questionBtn">备注</button>
     </div>
 
-    <div class="floating-update">上一次更新：1788043332</div>
+    <div class="floating-update">上一次更新：26年8月30日11:46</div>
 
     <div class="main-container">
 
         <div class="time-section">
-            <div class="time-block">
+            <div class="time-block" id="qqTimeBlock">
                 <span class="time-label">QQ下一次预计可回复时间</span>
-                <span class="time-value" id="timeValue">2026年10月1日</span>
+                <span class="time-value" id="timeValue">2026年9月30日</span>
                 <div class="expired-message" id="expiredMessage">
                     <span class="marquee-content" id="expiredText"></span>
                 </div>
             </div>
-            <div class="time-block">
+            <div class="time-block" id="wechatTimeBlock">
                 <span class="time-label">微信下一次预计可回复时间</span>
-                <span class="time-value" id="wechatTimeValue">2026年10月1日</span>
+                <span class="time-value" id="wechatTimeValue">2026年9月30日</span>
                 <div class="expired-message" id="wechatExpiredMessage">
                     <span class="marquee-content" id="wechatExpiredText"></span>
                 </div>
@@ -561,7 +618,12 @@
         </div>
 
         <div class="content-panel">
-            <div id="initial-placeholder" class="placeholder-message">上面的按钮（或下划线）是可以左右滑动显示更多选项并且进行点击的</div>
+            <div id="initial-placeholder" class="placeholder-message">
+                上面的按钮（或下划线）是可以左右滑动显示更多选项并且进行点击的<br><br>
+                烦请您查看相关内容。手机上的下划线是可以左右滑动并点击的。<br>
+                请放心访问，我无法获取您的IP。您也可以询问AI看GitHub和Netlify代理的GitHub是否可获取您的IP。
+                另外说明，如何判断服务器是否在线？看QQ状态是不是“离开”，以及是否可收到QQ自带的自动回复。是的话就在线，如果是离线那就是服务器掉了。由于自动回复易被风控，已经关闭自动回复功能。我回家的时候虽然有时也是离开状态，但是自动回复是空的。自动回复内容可以单击名字下面的状态查看。
+            </div>
 
             <div id="content-msg-handle" class="content-section hidden">
                 <h1>消息处理说明</h1>
@@ -746,7 +808,7 @@
 
             const questionBtn = document.getElementById('questionBtn');
             questionBtn.addEventListener('click', () => {
-                showModal('微信提示预留');
+                showModal('请于在线时私信获取。');
             });
 
             document.querySelectorAll('.note-question-btn').forEach(btn => {
@@ -766,17 +828,19 @@
                 }
             });
 
-            function checkExpiry(valueElementId, messageElementId, textElementId) {
+            function checkExpiry(valueElementId, messageElementId, textElementId, blockElementId) {
                 const timeValueElement = document.getElementById(valueElementId);
                 const expiredMessageElement = document.getElementById(messageElementId);
                 const expiredTextElement = document.getElementById(textElementId);
-                if (!timeValueElement || !expiredMessageElement || !expiredTextElement) return;
+                const blockElement = document.getElementById(blockElementId);
+                if (!timeValueElement || !expiredMessageElement || !expiredTextElement || !blockElement) return;
 
                 const rawText = timeValueElement.textContent.trim();
                 const dateMatch = rawText.match(/(\d{2}|\d{4})年(\d{1,2})月(\d{1,2})日/);
                 if (!dateMatch) {
                     timeValueElement.style.display = 'block';
                     expiredMessageElement.style.display = 'none';
+                    blockElement.classList.remove('expired-block');
                     return;
                 }
 
@@ -789,6 +853,7 @@
                 if (isNaN(targetDate.getTime())) {
                     timeValueElement.style.display = 'block';
                     expiredMessageElement.style.display = 'none';
+                    blockElement.classList.remove('expired-block');
                     return;
                 }
 
@@ -800,18 +865,20 @@
                     const diffTime = todayDate.getTime() - targetDateOnly.getTime();
                     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                     const originalDateStr = year + '年' + month + '月' + day + '日';
-                    const message = '该页面已经过期，现在已经过了原设定可回复日期' + diffDays + '天（原设定：' + originalDateStr + '）。这可能是因为封丘一中过于死人修改了回家时间或者已到家但因各种原因无法回复且无法更新此网页。有事请先留言，消息有可能因长时间未登录被吞，请以实际回复情况为准。';
+                    const message = '该日期已经过期，现在已经过了原设定可回复日期' + diffDays + '天（原设定：' + originalDateStr + '）。这可能是因为封丘一中过于死人修改了回家时间或者已到家但因各种原因无法回复且无法更新此网页。有事请先留言，消息有可能因长时间未登录被吞，请以实际回复情况为准。';
                     timeValueElement.style.display = 'none';
                     expiredMessageElement.style.display = 'block';
                     expiredTextElement.textContent = message;
+                    blockElement.classList.add('expired-block');
                 } else {
                     timeValueElement.style.display = 'block';
                     expiredMessageElement.style.display = 'none';
+                    blockElement.classList.remove('expired-block');
                 }
             }
 
-            checkExpiry('timeValue', 'expiredMessage', 'expiredText');
-            checkExpiry('wechatTimeValue', 'wechatExpiredMessage', 'wechatExpiredText');
+            checkExpiry('timeValue', 'expiredMessage', 'expiredText', 'qqTimeBlock');
+            checkExpiry('wechatTimeValue', 'wechatExpiredMessage', 'wechatExpiredText', 'wechatTimeBlock');
 
             function getDeviceModel() {
                 const ua = navigator.userAgent;
