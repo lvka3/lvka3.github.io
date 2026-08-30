@@ -524,7 +524,7 @@
         <span id="watermark-ip"></span>
     </div>
 
-    <div class="warning-top-center">请勿传播此页面链接！</div>
+    <div class="warning-top-center">请以实际回复为准｜请勿传播此页面链接</div>
 
     <div class="floating-left">
         <span class="wechat-text">建议使用微信联系</span>
@@ -538,14 +538,14 @@
         <div class="time-section">
             <div class="time-block">
                 <span class="time-label">QQ下一次预计可回复时间</span>
-                <span class="time-value" id="timeValue">26年10月1日</span>
+                <span class="time-value" id="timeValue">2026年10月1日</span>
                 <div class="expired-message" id="expiredMessage">
                     <span class="marquee-content" id="expiredText"></span>
                 </div>
             </div>
             <div class="time-block">
                 <span class="time-label">微信下一次预计可回复时间</span>
-                <span class="time-value" id="wechatTimeValue">26年10月1日</span>
+                <span class="time-value" id="wechatTimeValue">2026年10月1日</span>
                 <div class="expired-message" id="wechatExpiredMessage">
                     <span class="marquee-content" id="wechatExpiredText"></span>
                 </div>
@@ -751,7 +751,7 @@
 
             document.querySelectorAll('.note-question-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    showModal('是否违规由AI决定');
+                    showModal('是否违规由AI决定，违规后会引用您的消息并进行提示。');
                 });
             });
 
@@ -800,7 +800,7 @@
                     const diffTime = todayDate.getTime() - targetDateOnly.getTime();
                     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
                     const originalDateStr = year + '年' + month + '月' + day + '日';
-                    const message = '该页面已经过期，现在已经过了原设定可回复日期' + diffDays + '天（原设定：' + originalDateStr + '）。这可能是因为封丘一中过于死人修改了回家时间。有事请先留言，请以实际回复情况为准。';
+                    const message = '该页面已经过期，现在已经过了原设定可回复日期' + diffDays + '天（原设定：' + originalDateStr + '）。这可能是因为封丘一中过于死人修改了回家时间或者已到家但因各种原因无法回复且无法更新此网页。有事请先留言，消息有可能因长时间未登录被吞，请以实际回复情况为准。';
                     timeValueElement.style.display = 'none';
                     expiredMessageElement.style.display = 'block';
                     expiredTextElement.textContent = message;
